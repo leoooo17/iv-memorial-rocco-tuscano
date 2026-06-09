@@ -55,60 +55,36 @@ cursor:pointer;
 font-weight:600;
 }
 
-#menuBtn:hover{
-background:#FFD700;
-color:#111;
-}
-
-/* SIDEBAR FOTOGRAFO */
-#photographerPanel{
+/* 🔥 BOX LOGIN PICCOLO */
+#loginBox{
 position:fixed;
-top:0;
-left:-320px;
-width:300px;
-height:100%;
+top:55px;
+left:10px;
+z-index:1000;
+
 background:#111;
-color:white;
-padding:16px;
-transition:0.3s;
-z-index:999;
-box-sizing:border-box;
+padding:10px;
+border-radius:10px;
+display:none;
+width:160px;
 }
 
-#photographerPanel.open{
-left:0;
-}
-
-#photographerPanel h3{
-color:#FFD700;
-margin-top:0;
-font-size:18px;
-margin-bottom:10px;
-}
-
-/* INPUT COMPATTI */
-#photographerPanel input,
-#photographerPanel select{
+#loginBox input{
 width:100%;
-padding:8px;
-margin-top:8px;
+padding:6px;
 border:none;
-border-radius:8px;
-font-size:14px;
-box-sizing:border-box;
+border-radius:6px;
+margin-bottom:6px;
+font-size:12px;
 }
 
-#photographerPanel input{
-height:34px;
-}
-
-/* BOTTONI COMPATTI */
-#photographerPanel button{
+#loginBox button{
 width:100%;
-margin-top:8px;
-padding:9px;
-font-size:14px;
-border-radius:8px;
+padding:6px;
+border:none;
+border-radius:6px;
+font-size:12px;
+cursor:pointer;
 }
 
 /* CARTELLE */
@@ -167,19 +143,17 @@ transform:scale(1.02);
 <body>
 
 <!-- 🔥 MENU BUTTON -->
-<button id="menuBtn" onclick="openPhotographer()">☰ Menu</button>
+<button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
 
-<!-- 🔥 SIDEBAR FOTOGRAFO -->
-<div id="photographerPanel">
-
-<h3>Area Fotografo</h3>
+<!-- 🔥 LOGIN BOX PICCOLO -->
+<div id="loginBox">
 
 <input type="password" id="pass" placeholder="Password">
 <button onclick="login()">Accedi</button>
 
-<div id="uploadBox" style="display:none;">
+<div id="uploadBox" style="display:none;margin-top:6px;">
 
-<select id="folderSelect">
+<select id="folderSelect" style="width:100%;font-size:12px;">
 <option value="08-06">08/06</option>
 <option value="09-06">09/06</option>
 <option value="10-06">10/06</option>
@@ -195,7 +169,7 @@ transform:scale(1.02);
 <option value="finale">FINALE</option>
 </select>
 
-<button onclick="uploadPhoto()">📸 Carica Foto</button>
+<button onclick="uploadPhoto()">📸 Carica</button>
 
 </div>
 
@@ -226,7 +200,6 @@ transform:scale(1.02);
 
 </div>
 
-<!-- GALLERY -->
 <div class="gallery" id="gallery"></div>
 
 <!-- FIREBASE -->
@@ -253,10 +226,10 @@ const db = firebase.firestore();
 let currentFolder = "08-06";
 let isAdmin = false;
 
-/* PANEL FOTOGRAFO */
-function openPhotographer(){
-document.getElementById("photographerPanel").classList.add("open");
-document.getElementById("menuBtn").style.display = "none";
+/* 🔥 TOGGLE LOGIN BOX */
+function toggleLogin(){
+const box = document.getElementById("loginBox");
+box.style.display = (box.style.display === "block") ? "none" : "block";
 }
 
 /* LOGIN */
