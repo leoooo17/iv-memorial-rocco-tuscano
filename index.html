@@ -36,15 +36,7 @@ header h1, header p{
     position:relative;
 }
 
-/* MENU */
-.menu{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:8px;
-    padding:10px;
-}
-
+/* BUTTON */
 button{
     padding:10px 14px;
     border:none;
@@ -53,22 +45,26 @@ button{
     background:#1f1f1f;
     color:white;
     font-size:13px;
+    margin:3px;
 }
 
 button:hover{
     background:#007bff;
 }
 
+/* MENU */
+.menu{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+    padding:10px;
+}
+
 /* UPLOAD */
 .upload{
     text-align:center;
     padding:15px;
-}
-
-input{
-    padding:8px;
-    margin:5px;
-    border-radius:8px;
 }
 
 /* GALLERY */
@@ -164,10 +160,10 @@ function login(){
     }
 }
 
-/* FILTRO */
+/* FILTER */
 function filter(tag){
     currentTag = tag;
-    loadImages(tag);
+    loadImages();
 }
 
 /* UPLOAD */
@@ -183,12 +179,12 @@ function uploadPhoto(){
         uploadPreset: uploadPreset,
         sources: ['local','camera'],
         multiple: true,
-        tags: [currentTag]
+        folder: "iv-memorial-rocco-tuscano/" + currentTag   // 🔥 CARTELLA VERA
     },
     (error, result) => {
 
         if(result && result.event === "success"){
-            loadImages(currentTag);
+            loadImages();
         }
     });
 
@@ -204,19 +200,19 @@ function openImg(url){
     document.body.appendChild(m);
 }
 
-/* 🔥 FIX DEFINITIVO: SEARCH API */
-function loadImages(tag){
+/* 🔥 FUNZIONE CHE FUNZIONA DAVVERO */
+function loadImages(){
 
     const g = document.getElementById("gallery");
     g.innerHTML = "Caricamento...";
 
-    fetch(`https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`)
-    .then(r => r.json())
+    fetch(`https://res.cloudinary.com/${cloudName}/image/list/${currentTag}.json`)
+    .then(res => res.json())
     .then(data => {
 
         g.innerHTML = "";
 
-        if(!data.resources){
+        if(!data.resources || data.resources.length === 0){
             g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
             return;
         }
@@ -235,14 +231,15 @@ function loadImages(tag){
 
             g.appendChild(div);
         });
+
     })
     .catch(() => {
-        g.innerHTML = "<p style='text-align:center'>Errore caricamento immagini</p>";
+        g.innerHTML = "<p style='text-align:center'>Errore caricamento</p>";
     });
 }
 
 /* INIT */
-loadImages(currentTag);
+loadImages();
 
 </script>
 
