@@ -303,14 +303,13 @@ currentFolder = f;
 render();
 }
 
+/* FIX RENDER SENZA ORDERBY */
 function render() {
   const g = document.getElementById("gallery");
   g.innerHTML = "";
 
   db.collection("photos")
     .where("tag", "==", currentFolder)
-    .orderBy("time", "desc")
-    .limit(1)
     .get()
     .then(snapshot => {
 
@@ -322,16 +321,21 @@ function render() {
         return;
       }
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
+      let photos = [];
 
-        g.innerHTML = `
-          <div class="featured-photo">
-            <img src="${data.url}" onclick="openImg('${data.url}')">
-          </div>
-        `;
+      snapshot.forEach(doc => {
+        photos.push(doc.data());
       });
 
+      photos.sort((a, b) => b.time - a.time);
+
+      const last = photos[0];
+
+      g.innerHTML = `
+        <div class="featured-photo">
+          <img src="${last.url}" onclick="openImg('${last.url}')">
+        </div>
+      `;
     });
 }
 
