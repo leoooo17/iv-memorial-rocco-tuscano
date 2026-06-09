@@ -13,7 +13,34 @@ background:#f4f4f6;
 color:#222;
 }
 
-/* HERO più pulito stile immagine */
+/* SCROLL FIX + SMOOTH */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-y: scroll;
+}
+
+/* SCROLLBAR PERSONALIZZATA */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* HERO */
 header {
   height: 90vh;
   display: flex;
@@ -24,7 +51,6 @@ header {
   background: url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover no-repeat;
 }
 
-/* overlay più cinematografico */
 header::before {
   content: "";
   position: absolute;
@@ -36,7 +62,6 @@ header::before {
   );
 }
 
-/* titolo più “evento sportivo” */
 header h1 {
   position: relative;
   font-size: 60px;
@@ -45,7 +70,6 @@ header h1 {
   letter-spacing: 3px;
 }
 
-/* sottotitolo stile immagine */
 header h1::after {
   content: "SPORT • PASSIONE • RICORDO";
   display: block;
@@ -55,7 +79,7 @@ header h1::after {
   letter-spacing: 4px;
 }
 
-/* MENU più simile all’immagine */
+/* MENU */
 .menu {
   position: sticky;
   top: 0;
@@ -69,7 +93,7 @@ header h1::after {
   gap:6px;
 }
 
-/* bottoni */
+/* BUTTON */
 button{
 padding:10px 14px;
 border-radius:12px;
@@ -85,7 +109,7 @@ background:#FFD700;
 transform:translateY(-2px);
 }
 
-/* FOTO PRINCIPALE */
+/* FEATURED PHOTO */
 .featured-photo {
   width: 100%;
   display: flex;
@@ -106,7 +130,7 @@ transform:translateY(-2px);
   transform: scale(1.02);
 }
 
-/* stato vuoto */
+/* EMPTY STATE */
 .empty-state {
   text-align: center;
   padding: 50px;
@@ -212,11 +236,8 @@ cursor:pointer;
 
 <div class="gallery" id="gallery"></div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
-<!-- CLOUDINARY -->
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 <script>
@@ -258,7 +279,7 @@ currentFolder = f;
 render();
 }
 
-/* NUOVA RENDER */
+/* RENDER ULTIMA FOTO */
 function render() {
   const g = document.getElementById("gallery");
   g.innerHTML = "";
