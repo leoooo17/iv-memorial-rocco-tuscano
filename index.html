@@ -40,7 +40,7 @@ body {
   background: #999;
 }
 
-/* HERO CALCISTICO */
+/* HERO CON TUA IMMAGINE */
 header {
   height: 90vh;
   display: flex;
@@ -48,7 +48,9 @@ header {
   align-items: center;
   text-align: center;
   position: relative;
-  background: url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6") center/cover no-repeat;
+
+  background: url("https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg")
+  center/cover no-repeat;
 }
 
 header::before {
@@ -324,7 +326,6 @@ currentFolder = f;
 render();
 }
 
-/* GALLERIA COMPLETA (ILLIMITATA) */
 function render() {
   const g = document.getElementById("gallery");
   g.innerHTML = "";
@@ -363,7 +364,6 @@ function render() {
     });
 }
 
-/* DELETE */
 function deletePhoto(id){
 
   if(!isAdmin){
