@@ -9,37 +9,48 @@
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background:#f4f4f6;
-color:#222;
+overflow:hidden;
 }
 
-/* HEADER */
-header{
-height:260px;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-position:relative;
-background:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover no-repeat;
+/* 🔥 HERO IMAGE FULL SCREEN */
+#hero{
+position:fixed;
+inset:0;
+background:url("campo.jpg") center/cover no-repeat;
 }
 
-header::before{
+/* overlay scuro */
+#hero::before{
 content:"";
 position:absolute;
 inset:0;
-background:rgba(0,0,0,0.55);
+background:rgba(0,0,0,0.45);
 }
 
-header h1{
-position:relative;
-font-size:36px;
+/* titolo centrale */
+#title{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+text-align:center;
+}
+
+#title h1{
+font-size:42px;
 letter-spacing:2px;
-text-transform:uppercase;
+margin:0;
 color:#FFD700;
 }
 
-/* MENU BUTTON */
+#title p{
+margin-top:10px;
+font-size:16px;
+opacity:0.9;
+}
+
+/* 🔥 MENU BUTTON */
 #menuBtn{
 position:fixed;
 top:10px;
@@ -55,7 +66,7 @@ cursor:pointer;
 font-weight:600;
 }
 
-/* 🔥 BOX LOGIN PICCOLO */
+/* 🔥 LOGIN BOX PICCOLO */
 #loginBox{
 position:fixed;
 top:55px;
@@ -87,238 +98,97 @@ font-size:12px;
 cursor:pointer;
 }
 
-/* CARTELLE */
-.menu{
+/* cartelle sopra immagine */
+#folders{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
 display:flex;
+gap:8px;
 flex-wrap:wrap;
 justify-content:center;
-padding:10px;
-gap:6px;
+z-index:1000;
 }
 
-button{
-padding:10px 14px;
-border-radius:12px;
-border:1px solid #ddd;
+#folders button{
+padding:8px 12px;
+border-radius:10px;
+border:none;
 background:white;
 cursor:pointer;
 font-weight:600;
-transition:0.2s;
 }
 
-button:hover{
+#folders button:hover{
 background:#FFD700;
-transform:translateY(-2px);
 }
 
-/* GALLERY */
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:12px;
-padding:15px;
-}
-
-.card{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-transition:0.2s;
-}
-
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
-cursor:pointer;
-}
-
-.card:hover{
-transform:scale(1.02);
+/* responsive */
+@media(max-width:600px){
+#title h1{font-size:28px;}
 }
 </style>
 </head>
 
 <body>
 
+<!-- 🔥 HERO IMAGE -->
+<div id="hero"></div>
+
+<!-- 🔥 TITLE -->
+<div id="title">
+<h1>IV MEMORIAL ROCCO TUSCANO</h1>
+<p>Evento sportivo ufficiale</p>
+</div>
+
 <!-- 🔥 MENU BUTTON -->
 <button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
 
-<!-- 🔥 LOGIN BOX PICCOLO -->
+<!-- 🔥 LOGIN BOX -->
 <div id="loginBox">
 
 <input type="password" id="pass" placeholder="Password">
 <button onclick="login()">Accedi</button>
 
 <div id="uploadBox" style="display:none;margin-top:6px;">
-
-<select id="folderSelect" style="width:100%;font-size:12px;">
-<option value="08-06">08/06</option>
-<option value="09-06">09/06</option>
-<option value="10-06">10/06</option>
-<option value="11-06">11/06</option>
-<option value="12-06">12/06</option>
-<option value="13-06">13/06</option>
-<option value="15-06">15/06</option>
-<option value="16-06">16/06</option>
-<option value="17-06">17/06</option>
-<option value="ottavi">OTTAVI</option>
-<option value="quarti">QUARTI</option>
-<option value="semifinale">SEMIFINALE</option>
-<option value="finale">FINALE</option>
-</select>
-
-<button onclick="uploadPhoto()">📸 Carica</button>
-
+<p style="color:white;font-size:12px;margin:0 0 6px 0;">Area Fotografo</p>
 </div>
 
 </div>
 
-<!-- HEADER -->
-<header>
-<h1>IV MEMORIAL ROCCO TUSCANO</h1>
-</header>
+<!-- 🔥 CARTELLE (SEMPLICI) -->
+<div id="folders">
 
-<!-- CARTELLE -->
-<div class="menu">
-
-<button onclick="setFolder('08-06')">08/06</button>
-<button onclick="setFolder('09-06')">09/06</button>
-<button onclick="setFolder('10-06')">10/06</button>
-<button onclick="setFolder('11-06')">11/06</button>
-<button onclick="setFolder('12-06')">12/06</button>
-<button onclick="setFolder('13-06')">13/06</button>
-<button onclick="setFolder('15-06')">15/06</button>
-<button onclick="setFolder('16-06')">16/06</button>
-<button onclick="setFolder('17-06')">17/06</button>
-
-<button onclick="setFolder('ottavi')">OTTAVI</button>
-<button onclick="setFolder('quarti')">QUARTI</button>
-<button onclick="setFolder('semifinale')">SEMIFINALE</button>
-<button onclick="setFolder('finale')">FINALE</button>
+<button>08/06</button>
+<button>09/06</button>
+<button>10/06</button>
+<button>11/06</button>
+<button>12/06</button>
+<button>13/06</button>
+<button>Finale</button>
 
 </div>
-
-<div class="gallery" id="gallery"></div>
-
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
-<!-- CLOUDINARY -->
-<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 <script>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
-  authDomain: "memorial-rocco-tuscano.firebaseapp.com",
-  projectId: "memorial-rocco-tuscano",
-  storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
-  messagingSenderId: "72206140774",
-  appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-let currentFolder = "08-06";
-let isAdmin = false;
-
-/* 🔥 TOGGLE LOGIN BOX */
+/* toggle menu */
 function toggleLogin(){
 const box = document.getElementById("loginBox");
 box.style.display = (box.style.display === "block") ? "none" : "block";
 }
 
-/* LOGIN */
+/* login base */
 function login(){
 const pass = document.getElementById("pass").value;
 
 if(pass === "alessio2026"){
-isAdmin = true;
 document.getElementById("uploadBox").style.display = "block";
 alert("Accesso fotografo attivato");
 }else{
 alert("Password errata");
 }
 }
-
-/* CARTELLE */
-function setFolder(f){
-currentFolder = f;
-render();
-}
-
-/* UPLOAD */
-function uploadPhoto(){
-
-if(!isAdmin){
-alert("Devi fare login");
-return;
-}
-
-let scelta = document.getElementById("folderSelect").value;
-
-let widget = cloudinary.createUploadWidget({
-cloudName: "dagfasmlx",
-uploadPreset: "iv-memorial",
-folder: "iv-memorial/" + scelta
-}, (err,res)=>{
-
-if(res && res.event === "success"){
-
-db.collection("photos").add({
-url: res.info.secure_url,
-tag: scelta,
-time: Date.now()
-});
-
-render();
-}
-});
-
-widget.open();
-}
-
-/* GALLERY */
-function render(){
-const g = document.getElementById("gallery");
-g.innerHTML = "";
-
-db.collection("photos")
-.where("tag","==",currentFolder)
-.get()
-.then(snapshot=>{
-
-if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
-return;
-}
-
-snapshot.forEach(doc=>{
-let data = doc.data();
-
-g.innerHTML += `
-<div class="card">
-<img src="${data.url}" onclick="openImg('${data.url}')">
-</div>
-`;
-});
-});
-}
-
-/* ZOOM */
-function openImg(url){
-const m = document.createElement("div");
-m.style = "position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
-m.innerHTML = `<img src="${url}" style="max-width:90%;max-height:90%">`;
-m.onclick = ()=>m.remove();
-document.body.appendChild(m);
-}
-
-render();
 
 </script>
 
