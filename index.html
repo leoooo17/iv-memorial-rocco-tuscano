@@ -21,22 +21,36 @@ header{
 
 h1{ margin:0; }
 
-.admin{
-    padding:10px;
-    text-align:center;
+.menu{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    padding:15px;
 }
 
 button{
-    padding:10px 15px;
-    margin:5px;
+    padding:8px 10px;
     border:none;
-    cursor:pointer;
     border-radius:6px;
+    cursor:pointer;
+    background:black;
+    color:white;
+    font-size:12px;
+}
+
+button:hover{
+    background:#333;
 }
 
 .upload{
+    text-align:center;
+    padding:10px;
+}
+
+.upload button{
     background:#007bff;
-    color:white;
+    font-size:14px;
 }
 
 .gallery{
@@ -74,66 +88,106 @@ button{
 
 <header>
 <h1>IV Memorial Rocco Tuscano</h1>
-<p>Galleria fotografica ufficiale</p>
+<p>Galleria fotografica ufficiale del torneo</p>
 </header>
 
-<div class="admin">
-    <button class="upload" onclick="uploadPhoto()">📸 Carica foto (Fotografo)</button>
+<div class="upload">
+<button onclick="uploadPhoto()">📸 Carica Foto (Fotografo)</button>
 </div>
 
-<section class="gallery" id="gallery">
+<div class="menu">
 
-<!-- FOTO DI PROVA -->
-<div class="card">
-<img src="https://via.placeholder.com/600x400">
-<a href="https://via.placeholder.com/600x400" download>Scarica</a>
+<button onclick="filter('08-06')">08/06</button>
+<button onclick="filter('09-06')">09/06</button>
+<button onclick="filter('10-06')">10/06</button>
+<button onclick="filter('11-06')">11/06</button>
+<button onclick="filter('12-06')">12/06</button>
+<button onclick="filter('13-06')">13/06</button>
+<button onclick="filter('15-06')">15/06</button>
+<button onclick="filter('16-06')">16/06</button>
+<button onclick="filter('17-06')">17/06</button>
+
+<button onclick="filter('ottavi')">OTTAVI</button>
+<button onclick="filter('quarti')">QUARTI</button>
+<button onclick="filter('semifinale')">SEMIFINALE</button>
+<button onclick="filter('finale')">FINALE</button>
+
 </div>
 
-</section>
+<section class="gallery" id="gallery"></section>
 
 <script>
 
-// CONFIG CLOUDINARY
 const cloudName = "dagfasmlx";
 const uploadPreset = "iv-memorial";
 
-// CARICAMENTO FOTO
+let currentFolder = "08-06";
+
+// CAMBIA CARTELLA (FILTRO)
+function filter(folder){
+    currentFolder = folder;
+    loadImages(folder);
+}
+
+// CARICA FOTO (FOTOGRAFO)
 function uploadPhoto(){
 
     let widget = cloudinary.createUploadWidget({
         cloudName: cloudName,
         uploadPreset: uploadPreset,
+        folder: "iv-memorial-rocco-tuscano/" + currentFolder,
         sources: ['local', 'camera'],
-        multiple: true,
-        folder: "iv-memorial-rocco-tuscano"
+        multiple: true
     },
     (error, result) => {
         if (!error && result && result.event === "success") {
-            addImage(result.info.secure_url);
+            loadImages(currentFolder);
         }
     });
 
     widget.open();
 }
 
-// AGGIUNGI FOTO ALLA GALLERIA
-function addImage(url){
+// CARICA FOTO DAL CLOUD
+function loadImages(folder){
+
     const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
 
-    const div = document.createElement("div");
-    div.className = "card";
+    fetch(`https://res.cloudinary.com/${cloudName}/image/list/${folder}.json`)
+    .then(res => res.json())
+    .then(data => {
 
-    div.innerHTML = `
-        <img src="${url}">
-        <a href="${url}" download>Scarica</a>
-    `;
+        if(!data.resources){
+            gallery.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
+            return;
+        }
 
-    gallery.prepend(div);
+        data.resources.forEach(img => {
+
+            const url = `https://res.cloudinary.com/${cloudName}/image/upload/${img.public_id}.${img.format}`;
+
+            const div = document.createElement("div");
+            div.className = "card";
+
+            div.innerHTML = `
+                <img src="${url}">
+                <a href="${url}" download>Scarica</a>
+            `;
+
+            gallery.appendChild(div);
+        });
+    })
+    .catch(() => {
+        gallery.innerHTML = "<p style='text-align:center'>Errore caricamento foto</p>";
+    });
 }
+
+// iniziale
+loadImages(currentFolder);
 
 </script>
 
-<!-- Cloudinary widget -->
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 </body>
