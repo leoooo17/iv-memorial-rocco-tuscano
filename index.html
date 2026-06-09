@@ -13,39 +13,113 @@ background:#f4f4f6;
 color:#222;
 }
 
-/* HEADER */
-header{
-height:260px;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-position:relative;
-background:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover no-repeat;
+/* HERO più pulito stile immagine */
+header {
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  background: url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover no-repeat;
 }
 
-header::before{
-content:"";
-position:absolute;
-inset:0;
-background:rgba(0,0,0,0.55);
+/* overlay più cinematografico */
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.6),
+    rgba(0,0,0,0.8)
+  );
 }
 
-header h1{
-position:relative;
-font-size:36px;
-letter-spacing:2px;
-text-transform:uppercase;
-color:#FFD700;
+/* titolo più “evento sportivo” */
+header h1 {
+  position: relative;
+  font-size: 60px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 3px;
 }
 
-/* MENU BUTTON */
+/* sottotitolo stile immagine */
+header h1::after {
+  content: "SPORT • PASSIONE • RICORDO";
+  display: block;
+  font-size: 14px;
+  margin-top: 10px;
+  color: #FFD700;
+  letter-spacing: 4px;
+}
+
+/* MENU più simile all’immagine */
+.menu {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 999;
+  padding: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:6px;
+}
+
+/* bottoni */
+button{
+padding:10px 14px;
+border-radius:12px;
+border:1px solid #ddd;
+background:white;
+cursor:pointer;
+font-weight:600;
+transition:0.2s;
+}
+
+button:hover{
+background:#FFD700;
+transform:translateY(-2px);
+}
+
+/* FOTO PRINCIPALE */
+.featured-photo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.featured-photo img {
+  width: 90%;
+  max-width: 1000px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.featured-photo img:hover {
+  transform: scale(1.02);
+}
+
+/* stato vuoto */
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* LOGIN */
 #menuBtn{
 position:fixed;
 top:10px;
 left:10px;
 z-index:1000;
-
 padding:10px 14px;
 border-radius:10px;
 border:none;
@@ -55,13 +129,11 @@ cursor:pointer;
 font-weight:600;
 }
 
-/* 🔥 BOX LOGIN PICCOLO */
 #loginBox{
 position:fixed;
 top:55px;
 left:10px;
 z-index:1000;
-
 background:#111;
 padding:10px;
 border-radius:10px;
@@ -86,73 +158,18 @@ border-radius:6px;
 font-size:12px;
 cursor:pointer;
 }
-
-/* CARTELLE */
-.menu{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-padding:10px;
-gap:6px;
-}
-
-button{
-padding:10px 14px;
-border-radius:12px;
-border:1px solid #ddd;
-background:white;
-cursor:pointer;
-font-weight:600;
-transition:0.2s;
-}
-
-button:hover{
-background:#FFD700;
-transform:translateY(-2px);
-}
-
-/* GALLERY */
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:12px;
-padding:15px;
-}
-
-.card{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-transition:0.2s;
-}
-
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
-cursor:pointer;
-}
-
-.card:hover{
-transform:scale(1.02);
-}
 </style>
 </head>
 
 <body>
 
-<!-- 🔥 MENU BUTTON -->
 <button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
 
-<!-- 🔥 LOGIN BOX PICCOLO -->
 <div id="loginBox">
-
 <input type="password" id="pass" placeholder="Password">
 <button onclick="login()">Accedi</button>
 
 <div id="uploadBox" style="display:none;margin-top:6px;">
-
 <select id="folderSelect" style="width:100%;font-size:12px;">
 <option value="08-06">08/06</option>
 <option value="09-06">09/06</option>
@@ -170,19 +187,14 @@ transform:scale(1.02);
 </select>
 
 <button onclick="uploadPhoto()">📸 Carica</button>
-
+</div>
 </div>
 
-</div>
-
-<!-- HEADER -->
 <header>
 <h1>IV MEMORIAL ROCCO TUSCANO</h1>
 </header>
 
-<!-- CARTELLE -->
 <div class="menu">
-
 <button onclick="setFolder('08-06')">08/06</button>
 <button onclick="setFolder('09-06')">09/06</button>
 <button onclick="setFolder('10-06')">10/06</button>
@@ -192,12 +204,10 @@ transform:scale(1.02);
 <button onclick="setFolder('15-06')">15/06</button>
 <button onclick="setFolder('16-06')">16/06</button>
 <button onclick="setFolder('17-06')">17/06</button>
-
 <button onclick="setFolder('ottavi')">OTTAVI</button>
 <button onclick="setFolder('quarti')">QUARTI</button>
 <button onclick="setFolder('semifinale')">SEMIFINALE</button>
 <button onclick="setFolder('finale')">FINALE</button>
-
 </div>
 
 <div class="gallery" id="gallery"></div>
@@ -226,13 +236,11 @@ const db = firebase.firestore();
 let currentFolder = "08-06";
 let isAdmin = false;
 
-/* 🔥 TOGGLE LOGIN BOX */
 function toggleLogin(){
 const box = document.getElementById("loginBox");
 box.style.display = (box.style.display === "block") ? "none" : "block";
 }
 
-/* LOGIN */
 function login(){
 const pass = document.getElementById("pass").value;
 
@@ -245,13 +253,44 @@ alert("Password errata");
 }
 }
 
-/* CARTELLE */
 function setFolder(f){
 currentFolder = f;
 render();
 }
 
-/* UPLOAD */
+/* NUOVA RENDER */
+function render() {
+  const g = document.getElementById("gallery");
+  g.innerHTML = "";
+
+  db.collection("photos")
+    .where("tag", "==", currentFolder)
+    .orderBy("time", "desc")
+    .limit(1)
+    .get()
+    .then(snapshot => {
+
+      if (snapshot.empty) {
+        g.innerHTML = `
+          <div class="empty-state">
+            Nessuna foto disponibile per questa sezione
+          </div>`;
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+
+        g.innerHTML = `
+          <div class="featured-photo">
+            <img src="${data.url}" onclick="openImg('${data.url}')">
+          </div>
+        `;
+      });
+
+    });
+}
+
 function uploadPhoto(){
 
 if(!isAdmin){
@@ -282,34 +321,6 @@ render();
 widget.open();
 }
 
-/* GALLERY */
-function render(){
-const g = document.getElementById("gallery");
-g.innerHTML = "";
-
-db.collection("photos")
-.where("tag","==",currentFolder)
-.get()
-.then(snapshot=>{
-
-if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
-return;
-}
-
-snapshot.forEach(doc=>{
-let data = doc.data();
-
-g.innerHTML += `
-<div class="card">
-<img src="${data.url}" onclick="openImg('${data.url}')">
-</div>
-`;
-});
-});
-}
-
-/* ZOOM */
 function openImg(url){
 const m = document.createElement("div");
 m.style = "position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
