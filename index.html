@@ -39,34 +39,7 @@ text-transform:uppercase;
 color:#FFD700;
 }
 
-/* MENU CARTELLE */
-.menu{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-padding:10px;
-gap:6px;
-}
-
-/* BOTTONI GENERALI */
-button{
-padding:10px 14px;
-border-radius:12px;
-border:1px solid #ddd;
-background:white;
-color:#222;
-cursor:pointer;
-margin:4px;
-font-weight:600;
-transition:0.2s;
-}
-
-button:hover{
-background:#FFD700;
-transform:translateY(-2px);
-}
-
-/* 🔥 FIX MENU BUTTON (NO BORDI NERI) */
+/* MENU BUTTON */
 #menuBtn{
 position:fixed;
 top:10px;
@@ -74,32 +47,21 @@ left:10px;
 z-index:1000;
 
 padding:10px 14px;
-border-radius:12px;
+border-radius:10px;
 border:none;
 background:#111;
 color:white;
-font-size:18px;
 cursor:pointer;
-
-outline:none;
-box-shadow:none;
+font-weight:600;
 }
 
 #menuBtn:hover{
 background:#FFD700;
 color:#111;
-transform:scale(1.05);
-transition:0.2s;
 }
 
-#menuBtn:focus,
-#menuBtn:active{
-outline:none;
-box-shadow:none;
-}
-
-/* SIDEBAR */
-#sidebar{
+/* PANEL FOTOGRAFO */
+#photographerPanel{
 position:fixed;
 top:0;
 left:-320px;
@@ -112,30 +74,54 @@ transition:0.3s;
 z-index:999;
 }
 
-#sidebar.open{
+#photographerPanel.open{
 left:0;
 }
 
-#sidebar h2{
+#photographerPanel h3{
 color:#FFD700;
 margin-top:0;
 }
 
-#sidebar input,
-#sidebar select{
+#photographerPanel input,
+#photographerPanel select{
 width:100%;
 padding:10px;
 margin-top:10px;
-border-radius:8px;
 border:none;
+border-radius:8px;
 }
 
-#sidebar button{
+#photographerPanel button{
 width:100%;
 margin-top:10px;
 }
 
-/* GALLERIA */
+/* CARTELLE */
+.menu{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+padding:10px;
+gap:6px;
+}
+
+button{
+padding:10px 14px;
+border-radius:12px;
+border:1px solid #ddd;
+background:white;
+cursor:pointer;
+font-weight:600;
+transition:0.2s;
+}
+
+button:hover{
+background:#FFD700;
+transform:translateY(-2px);
+}
+
+/* GALLERY */
 .gallery{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -167,19 +153,15 @@ transform:scale(1.02);
 <body>
 
 <!-- 🔥 MENU BUTTON -->
-<button id="menuBtn" onclick="toggleSidebar()">☰ Menu</button>
+<button id="menuBtn" onclick="openPhotographer()">☰ Menu</button>
 
-<!-- 🔥 SIDEBAR -->
-<div id="sidebar">
+<!-- 🔥 PANEL FOTOGRAFO -->
+<div id="photographerPanel">
 
-<h2>Area Fotografo</h2>
+<h3>Area Fotografo</h3>
 
-<button onclick="showLoginBox()">🔒 Accedi</button>
-
-<div id="loginBox" style="display:none;">
 <input type="password" id="pass" placeholder="Password">
-<button onclick="login()">Entra</button>
-</div>
+<button onclick="login()">Accedi</button>
 
 <div id="uploadBox" style="display:none;">
 
@@ -210,7 +192,7 @@ transform:scale(1.02);
 <h1>IV MEMORIAL ROCCO TUSCANO</h1>
 </header>
 
-<!-- MENU CARTELLE -->
+<!-- CARTELLE -->
 <div class="menu">
 
 <button onclick="setFolder('08-06')">08/06</button>
@@ -254,27 +236,23 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let isAdmin = false;
 let currentFolder = "08-06";
+let isAdmin = false;
 
-/* SIDEBAR */
-function toggleSidebar(){
-document.getElementById("sidebar").classList.toggle("open");
+/* 🔥 APERTURA PANEL FOTOGRAFO */
+function openPhotographer(){
+document.getElementById("photographerPanel").classList.add("open");
+document.getElementById("menuBtn").style.display = "none";
 }
 
 /* LOGIN */
-function showLoginBox(){
-document.getElementById("loginBox").style.display = "block";
-}
-
 function login(){
 const pass = document.getElementById("pass").value;
 
 if(pass === "alessio2026"){
 isAdmin = true;
 document.getElementById("uploadBox").style.display = "block";
-alert("Accesso fotografo effettuato");
-render();
+alert("Accesso fotografo attivato");
 }else{
 alert("Password errata");
 }
@@ -319,7 +297,6 @@ widget.open();
 
 /* GALLERY */
 function render(){
-
 const g = document.getElementById("gallery");
 g.innerHTML = "";
 
@@ -339,19 +316,10 @@ let data = doc.data();
 g.innerHTML += `
 <div class="card">
 <img src="${data.url}" onclick="openImg('${data.url}')">
-
-${isAdmin ? `<button onclick="deletePhoto('${doc.id}')">🗑 Elimina</button>` : ""}
-
 </div>
 `;
 });
 });
-}
-
-/* DELETE */
-function deletePhoto(id){
-if(!confirm("Eliminare foto?")) return;
-db.collection("photos").doc(id).delete().then(render);
 }
 
 /* ZOOM */
