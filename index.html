@@ -39,7 +39,16 @@ text-transform:uppercase;
 color:#FFD700;
 }
 
-/* BOTTONI */
+/* MENU CARTELLE */
+.menu{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+padding:10px;
+gap:6px;
+}
+
+/* BOTTONI GENERALI */
 button{
 padding:10px 14px;
 border-radius:12px;
@@ -57,38 +66,76 @@ background:#FFD700;
 transform:translateY(-2px);
 }
 
-/* MENU BUTTON */
+/* 🔥 FIX MENU BUTTON (NO BORDI NERI) */
 #menuBtn{
 position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+top:10px;
+left:10px;
 z-index:1000;
 
-padding:14px 22px;
+padding:10px 14px;
+border-radius:12px;
 border:none;
-border-radius:14px;
 background:#111;
 color:white;
-font-size:20px;
+font-size:18px;
 cursor:pointer;
+
+outline:none;
+box-shadow:none;
 }
 
-/* CONTENT INITIALLY HIDDEN */
-#content{
-display:none;
+#menuBtn:hover{
+background:#FFD700;
+color:#111;
+transform:scale(1.05);
+transition:0.2s;
 }
 
-/* MENU CARTELLE */
-.menu{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
+#menuBtn:focus,
+#menuBtn:active{
+outline:none;
+box-shadow:none;
+}
+
+/* SIDEBAR */
+#sidebar{
+position:fixed;
+top:0;
+left:-320px;
+width:300px;
+height:100%;
+background:#111;
+color:white;
+padding:20px;
+transition:0.3s;
+z-index:999;
+}
+
+#sidebar.open{
+left:0;
+}
+
+#sidebar h2{
+color:#FFD700;
+margin-top:0;
+}
+
+#sidebar input,
+#sidebar select{
+width:100%;
 padding:10px;
-gap:6px;
+margin-top:10px;
+border-radius:8px;
+border:none;
 }
 
-/* GALLERY */
+#sidebar button{
+width:100%;
+margin-top:10px;
+}
+
+/* GALLERIA */
 .gallery{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -119,16 +166,51 @@ transform:scale(1.02);
 
 <body>
 
-<!-- 🔥 MENU INIT -->
-<button id="menuBtn" onclick="openSite()">☰ MENU</button>
+<!-- 🔥 MENU BUTTON -->
+<button id="menuBtn" onclick="toggleSidebar()">☰ Menu</button>
 
-<!-- 🔥 CONTENUTO NASCOSTO -->
-<div id="content">
+<!-- 🔥 SIDEBAR -->
+<div id="sidebar">
 
+<h2>Area Fotografo</h2>
+
+<button onclick="showLoginBox()">🔒 Accedi</button>
+
+<div id="loginBox" style="display:none;">
+<input type="password" id="pass" placeholder="Password">
+<button onclick="login()">Entra</button>
+</div>
+
+<div id="uploadBox" style="display:none;">
+
+<select id="folderSelect">
+<option value="08-06">08/06</option>
+<option value="09-06">09/06</option>
+<option value="10-06">10/06</option>
+<option value="11-06">11/06</option>
+<option value="12-06">12/06</option>
+<option value="13-06">13/06</option>
+<option value="15-06">15/06</option>
+<option value="16-06">16/06</option>
+<option value="17-06">17/06</option>
+<option value="ottavi">OTTAVI</option>
+<option value="quarti">QUARTI</option>
+<option value="semifinale">SEMIFINALE</option>
+<option value="finale">FINALE</option>
+</select>
+
+<button onclick="uploadPhoto()">📸 Carica Foto</button>
+
+</div>
+
+</div>
+
+<!-- HEADER -->
 <header>
 <h1>IV MEMORIAL ROCCO TUSCANO</h1>
 </header>
 
+<!-- MENU CARTELLE -->
 <div class="menu">
 
 <button onclick="setFolder('08-06')">08/06</button>
@@ -148,9 +230,8 @@ transform:scale(1.02);
 
 </div>
 
+<!-- GALLERY -->
 <div class="gallery" id="gallery"></div>
-
-</div>
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -173,19 +254,67 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+let isAdmin = false;
 let currentFolder = "08-06";
 
-/* 🔥 APERTURA SITO */
-function openSite(){
-document.getElementById("menuBtn").style.display = "none";
-document.getElementById("content").style.display = "block";
+/* SIDEBAR */
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("open");
+}
+
+/* LOGIN */
+function showLoginBox(){
+document.getElementById("loginBox").style.display = "block";
+}
+
+function login(){
+const pass = document.getElementById("pass").value;
+
+if(pass === "alessio2026"){
+isAdmin = true;
+document.getElementById("uploadBox").style.display = "block";
+alert("Accesso fotografo effettuato");
 render();
+}else{
+alert("Password errata");
+}
 }
 
 /* CARTELLE */
 function setFolder(f){
 currentFolder = f;
 render();
+}
+
+/* UPLOAD */
+function uploadPhoto(){
+
+if(!isAdmin){
+alert("Devi fare login");
+return;
+}
+
+let scelta = document.getElementById("folderSelect").value;
+
+let widget = cloudinary.createUploadWidget({
+cloudName: "dagfasmlx",
+uploadPreset: "iv-memorial",
+folder: "iv-memorial/" + scelta
+}, (err,res)=>{
+
+if(res && res.event === "success"){
+
+db.collection("photos").add({
+url: res.info.secure_url,
+tag: scelta,
+time: Date.now()
+});
+
+render();
+}
+});
+
+widget.open();
 }
 
 /* GALLERY */
@@ -210,10 +339,19 @@ let data = doc.data();
 g.innerHTML += `
 <div class="card">
 <img src="${data.url}" onclick="openImg('${data.url}')">
+
+${isAdmin ? `<button onclick="deletePhoto('${doc.id}')">🗑 Elimina</button>` : ""}
+
 </div>
 `;
 });
 });
+}
+
+/* DELETE */
+function deletePhoto(id){
+if(!confirm("Eliminare foto?")) return;
+db.collection("photos").doc(id).delete().then(render);
 }
 
 /* ZOOM */
@@ -224,6 +362,8 @@ m.innerHTML = `<img src="${url}" style="max-width:90%;max-height:90%">`;
 m.onclick = ()=>m.remove();
 document.body.appendChild(m);
 }
+
+render();
 
 </script>
 
