@@ -9,7 +9,7 @@
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background:#0f1115;
+background:#070A12;
 color:white;
 }
 
@@ -28,39 +28,41 @@ header::before{
 content:"";
 position:absolute;
 inset:0;
-background:rgba(0,0,0,0.65);
+background:rgba(0,0,0,0.75);
+backdrop-filter: blur(2px);
 }
 
 header h1{
 position:relative;
-font-size:34px;
-letter-spacing:2px;
+font-size:36px;
+letter-spacing:3px;
 text-transform:uppercase;
+color:#00E5FF;
+text-shadow:0 0 15px rgba(0,229,255,0.5);
 }
 
-/* 🔥 BOTTONI MODERNI */
+/* 🔵 BOTTONI NEON */
 button{
 padding:10px 14px;
-border:none;
 border-radius:999px;
-background:rgba(255,255,255,0.08);
-color:white;
+border:1px solid rgba(0,229,255,0.4);
+background:rgba(0,229,255,0.08);
+color:#00E5FF;
 cursor:pointer;
 margin:4px;
 font-weight:600;
 letter-spacing:0.5px;
 transition:0.25s;
-backdrop-filter: blur(6px);
-border:1px solid rgba(255,255,255,0.12);
+backdrop-filter: blur(8px);
 }
 
 button:hover{
 transform:translateY(-2px);
-background:linear-gradient(135deg,#ff3b3b,#ff7a00);
-box-shadow:0 6px 15px rgba(255,100,0,0.25);
+background:rgba(0,229,255,0.25);
+box-shadow:0 0 18px rgba(0,229,255,0.6);
 }
 
-/* MENU CARTELLE */
+/* MENU */
 .menu{
 display:flex;
 flex-wrap:wrap;
@@ -80,6 +82,7 @@ text-align:center;
 padding:15px;
 }
 
+/* LOGIN INPUT */
 #loginBox input{
 padding:10px;
 border-radius:20px;
@@ -91,20 +94,23 @@ outline:none;
 .gallery{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-gap:10px;
+gap:12px;
 padding:15px;
 }
 
+/* CARD */
 .card{
-background:#1a1a1a;
-border-radius:12px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(0,229,255,0.15);
+border-radius:14px;
 overflow:hidden;
-box-shadow:0 6px 18px rgba(0,0,0,0.4);
-transition:0.2s;
+box-shadow:0 0 15px rgba(0,229,255,0.08);
+transition:0.25s;
 }
 
 .card:hover{
 transform:scale(1.03);
+box-shadow:0 0 25px rgba(0,229,255,0.25);
 }
 
 .card img{
@@ -121,6 +127,9 @@ padding:10px;
 border-radius:20px;
 border:none;
 margin-top:10px;
+background:#0B1020;
+color:#00E5FF;
+border:1px solid rgba(0,229,255,0.3);
 }
 </style>
 </head>
@@ -211,6 +220,7 @@ const db = firebase.firestore();
 let isAdmin = false;
 let currentFolder = "08-06";
 
+/* LOGIN */
 function showLogin(){
 document.getElementById("loginBox").style.display = "block";
 }
@@ -229,11 +239,13 @@ alert("Password errata");
 }
 }
 
+/* CARTELLE */
 function setFolder(f){
 currentFolder = f;
 render();
 }
 
+/* UPLOAD */
 function uploadPhoto(){
 
 if(!isAdmin){
@@ -264,11 +276,13 @@ render();
 widget.open();
 }
 
+/* DELETE */
 function deletePhoto(id){
 if(!confirm("Eliminare foto?")) return;
 db.collection("photos").doc(id).delete().then(render);
 }
 
+/* GALLERY */
 function render(){
 
 const g = document.getElementById("gallery");
@@ -295,7 +309,7 @@ g.innerHTML += `
 
 ${isAdmin ? `
 <button onclick="deletePhoto('${doc.id}')"
-style="width:100%;background:red;border-radius:0;">
+style="width:100%;background:red;border-radius:0;color:white;">
 🗑 Elimina
 </button>
 ` : ""}
@@ -307,6 +321,7 @@ style="width:100%;background:red;border-radius:0;">
 });
 }
 
+/* ZOOM */
 function openImg(url){
 const m = document.createElement("div");
 m.style = "position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
