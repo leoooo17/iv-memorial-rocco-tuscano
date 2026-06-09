@@ -122,13 +122,10 @@ cursor:pointer;
 
 <script>
 
-const cloudName = "dagfasmlx";
-const uploadPreset = "iv-memorial";
-
-let isAdmin = false;
 let currentFolder = "08-06";
+let isAdmin = false;
 
-/* LOCAL STORAGE */
+/* DATABASE LOCALE */
 let photos = JSON.parse(localStorage.getItem("photos")) || [];
 
 /* LOGIN */
@@ -141,9 +138,15 @@ const pass = document.getElementById("pass").value;
 
 if(pass === "alessio2026"){
 isAdmin = true;
+
 document.getElementById("uploadBox").style.display = "block";
 document.getElementById("loginBox").style.display = "none";
-alert("Accesso effettuato");
+
+alert("Accesso fotografo effettuato");
+
+// 🔥 aggiorna UI
+render();
+
 }else{
 alert("Password errata");
 }
@@ -155,7 +158,7 @@ currentFolder = folder;
 render();
 }
 
-/* UPLOAD */
+/* UPLOAD FOTO */
 function uploadPhoto(){
 
 if(!isAdmin){
@@ -176,8 +179,8 @@ return;
 }
 
 let widget = cloudinary.createUploadWidget({
-cloudName: cloudName,
-uploadPreset: uploadPreset,
+cloudName: "dagfasmlx",
+uploadPreset: "iv-memorial",
 folder: "iv-memorial/" + scelta
 }, (err,res)=>{
 
@@ -217,7 +220,8 @@ g.innerHTML += `
 <img src="${p.url}" onclick="openImg('${p.url}')">
 
 ${isAdmin ? `
-<button onclick="deletePhoto(${index})" style="width:100%;background:red;border-radius:0;">
+<button onclick="deletePhoto(${index})"
+style="width:100%;background:red;border-radius:0;">
 🗑 Elimina
 </button>
 ` : ""}
@@ -242,10 +246,11 @@ photos = [
 ];
 
 localStorage.setItem("photos", JSON.stringify(photos));
+
 render();
 }
 
-/* ZOOM */
+/* ZOOM FOTO */
 function openImg(url){
 const m = document.createElement("div");
 m.style = "position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
