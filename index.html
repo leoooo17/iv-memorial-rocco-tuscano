@@ -29,9 +29,7 @@ inset:0;
 background:rgba(0,0,0,0.55);
 }
 
-header h1{
-position:relative;
-}
+header h1{position:relative}
 
 button{
 padding:10px 14px;
@@ -41,10 +39,6 @@ background:#222;
 color:white;
 cursor:pointer;
 margin:5px;
-}
-
-button:hover{
-background:#007bff;
 }
 
 .menu{
@@ -57,10 +51,6 @@ padding:10px;
 .upload{
 text-align:center;
 padding:10px;
-}
-
-.loginBox{
-margin-top:10px;
 }
 
 .gallery{
@@ -109,20 +99,20 @@ cursor:pointer;
 
 <div class="menu">
 
-<button onclick="setTag('08-06')">08/06</button>
-<button onclick="setTag('09-06')">09/06</button>
-<button onclick="setTag('10-06')">10/06</button>
-<button onclick="setTag('11-06')">11/06</button>
-<button onclick="setTag('12-06')">12/06</button>
-<button onclick="setTag('13-06')">13/06</button>
-<button onclick="setTag('15-06')">15/06</button>
-<button onclick="setTag('16-06')">16/06</button>
-<button onclick="setTag('17-06')">17/06</button>
+<button onclick="setFolder('08-06')">08/06</button>
+<button onclick="setFolder('09-06')">09/06</button>
+<button onclick="setFolder('10-06')">10/06</button>
+<button onclick="setFolder('11-06')">11/06</button>
+<button onclick="setFolder('12-06')">12/06</button>
+<button onclick="setFolder('13-06')">13/06</button>
+<button onclick="setFolder('15-06')">15/06</button>
+<button onclick="setFolder('16-06')">16/06</button>
+<button onclick="setFolder('17-06')">17/06</button>
 
-<button onclick="setTag('ottavi')">OTTAVI</button>
-<button onclick="setTag('quarti')">QUARTI</button>
-<button onclick="setTag('semifinale')">SEMIFINALE</button>
-<button onclick="setTag('finale')">FINALE</button>
+<button onclick="setFolder('ottavi')">OTTAVI</button>
+<button onclick="setFolder('quarti')">QUARTI</button>
+<button onclick="setFolder('semifinale')">SEMIFINALE</button>
+<button onclick="setFolder('finale')">FINALE</button>
 
 </div>
 
@@ -133,10 +123,10 @@ cursor:pointer;
 const cloudName = "dagfasmlx";
 const uploadPreset = "iv-memorial";
 
-let currentTag = "08-06";
 let isAdmin = false;
+let currentFolder = "08-06";
 
-/* STORAGE LOCALE */
+/* STORAGE */
 let photos = JSON.parse(localStorage.getItem("photos")) || [];
 
 /* LOGIN */
@@ -151,19 +141,19 @@ if(pass === "alessio2026"){
 isAdmin = true;
 document.getElementById("uploadBox").style.display = "block";
 document.getElementById("loginBox").style.display = "none";
-alert("Accesso effettuato");
+alert("Accesso OK");
 }else{
 alert("Password errata");
 }
 }
 
 /* CAMBIA CARTELLA */
-function setTag(tag){
-currentTag = tag;
+function setFolder(folder){
+currentFolder = folder;
 render();
 }
 
-/* UPLOAD */
+/* UPLOAD CON SCELTA CARTELLA */
 function uploadPhoto(){
 
 if(!isAdmin){
@@ -171,17 +161,29 @@ alert("Devi fare login");
 return;
 }
 
+let scelta = prompt(
+`Dove vuoi salvare la foto?
+
+08-06, 09-06, 10-06, 11-06, 12-06, 13-06,
+15-06, 16-06, 17-06, ottavi, quarti, semifinale, finale`
+);
+
+if(!scelta){
+alert("Devi scegliere una cartella");
+return;
+}
+
 let widget = cloudinary.createUploadWidget({
 cloudName: cloudName,
 uploadPreset: uploadPreset,
-folder: "iv-memorial/" + currentTag
+folder: "iv-memorial/" + scelta
 }, (err,res)=>{
 
 if(res && res.event === "success"){
 
 photos.push({
 url: res.info.secure_url,
-tag: currentTag
+tag: scelta
 });
 
 localStorage.setItem("photos", JSON.stringify(photos));
@@ -192,16 +194,16 @@ render();
 widget.open();
 }
 
-/* RENDER */
+/* RENDER SOLO CARTELLA SELEZIONATA */
 function render(){
 
 const g = document.getElementById("gallery");
 g.innerHTML = "";
 
-const filtered = photos.filter(p => p.tag === currentTag);
+const filtered = photos.filter(p => p.tag === currentFolder);
 
 if(filtered.length === 0){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
+g.innerHTML = "<p style='text-align:center'>Nessuna foto in questa sezione</p>";
 return;
 }
 
