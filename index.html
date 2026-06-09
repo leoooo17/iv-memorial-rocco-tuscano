@@ -21,20 +21,6 @@ header{
 
 h1{ margin:0; }
 
-.upload{
-    text-align:center;
-    padding:10px;
-}
-
-.upload button{
-    background:#007bff;
-    color:white;
-    padding:10px 15px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-
 .menu{
     display:flex;
     flex-wrap:wrap;
@@ -55,6 +41,20 @@ button{
 
 button:hover{
     background:#333;
+}
+
+.upload{
+    text-align:center;
+    padding:10px;
+}
+
+.upload button{
+    background:#007bff;
+    color:white;
+    padding:10px 15px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
 }
 
 .gallery{
@@ -103,7 +103,13 @@ button:hover{
 </header>
 
 <div class="upload">
-<button onclick="uploadPhoto()">📸 Carica Foto (Fotografo)</button>
+
+<button onclick="loginPhotographer()">🔒 Area Fotografo</button>
+
+<div id="uploadArea" style="display:none; margin-top:10px;">
+<button onclick="uploadPhoto()">📸 Carica Foto</button>
+</div>
+
 </div>
 
 <div class="menu">
@@ -133,6 +139,20 @@ const cloudName = "dagfasmlx";
 const uploadPreset = "iv-memorial";
 
 let currentFolder = "08-06";
+let isPhotographer = false;
+
+// LOGIN FOTOGRAFO
+function loginPhotographer(){
+    const pass = prompt("Inserisci password fotografo:");
+
+    if(pass === "alessio2026"){
+        isPhotographer = true;
+        document.getElementById("uploadArea").style.display = "block";
+        alert("Accesso effettuato");
+    } else {
+        alert("Password errata");
+    }
+}
 
 // CAMBIA SEZIONE
 function filter(folder){
@@ -183,7 +203,7 @@ function openImage(url){
     document.body.appendChild(modal);
 }
 
-// CARICA FOTO DAL CLOUD
+// CARICA FOTO
 function loadImages(folder){
 
     const gallery = document.getElementById("gallery");
