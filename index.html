@@ -13,7 +13,7 @@ background:#f4f4f6;
 color:#222;
 }
 
-/* HEADER ELEGANTE */
+/* HEADER */
 header{
 height:260px;
 display:flex;
@@ -37,10 +37,17 @@ font-size:36px;
 letter-spacing:2px;
 text-transform:uppercase;
 color:#FFD700;
-text-shadow:0 2px 10px rgba(0,0,0,0.6);
 }
 
-/* BOTTONI ELEGANTI */
+/* MENU CARTELLE */
+.menu{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+padding:10px;
+gap:6px;
+}
+
 button{
 padding:10px 14px;
 border-radius:12px;
@@ -55,41 +62,7 @@ transition:0.2s;
 
 button:hover{
 background:#FFD700;
-color:#111;
 transform:translateY(-2px);
-}
-
-/* MENU */
-.menu{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-padding:10px;
-gap:6px;
-}
-
-.menu button{
-min-width:90px;
-}
-
-/* UPLOAD AREA */
-.upload{
-text-align:center;
-padding:15px;
-}
-
-/* LOGIN INPUT */
-#loginBox input{
-padding:10px;
-border-radius:10px;
-border:1px solid #ccc;
-}
-
-/* SELECT */
-select{
-padding:10px;
-border-radius:10px;
-border:1px solid #ccc;
 }
 
 /* GALLERIA */
@@ -100,7 +73,6 @@ gap:12px;
 padding:15px;
 }
 
-/* CARD FOTO */
 .card{
 background:white;
 border-radius:12px;
@@ -109,60 +81,106 @@ box-shadow:0 3px 10px rgba(0,0,0,0.1);
 transition:0.2s;
 }
 
-.card:hover{
-transform:scale(1.02);
-box-shadow:0 5px 18px rgba(0,0,0,0.2);
-}
-
 .card img{
 width:100%;
 height:200px;
 object-fit:cover;
 cursor:pointer;
 }
+
+/* =========================
+   SIDEBAR FOTOGRAFO
+========================= */
+
+#sidebar{
+position:fixed;
+top:0;
+left:-320px;
+width:300px;
+height:100%;
+background:#111;
+color:white;
+padding:20px;
+transition:0.3s;
+z-index:999;
+}
+
+#sidebar.open{
+left:0;
+}
+
+#sidebar h2{
+color:#FFD700;
+margin-top:0;
+}
+
+#sidebar input, #sidebar select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:none;
+}
+
+#sidebar button{
+width:100%;
+margin-top:10px;
+}
+
+/* bottone menu */
+#menuBtn{
+position:fixed;
+top:10px;
+left:10px;
+z-index:1000;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>IV MEMORIAL ROCCO TUSCANO</h1>
-</header>
+<!-- 🔥 MENU BUTTON -->
+<button id="menuBtn" onclick="toggleSidebar()">☰ Menu</button>
 
-<div class="upload">
+<!-- 🔥 SIDEBAR FOTOGRAFO -->
+<div id="sidebar">
 
-<button onclick="showLogin()">🔒 Area Fotografo</button>
+<h2>Area Fotografo</h2>
+
+<button onclick="showLoginBox()">🔒 Accedi</button>
 
 <div id="loginBox" style="display:none;">
 <input type="password" id="pass" placeholder="Password">
-<button onclick="login()">Accedi</button>
+<button onclick="login()">Entra</button>
 </div>
 
-<div id="uploadBox" style="display:none; text-align:center;">
+<div id="uploadBox" style="display:none;">
 
 <select id="folderSelect">
-  <option value="08-06">08/06</option>
-  <option value="09-06">09/06</option>
-  <option value="10-06">10/06</option>
-  <option value="11-06">11/06</option>
-  <option value="12-06">12/06</option>
-  <option value="13-06">13/06</option>
-  <option value="15-06">15/06</option>
-  <option value="16-06">16/06</option>
-  <option value="17-06">17/06</option>
-  <option value="ottavi">OTTAVI</option>
-  <option value="quarti">QUARTI</option>
-  <option value="semifinale">SEMIFINALE</option>
-  <option value="finale">FINALE</option>
+<option value="08-06">08/06</option>
+<option value="09-06">09/06</option>
+<option value="10-06">10/06</option>
+<option value="11-06">11/06</option>
+<option value="12-06">12/06</option>
+<option value="13-06">13/06</option>
+<option value="15-06">15/06</option>
+<option value="16-06">16/06</option>
+<option value="17-06">17/06</option>
+<option value="ottavi">OTTAVI</option>
+<option value="quarti">QUARTI</option>
+<option value="semifinale">SEMIFINALE</option>
+<option value="finale">FINALE</option>
 </select>
-
-<br>
 
 <button onclick="uploadPhoto()">📸 Carica Foto</button>
 
 </div>
 
 </div>
+
+<header>
+<h1>IV MEMORIAL ROCCO TUSCANO</h1>
+</header>
 
 <div class="menu">
 
@@ -209,8 +227,13 @@ const db = firebase.firestore();
 let isAdmin = false;
 let currentFolder = "08-06";
 
-/* LOGIN */
-function showLogin(){
+/* SIDEBAR */
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("open");
+}
+
+/* LOGIN BOX */
+function showLoginBox(){
 document.getElementById("loginBox").style.display = "block";
 }
 
@@ -220,7 +243,6 @@ const pass = document.getElementById("pass").value;
 if(pass === "alessio2026"){
 isAdmin = true;
 document.getElementById("uploadBox").style.display = "block";
-document.getElementById("loginBox").style.display = "none";
 alert("Accesso fotografo effettuato");
 render();
 }else{
@@ -265,15 +287,8 @@ render();
 widget.open();
 }
 
-/* DELETE */
-function deletePhoto(id){
-if(!confirm("Eliminare foto?")) return;
-db.collection("photos").doc(id).delete().then(render);
-}
-
 /* GALLERY */
 function render(){
-
 const g = document.getElementById("gallery");
 g.innerHTML = "";
 
@@ -283,31 +298,29 @@ db.collection("photos")
 .then(snapshot=>{
 
 if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto in questa sezione</p>";
+g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
 return;
 }
 
 snapshot.forEach(doc=>{
-
 let data = doc.data();
 
 g.innerHTML += `
 <div class="card">
-
 <img src="${data.url}" onclick="openImg('${data.url}')">
 
-${isAdmin ? `
-<button onclick="deletePhoto('${doc.id}')"
-style="width:100%;background:red;border-radius:0;color:white;">
-🗑 Elimina
-</button>
-` : ""}
+${isAdmin ? `<button onclick="deletePhoto('${doc.id}')">🗑 Elimina</button>` : ""}
 
 </div>
 `;
 });
-
 });
+}
+
+/* DELETE */
+function deletePhoto(id){
+if(!confirm("Eliminare foto?")) return;
+db.collection("photos").doc(id).delete().then(render);
 }
 
 /* ZOOM */
