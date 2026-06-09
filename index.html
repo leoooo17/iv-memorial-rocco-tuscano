@@ -6,7 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;font-family:Arial;background:#f5f6f8}
+body{
+margin:0;
+font-family:Arial;
+background:#f5f6f8;
+}
 
 header{
 height:200px;
@@ -25,16 +29,22 @@ inset:0;
 background:rgba(0,0,0,0.55);
 }
 
-header h1{position:relative}
+header h1{
+position:relative;
+}
 
 button{
-padding:10px;
+padding:10px 14px;
 border:none;
 border-radius:20px;
 background:#222;
 color:white;
 cursor:pointer;
 margin:5px;
+}
+
+button:hover{
+background:#007bff;
 }
 
 .menu{
@@ -47,6 +57,10 @@ padding:10px;
 .upload{
 text-align:center;
 padding:10px;
+}
+
+.loginBox{
+margin-top:10px;
 }
 
 .gallery{
@@ -80,7 +94,16 @@ cursor:pointer;
 
 <div class="upload">
 
+<button onclick="showLogin()">🔒 Area Fotografo</button>
+
+<div id="loginBox" style="display:none;">
+<input type="password" id="pass" placeholder="Password">
+<button onclick="login()">Accedi</button>
+</div>
+
+<div id="uploadBox" style="display:none;">
 <button onclick="uploadPhoto()">📸 Carica Foto</button>
+</div>
 
 </div>
 
@@ -88,7 +111,17 @@ cursor:pointer;
 
 <button onclick="setTag('08-06')">08/06</button>
 <button onclick="setTag('09-06')">09/06</button>
+<button onclick="setTag('10-06')">10/06</button>
+<button onclick="setTag('11-06')">11/06</button>
+<button onclick="setTag('12-06')">12/06</button>
+<button onclick="setTag('13-06')">13/06</button>
+<button onclick="setTag('15-06')">15/06</button>
+<button onclick="setTag('16-06')">16/06</button>
+<button onclick="setTag('17-06')">17/06</button>
+
 <button onclick="setTag('ottavi')">OTTAVI</button>
+<button onclick="setTag('quarti')">QUARTI</button>
+<button onclick="setTag('semifinale')">SEMIFINALE</button>
 <button onclick="setTag('finale')">FINALE</button>
 
 </div>
@@ -101,11 +134,30 @@ const cloudName = "dagfasmlx";
 const uploadPreset = "iv-memorial";
 
 let currentTag = "08-06";
+let isAdmin = false;
 
-/* STORAGE LOCALE FOTO */
+/* STORAGE LOCALE */
 let photos = JSON.parse(localStorage.getItem("photos")) || [];
 
-/* CAMBIA TAG */
+/* LOGIN */
+function showLogin(){
+document.getElementById("loginBox").style.display = "block";
+}
+
+function login(){
+const pass = document.getElementById("pass").value;
+
+if(pass === "alessio2026"){
+isAdmin = true;
+document.getElementById("uploadBox").style.display = "block";
+document.getElementById("loginBox").style.display = "none";
+alert("Accesso effettuato");
+}else{
+alert("Password errata");
+}
+}
+
+/* CAMBIA CARTELLA */
 function setTag(tag){
 currentTag = tag;
 render();
@@ -113,6 +165,11 @@ render();
 
 /* UPLOAD */
 function uploadPhoto(){
+
+if(!isAdmin){
+alert("Devi fare login");
+return;
+}
 
 let widget = cloudinary.createUploadWidget({
 cloudName: cloudName,
@@ -122,15 +179,12 @@ folder: "iv-memorial/" + currentTag
 
 if(res && res.event === "success"){
 
-const url = res.info.secure_url;
-
 photos.push({
-url:url,
-tag:currentTag
+url: res.info.secure_url,
+tag: currentTag
 });
 
 localStorage.setItem("photos", JSON.stringify(photos));
-
 render();
 }
 });
@@ -138,7 +192,7 @@ render();
 widget.open();
 }
 
-/* RENDER GALLERIA */
+/* RENDER */
 function render(){
 
 const g = document.getElementById("gallery");
@@ -152,13 +206,21 @@ return;
 }
 
 filtered.forEach(p=>{
-
 g.innerHTML += `
 <div class="card">
-<img src="${p.url}">
+<img src="${p.url}" onclick="openImg('${p.url}')">
 </div>
 `;
 });
+}
+
+/* ZOOM */
+function openImg(url){
+const m = document.createElement("div");
+m.style = "position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
+m.innerHTML = `<img src="${url}" style="max-width:90%;max-height:90%">`;
+m.onclick = ()=>m.remove();
+document.body.appendChild(m);
 }
 
 /* INIT */
