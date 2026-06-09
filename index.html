@@ -8,40 +8,62 @@
 <style>
 body{
 margin:0;
-font-family:Arial;
-background:#f5f6f8;
+font-family:Arial, sans-serif;
+background:#0f1115;
+color:white;
 }
 
 header{
-height:200px;
+height:260px;
 display:flex;
 justify-content:center;
 align-items:center;
-color:white;
-background:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover;
+text-align:center;
 position:relative;
+background:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover no-repeat;
 }
 
 header::before{
 content:"";
 position:absolute;
 inset:0;
-background:rgba(0,0,0,0.55);
+background:rgba(0,0,0,0.65);
 }
 
 header h1{
 position:relative;
-text-align:center;
+font-size:34px;
+letter-spacing:2px;
+text-transform:uppercase;
 }
 
 button{
-padding:10px 14px;
+padding:10px 16px;
 border:none;
-border-radius:20px;
-background:#222;
+border-radius:30px;
+background:linear-gradient(135deg,#1f1f1f,#3a3a3a);
 color:white;
 cursor:pointer;
-margin:5px;
+margin:6px;
+font-weight:bold;
+transition:0.2s;
+}
+
+button:hover{
+transform:scale(1.05);
+background:linear-gradient(135deg,#ff3b3b,#ff7a00);
+}
+
+.upload{
+text-align:center;
+padding:15px;
+}
+
+#loginBox input{
+padding:10px;
+border-radius:20px;
+border:none;
+outline:none;
 }
 
 .menu{
@@ -49,38 +71,41 @@ display:flex;
 flex-wrap:wrap;
 justify-content:center;
 padding:10px;
-}
-
-.upload{
-text-align:center;
-padding:10px;
+gap:6px;
 }
 
 .gallery{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
 gap:10px;
-padding:10px;
+padding:15px;
 }
 
 .card{
-background:white;
-border-radius:10px;
+background:#1a1a1a;
+border-radius:12px;
 overflow:hidden;
-box-shadow:0 3px 10px rgba(0,0,0,0.15);
+box-shadow:0 6px 18px rgba(0,0,0,0.4);
+transition:0.2s;
+}
+
+.card:hover{
+transform:scale(1.03);
 }
 
 .card img{
 width:100%;
-height:200px;
+height:190px;
 object-fit:cover;
+display:block;
 cursor:pointer;
 }
 
-#loginBox input{
+select{
 padding:10px;
 border-radius:20px;
-border:1px solid #ccc;
+border:none;
+margin-top:10px;
 }
 </style>
 </head>
@@ -100,8 +125,28 @@ border:1px solid #ccc;
 <button onclick="login()">Accedi</button>
 </div>
 
-<div id="uploadBox" style="display:none;">
+<div id="uploadBox" style="display:none; text-align:center;">
+
+<select id="folderSelect">
+  <option value="08-06">08/06</option>
+  <option value="09-06">09/06</option>
+  <option value="10-06">10/06</option>
+  <option value="11-06">11/06</option>
+  <option value="12-06">12/06</option>
+  <option value="13-06">13/06</option>
+  <option value="15-06">15/06</option>
+  <option value="16-06">16/06</option>
+  <option value="17-06">17/06</option>
+  <option value="ottavi">OTTAVI</option>
+  <option value="quarti">QUARTI</option>
+  <option value="semifinale">SEMIFINALE</option>
+  <option value="finale">FINALE</option>
+</select>
+
+<br>
+
 <button onclick="uploadPhoto()">📸 Carica Foto</button>
+
 </div>
 
 </div>
@@ -127,22 +172,23 @@ border:1px solid #ccc;
 
 <div class="gallery" id="gallery"></div>
 
-<!-- FIREBASE + CLOUDINARY -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<!-- CLOUDINARY -->
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 <script>
 
-/* 🔥 FIREBASE CONFIG */
+/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
   authDomain: "memorial-rocco-tuscano.firebaseapp.com",
   projectId: "memorial-rocco-tuscano",
   storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
   messagingSenderId: "72206140774",
-  appId: "1:72206140774:web:ac817e3fcd7107e53e34a7",
-  measurementId: "G-L5K6JSWZ5W"
+  appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -185,9 +231,7 @@ alert("Devi fare login");
 return;
 }
 
-let scelta = prompt("Scegli cartella (es: 08-06, ottavi, quarti...)");
-
-if(!scelta) return;
+let scelta = document.getElementById("folderSelect").value;
 
 let widget = cloudinary.createUploadWidget({
 cloudName: "dagfasmlx",
@@ -210,14 +254,13 @@ render();
 widget.open();
 }
 
-/* ELIMINA FOTO */
+/* ELIMINA */
 function deletePhoto(id){
-if(!confirm("Vuoi eliminare questa foto?")) return;
-
+if(!confirm("Eliminare foto?")) return;
 db.collection("photos").doc(id).delete().then(render);
 }
 
-/* RENDER GALLERIA */
+/* GALLERIA */
 function render(){
 
 const g = document.getElementById("gallery");
@@ -229,7 +272,7 @@ db.collection("photos")
 .then(snapshot=>{
 
 if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto in questa sezione</p>";
+g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
 return;
 }
 
@@ -265,7 +308,6 @@ m.onclick = ()=>m.remove();
 document.body.appendChild(m);
 }
 
-/* INIT */
 render();
 
 </script>
