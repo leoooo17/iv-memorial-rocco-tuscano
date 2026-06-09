@@ -2,82 +2,72 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IV Memorial Rocco Tuscano</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
-    margin:0;
-    font-family:Arial;
-    background:#f5f6f8;
-}
+body{margin:0;font-family:Arial;background:#f5f6f8}
 
 header{
-    position:relative;
-    height:220px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    color:white;
-    text-align:center;
-    background:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover;
+height:200px;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+background:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover;
+position:relative;
 }
 
 header::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.55);
+content:"";
+position:absolute;
+inset:0;
+background:rgba(0,0,0,0.55);
 }
 
-header h1, header p{
-    position:relative;
-}
+header h1{position:relative}
 
 button{
-    padding:10px 14px;
-    border:none;
-    border-radius:20px;
-    cursor:pointer;
-    background:#1f1f1f;
-    color:white;
-    margin:5px;
+padding:10px;
+border:none;
+border-radius:20px;
+background:#222;
+color:white;
+cursor:pointer;
+margin:5px;
 }
 
-button:hover{ background:#007bff; }
-
 .menu{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    padding:10px;
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+padding:10px;
 }
 
 .upload{
-    text-align:center;
-    padding:15px;
+text-align:center;
+padding:10px;
 }
 
 .gallery{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:10px;
-    padding:10px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+padding:10px;
 }
 
 .card{
-    background:white;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 3px 10px rgba(0,0,0,0.15);
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 3px 10px rgba(0,0,0,0.15);
 }
 
 .card img{
-    width:100%;
-    height:200px;
-    object-fit:cover;
-    cursor:pointer;
+width:100%;
+height:200px;
+object-fit:cover;
+cursor:pointer;
 }
 </style>
 </head>
@@ -86,114 +76,93 @@ button:hover{ background:#007bff; }
 
 <header>
 <h1>IV Memorial Rocco Tuscano</h1>
-<p>Galleria ufficiale torneo</p>
 </header>
 
 <div class="upload">
 
-<button onclick="showLogin()">🔒 Area Fotografo</button>
-
-<div id="loginBox" style="display:none;">
-    <input type="password" id="pass">
-    <button onclick="login()">Accedi</button>
-</div>
-
-<div id="uploadBox" style="display:none;">
-    <button onclick="uploadPhoto()">📸 Carica Foto</button>
-</div>
+<button onclick="uploadPhoto()">📸 Carica Foto</button>
 
 </div>
 
 <div class="menu">
 
-<button onclick="setFolder('08-06')">08/06</button>
-<button onclick="setFolder('09-06')">09/06</button>
-<button onclick="setFolder('10-06')">10/06</button>
-<button onclick="setFolder('11-06')">11/06</button>
-<button onclick="setFolder('12-06')">12/06</button>
-<button onclick="setFolder('13-06')">13/06</button>
-<button onclick="setFolder('15-06')">15/06</button>
-<button onclick="setFolder('16-06')">16/06</button>
-<button onclick="setFolder('17-06')">17/06</button>
-
-<button onclick="setFolder('ottavi')">OTTAVI</button>
-<button onclick="setFolder('quarti')">QUARTI</button>
-<button onclick="setFolder('semifinale')">SEMIFINALE</button>
-<button onclick="setFolder('finale')">FINALE</button>
+<button onclick="setTag('08-06')">08/06</button>
+<button onclick="setTag('09-06')">09/06</button>
+<button onclick="setTag('ottavi')">OTTAVI</button>
+<button onclick="setTag('finale')">FINALE</button>
 
 </div>
 
-<section class="gallery" id="gallery"></section>
+<div class="gallery" id="gallery"></div>
 
 <script>
 
 const cloudName = "dagfasmlx";
 const uploadPreset = "iv-memorial";
 
-let isAdmin = false;
-let folder = "08-06";
+let currentTag = "08-06";
 
-/* LOGIN */
-function showLogin(){
-    document.getElementById("loginBox").style.display = "block";
-}
+/* STORAGE LOCALE FOTO */
+let photos = JSON.parse(localStorage.getItem("photos")) || [];
 
-function login(){
-    if(document.getElementById("pass").value === "alessio2026"){
-        isAdmin = true;
-        document.getElementById("uploadBox").style.display = "block";
-        alert("OK");
-    } else alert("NO");
-}
-
-/* CAMBIA CARTELLA */
-function setFolder(f){
-    folder = f;
-    loadImages();
+/* CAMBIA TAG */
+function setTag(tag){
+currentTag = tag;
+render();
 }
 
 /* UPLOAD */
 function uploadPhoto(){
 
-    if(!isAdmin) return alert("Login richiesto");
+let widget = cloudinary.createUploadWidget({
+cloudName: cloudName,
+uploadPreset: uploadPreset,
+folder: "iv-memorial/" + currentTag
+}, (err,res)=>{
 
-    let widget = cloudinary.createUploadWidget({
-        cloudName,
-        uploadPreset,
-        folder: "iv-memorial/" + folder,
-        sources: ["local","camera"]
-    }, (err,res) => {
-        if(res && res.event === "success"){
-            loadImages();
-        }
-    });
+if(res && res.event === "success"){
 
-    widget.open();
+const url = res.info.secure_url;
+
+photos.push({
+url:url,
+tag:currentTag
+});
+
+localStorage.setItem("photos", JSON.stringify(photos));
+
+render();
+}
+});
+
+widget.open();
 }
 
-/* 🔥 SOLUZIONE CHE FUNZIONA: usa DIRECT URL non API */
-function loadImages(){
+/* RENDER GALLERIA */
+function render(){
 
-    const g = document.getElementById("gallery");
-    g.innerHTML = "";
+const g = document.getElementById("gallery");
+g.innerHTML = "";
 
-    // ⚠️ QUI NON POSSIAMO LISTARE → quindi mostriamo immagini via folder URL
-    const base = `https://res.cloudinary.com/${cloudName}/image/upload/`;
+const filtered = photos.filter(p => p.tag === currentTag);
 
-    // 👉 workaround: Cloudinary non permette listing frontend senza API
-    // quindi mostriamo messaggio + ultima immagine caricata (realistico senza backend)
+if(filtered.length === 0){
+g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
+return;
+}
 
-    g.innerHTML = `
-        <p style="text-align:center">
-        ✔ Upload funzionante<br>
-        ⚠ Per vedere tutte le foto serve API backend (Cloudinary limita accesso)<br><br>
-        Le foto vengono salvate correttamente nella cartella: <b>${folder}</b>
-        </p>
-    `;
+filtered.forEach(p=>{
+
+g.innerHTML += `
+<div class="card">
+<img src="${p.url}">
+</div>
+`;
+});
 }
 
 /* INIT */
-loadImages();
+render();
 
 </script>
 
