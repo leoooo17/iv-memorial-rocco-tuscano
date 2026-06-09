@@ -8,11 +8,10 @@
 <style>
 body{
     margin:0;
-    font-family:Arial, sans-serif;
+    font-family:Arial;
     background:#f5f6f8;
 }
 
-/* HEADER CON IMMAGINE */
 header{
     position:relative;
     height:220px;
@@ -20,71 +19,22 @@ header{
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    text-align:center;
     color:white;
+    text-align:center;
     background:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover no-repeat;
 }
 
 header::before{
     content:"";
     position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    inset:0;
     background:rgba(0,0,0,0.55);
 }
 
-header h1{
+header h1, header p{
     position:relative;
-    margin:0;
-    font-size:28px;
-    letter-spacing:2px;
 }
 
-header p{
-    position:relative;
-    margin-top:5px;
-    font-size:14px;
-    opacity:0.9;
-}
-
-/* UPLOAD */
-.upload{
-    text-align:center;
-    padding:15px;
-}
-
-/* BOTTONI */
-button{
-    padding:10px 14px;
-    border:none;
-    border-radius:20px;
-    cursor:pointer;
-    background:#1f1f1f;
-    color:white;
-    font-size:13px;
-    transition:0.2s;
-}
-
-button:hover{
-    background:#007bff;
-    transform:scale(1.05);
-}
-
-.upload button{
-    background:#007bff;
-}
-
-/* INPUT LOGIN */
-input{
-    padding:8px;
-    margin:5px;
-    border-radius:8px;
-    border:1px solid #ccc;
-}
-
-/* MENU */
 .menu{
     display:flex;
     flex-wrap:wrap;
@@ -93,42 +43,44 @@ input{
     padding:10px;
 }
 
-/* GALLERIA */
+button{
+    padding:10px 14px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    background:#1f1f1f;
+    color:white;
+    font-size:13px;
+}
+
+button:hover{
+    background:#007bff;
+}
+
+.upload{
+    text-align:center;
+    padding:15px;
+}
+
 .gallery{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:12px;
-    padding:12px;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:10px;
+    padding:10px;
 }
 
-/* CARD FOTO */
 .card{
     background:white;
-    border-radius:14px;
+    border-radius:12px;
     overflow:hidden;
-    box-shadow:0 3px 12px rgba(0,0,0,0.12);
-    transition:0.2s;
-}
-
-.card:hover{
-    transform:scale(1.03);
+    box-shadow:0 3px 12px rgba(0,0,0,0.15);
 }
 
 .card img{
     width:100%;
-    height:210px;
+    height:200px;
     object-fit:cover;
     cursor:pointer;
-}
-
-.card a{
-    display:block;
-    text-align:center;
-    padding:8px;
-    background:#111;
-    color:white;
-    text-decoration:none;
-    font-size:13px;
 }
 </style>
 </head>
@@ -137,7 +89,7 @@ input{
 
 <header>
 <h1>IV Memorial Rocco Tuscano</h1>
-<p>Galleria ufficiale del torneo</p>
+<p>Galleria ufficiale torneo</p>
 </header>
 
 <div class="upload">
@@ -145,11 +97,11 @@ input{
 <button onclick="showLogin()">🔒 Area Fotografo</button>
 
 <div id="loginBox" style="display:none; margin-top:10px;">
-    <input type="password" id="passwordInput" placeholder="Password">
-    <button onclick="checkPassword()">Accedi</button>
+    <input type="password" id="pass" placeholder="Password">
+    <button onclick="login()">Accedi</button>
 </div>
 
-<div id="uploadArea" style="display:none; margin-top:10px;">
+<div id="uploadBox" style="display:none; margin-top:10px;">
     <button onclick="uploadPhoto()">📸 Carica Foto</button>
 </div>
 
@@ -181,116 +133,117 @@ input{
 const cloudName = "dagfasmlx";
 const uploadPreset = "iv-memorial";
 
-let currentFolder = "08-06";
-let isPhotographer = false;
+let isAdmin = false;
+let currentTag = "08-06";
 
 /* LOGIN */
 function showLogin(){
     document.getElementById("loginBox").style.display = "block";
 }
 
-function checkPassword(){
-    const pass = document.getElementById("passwordInput").value;
+function login(){
+    const pass = document.getElementById("pass").value;
 
     if(pass === "alessio2026"){
-        isPhotographer = true;
+        isAdmin = true;
         document.getElementById("loginBox").style.display = "none";
-        document.getElementById("uploadArea").style.display = "block";
-        alert("Accesso effettuato ✔");
+        document.getElementById("uploadBox").style.display = "block";
+        alert("Accesso OK");
     } else {
-        alert("Password errata ❌");
+        alert("Password errata");
     }
 }
 
-/* CAMBIA SEZIONE */
-function filter(folder){
-    currentFolder = folder;
-    loadImages(folder);
+/* FILTRO */
+function filter(tag){
+    currentTag = tag;
+    loadImages(tag);
 }
 
-/* UPLOAD FOTO */
+/* UPLOAD */
 function uploadPhoto(){
 
-    if(!isPhotographer){
-        alert("Devi fare login prima");
+    if(!isAdmin){
+        alert("Devi fare login");
         return;
     }
 
     let widget = cloudinary.createUploadWidget({
         cloudName: cloudName,
         uploadPreset: uploadPreset,
-        folder: "iv-memorial-rocco-tuscano/" + currentFolder,
-        sources: ['local', 'camera'],
-        multiple: true
+        sources: ['local','camera'],
+        multiple: true,
+        tags: [currentTag]   // 🔥 QUI SALVIAMO LA CATEGORIA
     },
     (error, result) => {
-        if (!error && result && result.event === "success") {
-            loadImages(currentFolder);
+
+        if(!error && result && result.event === "success"){
+            loadImages(currentTag);
+        }
+
+        // 🔥 DOPO UPLOAD CHIEDE TAG (B)
+        if(result && result.event === "success"){
+            const scelta = prompt(
+`Dove vuoi inserire la foto?
+
+08-06, 09-06, 10-06, 11-06, 12-06, 13-06,
+15-06, 16-06, 17-06, ottavi, quarti, semifinale, finale`
+            );
+
+            if(scelta){
+                result.info.tags = [scelta];
+            }
         }
     });
 
     widget.open();
 }
 
-/* ZOOM FOTO */
-function openImage(url){
-    const modal = document.createElement("div");
-    modal.style.position = "fixed";
-    modal.style.top = 0;
-    modal.style.left = 0;
-    modal.style.width = "100%";
-    modal.style.height = "100%";
-    modal.style.background = "rgba(0,0,0,0.9)";
-    modal.style.display = "flex";
-    modal.style.alignItems = "center";
-    modal.style.justifyContent = "center";
-    modal.style.zIndex = 9999;
-    modal.style.cursor = "pointer";
-
-    modal.innerHTML = `<img src="${url}" style="max-width:90%; max-height:90%; border-radius:10px;">`;
-
-    modal.onclick = () => modal.remove();
-
-    document.body.appendChild(modal);
+/* ZOOM */
+function openImg(url){
+    const m = document.createElement("div");
+    m.style = "position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
+    m.innerHTML = `<img src='${url}' style='max-width:90%;max-height:90%'>`;
+    m.onclick = () => m.remove();
+    document.body.appendChild(m);
 }
 
-/* CARICA FOTO */
-function loadImages(folder){
+/* CARICA FOTO (TAG BASED) */
+function loadImages(tag){
 
-    const gallery = document.getElementById("gallery");
-    gallery.innerHTML = "";
+    const url = `https://res.cloudinary.com/${cloudName}/image/upload/fl_getall,tags:${tag}`;
 
-    fetch(`https://res.cloudinary.com/${cloudName}/image/list/${folder}.json`)
-    .then(res => res.json())
+    fetch(`https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`)
+    .then(r => r.json())
     .then(data => {
 
-        if(!data.resources || data.resources.length === 0){
-            gallery.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
+        const g = document.getElementById("gallery");
+        g.innerHTML = "";
+
+        if(!data.resources){
+            g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
             return;
         }
 
         data.resources.forEach(img => {
 
-            const url = `https://res.cloudinary.com/${cloudName}/image/upload/${img.public_id}.${img.format}`;
+            const imgUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${img.public_id}.${img.format}`;
 
             const div = document.createElement("div");
             div.className = "card";
 
             div.innerHTML = `
-                <img src="${url}" onclick="openImage('${url}')">
-                <a href="${url}" download>Scarica</a>
+                <img src="${imgUrl}" onclick="openImg('${imgUrl}')">
+                <a href="${imgUrl}" download>Scarica</a>
             `;
 
-            gallery.appendChild(div);
+            g.appendChild(div);
         });
-    })
-    .catch(() => {
-        gallery.innerHTML = "<p style='text-align:center'>Errore caricamento foto</p>";
     });
 }
 
 /* INIT */
-loadImages(currentFolder);
+loadImages(currentTag);
 
 </script>
 
