@@ -8,75 +8,106 @@
 <style>
 body{
     margin:0;
-    font-family:Arial;
-    background:#f2f2f2;
+    font-family:Arial, sans-serif;
+    background:#f5f6f8;
 }
 
+/* HEADER CON IMMAGINE */
 header{
-    background:black;
-    color:white;
-    text-align:center;
-    padding:20px;
-}
-
-h1{ margin:0; }
-
-.menu{
+    position:relative;
+    height:220px;
     display:flex;
-    flex-wrap:wrap;
+    flex-direction:column;
     justify-content:center;
-    gap:6px;
-    padding:10px;
+    align-items:center;
+    text-align:center;
+    color:white;
+    background:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d") center/cover no-repeat;
 }
 
+header::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.55);
+}
+
+header h1{
+    position:relative;
+    margin:0;
+    font-size:28px;
+    letter-spacing:2px;
+}
+
+header p{
+    position:relative;
+    margin-top:5px;
+    font-size:14px;
+    opacity:0.9;
+}
+
+/* UPLOAD */
+.upload{
+    text-align:center;
+    padding:15px;
+}
+
+/* BOTTONI */
 button{
-    padding:8px 10px;
+    padding:10px 14px;
     border:none;
-    border-radius:6px;
+    border-radius:20px;
     cursor:pointer;
-    background:black;
+    background:#1f1f1f;
     color:white;
-    font-size:12px;
+    font-size:13px;
+    transition:0.2s;
 }
 
 button:hover{
-    background:#333;
-}
-
-.upload{
-    text-align:center;
-    padding:10px;
+    background:#007bff;
+    transform:scale(1.05);
 }
 
 .upload button{
     background:#007bff;
-    color:white;
-    padding:10px 15px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
 }
 
+/* INPUT LOGIN */
 input{
     padding:8px;
     margin:5px;
-    border-radius:6px;
+    border-radius:8px;
     border:1px solid #ccc;
 }
 
-.gallery{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:10px;
+/* MENU */
+.menu{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
     padding:10px;
 }
 
+/* GALLERIA */
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:12px;
+    padding:12px;
+}
+
+/* CARD FOTO */
 .card{
     background:white;
-    border-radius:12px;
+    border-radius:14px;
     overflow:hidden;
-    box-shadow:0 4px 10px rgba(0,0,0,0.15);
-    transition:transform 0.2s;
+    box-shadow:0 3px 12px rgba(0,0,0,0.12);
+    transition:0.2s;
 }
 
 .card:hover{
@@ -85,7 +116,7 @@ input{
 
 .card img{
     width:100%;
-    height:200px;
+    height:210px;
     object-fit:cover;
     cursor:pointer;
 }
@@ -94,7 +125,7 @@ input{
     display:block;
     text-align:center;
     padding:8px;
-    background:black;
+    background:#111;
     color:white;
     text-decoration:none;
     font-size:13px;
@@ -114,7 +145,7 @@ input{
 <button onclick="showLogin()">🔒 Area Fotografo</button>
 
 <div id="loginBox" style="display:none; margin-top:10px;">
-    <input type="password" id="passwordInput" placeholder="Inserisci password">
+    <input type="password" id="passwordInput" placeholder="Password">
     <button onclick="checkPassword()">Accedi</button>
 </div>
 
