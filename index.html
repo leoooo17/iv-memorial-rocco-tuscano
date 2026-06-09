@@ -12,6 +12,7 @@ body{
     background:#f5f6f8;
 }
 
+/* HEADER */
 header{
     position:relative;
     height:220px;
@@ -35,6 +36,7 @@ header h1, header p{
     position:relative;
 }
 
+/* MENU */
 .menu{
     display:flex;
     flex-wrap:wrap;
@@ -57,11 +59,19 @@ button:hover{
     background:#007bff;
 }
 
+/* UPLOAD */
 .upload{
     text-align:center;
     padding:15px;
 }
 
+input{
+    padding:8px;
+    margin:5px;
+    border-radius:8px;
+}
+
+/* GALLERY */
 .gallery{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -96,12 +106,12 @@ button:hover{
 
 <button onclick="showLogin()">🔒 Area Fotografo</button>
 
-<div id="loginBox" style="display:none; margin-top:10px;">
+<div id="loginBox" style="display:none;">
     <input type="password" id="pass" placeholder="Password">
     <button onclick="login()">Accedi</button>
 </div>
 
-<div id="uploadBox" style="display:none; margin-top:10px;">
+<div id="uploadBox" style="display:none;">
     <button onclick="uploadPhoto()">📸 Carica Foto</button>
 </div>
 
@@ -173,26 +183,12 @@ function uploadPhoto(){
         uploadPreset: uploadPreset,
         sources: ['local','camera'],
         multiple: true,
-        tags: [currentTag]   // 🔥 QUI SALVIAMO LA CATEGORIA
+        tags: [currentTag]
     },
     (error, result) => {
 
-        if(!error && result && result.event === "success"){
-            loadImages(currentTag);
-        }
-
-        // 🔥 DOPO UPLOAD CHIEDE TAG (B)
         if(result && result.event === "success"){
-            const scelta = prompt(
-`Dove vuoi inserire la foto?
-
-08-06, 09-06, 10-06, 11-06, 12-06, 13-06,
-15-06, 16-06, 17-06, ottavi, quarti, semifinale, finale`
-            );
-
-            if(scelta){
-                result.info.tags = [scelta];
-            }
+            loadImages(currentTag);
         }
     });
 
@@ -208,16 +204,16 @@ function openImg(url){
     document.body.appendChild(m);
 }
 
-/* CARICA FOTO (TAG BASED) */
+/* 🔥 FIX DEFINITIVO: SEARCH API */
 function loadImages(tag){
 
-    const url = `https://res.cloudinary.com/${cloudName}/image/upload/fl_getall,tags:${tag}`;
+    const g = document.getElementById("gallery");
+    g.innerHTML = "Caricamento...";
 
     fetch(`https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`)
     .then(r => r.json())
     .then(data => {
 
-        const g = document.getElementById("gallery");
         g.innerHTML = "";
 
         if(!data.resources){
@@ -227,18 +223,21 @@ function loadImages(tag){
 
         data.resources.forEach(img => {
 
-            const imgUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${img.public_id}.${img.format}`;
+            const url = `https://res.cloudinary.com/${cloudName}/image/upload/${img.public_id}.${img.format}`;
 
             const div = document.createElement("div");
             div.className = "card";
 
             div.innerHTML = `
-                <img src="${imgUrl}" onclick="openImg('${imgUrl}')">
-                <a href="${imgUrl}" download>Scarica</a>
+                <img src="${url}" onclick="openImg('${url}')">
+                <a href="${url}" download style="display:block;text-align:center;padding:8px;background:black;color:white;text-decoration:none;">Scarica</a>
             `;
 
             g.appendChild(div);
         });
+    })
+    .catch(() => {
+        g.innerHTML = "<p style='text-align:center'>Errore caricamento immagini</p>";
     });
 }
 
