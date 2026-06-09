@@ -16,10 +16,28 @@ header{
     background:black;
     color:white;
     text-align:center;
-    padding:25px;
+    padding:20px;
 }
 
 h1{ margin:0; }
+
+.admin{
+    padding:10px;
+    text-align:center;
+}
+
+button{
+    padding:10px 15px;
+    margin:5px;
+    border:none;
+    cursor:pointer;
+    border-radius:6px;
+}
+
+.upload{
+    background:#007bff;
+    color:white;
+}
 
 .gallery{
     display:grid;
@@ -50,7 +68,6 @@ h1{ margin:0; }
     text-decoration:none;
 }
 </style>
-
 </head>
 
 <body>
@@ -60,15 +77,64 @@ h1{ margin:0; }
 <p>Galleria fotografica ufficiale</p>
 </header>
 
-<section class="gallery">
+<div class="admin">
+    <button class="upload" onclick="uploadPhoto()">📸 Carica foto (Fotografo)</button>
+</div>
+
+<section class="gallery" id="gallery">
 
 <!-- FOTO DI PROVA -->
 <div class="card">
-<img src="https://via.placeholder.com/600x400" />
+<img src="https://via.placeholder.com/600x400">
 <a href="https://via.placeholder.com/600x400" download>Scarica</a>
 </div>
 
 </section>
+
+<script>
+
+// CONFIG CLOUDINARY
+const cloudName = "dagfasmlx";
+const uploadPreset = "iv-memorial";
+
+// CARICAMENTO FOTO
+function uploadPhoto(){
+
+    let widget = cloudinary.createUploadWidget({
+        cloudName: cloudName,
+        uploadPreset: uploadPreset,
+        sources: ['local', 'camera'],
+        multiple: true,
+        folder: "iv-memorial-rocco-tuscano"
+    },
+    (error, result) => {
+        if (!error && result && result.event === "success") {
+            addImage(result.info.secure_url);
+        }
+    });
+
+    widget.open();
+}
+
+// AGGIUNGI FOTO ALLA GALLERIA
+function addImage(url){
+    const gallery = document.getElementById("gallery");
+
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+        <img src="${url}">
+        <a href="${url}" download>Scarica</a>
+    `;
+
+    gallery.prepend(div);
+}
+
+</script>
+
+<!-- Cloudinary widget -->
+<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 </body>
 </html>
