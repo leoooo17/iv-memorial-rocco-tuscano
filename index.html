@@ -57,6 +57,13 @@ button:hover{
     cursor:pointer;
 }
 
+input{
+    padding:8px;
+    margin:5px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
 .gallery{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -104,10 +111,15 @@ button:hover{
 
 <div class="upload">
 
-<button onclick="loginPhotographer()">🔒 Area Fotografo</button>
+<button onclick="showLogin()">🔒 Area Fotografo</button>
+
+<div id="loginBox" style="display:none; margin-top:10px;">
+    <input type="password" id="passwordInput" placeholder="Inserisci password">
+    <button onclick="checkPassword()">Accedi</button>
+</div>
 
 <div id="uploadArea" style="display:none; margin-top:10px;">
-<button onclick="uploadPhoto()">📸 Carica Foto</button>
+    <button onclick="uploadPhoto()">📸 Carica Foto</button>
 </div>
 
 </div>
@@ -141,27 +153,37 @@ const uploadPreset = "iv-memorial";
 let currentFolder = "08-06";
 let isPhotographer = false;
 
-// LOGIN FOTOGRAFO
-function loginPhotographer(){
-    const pass = prompt("Inserisci password fotografo:");
+/* LOGIN */
+function showLogin(){
+    document.getElementById("loginBox").style.display = "block";
+}
+
+function checkPassword(){
+    const pass = document.getElementById("passwordInput").value;
 
     if(pass === "alessio2026"){
         isPhotographer = true;
+        document.getElementById("loginBox").style.display = "none";
         document.getElementById("uploadArea").style.display = "block";
-        alert("Accesso effettuato");
+        alert("Accesso effettuato ✔");
     } else {
-        alert("Password errata");
+        alert("Password errata ❌");
     }
 }
 
-// CAMBIA SEZIONE
+/* CAMBIA SEZIONE */
 function filter(folder){
     currentFolder = folder;
     loadImages(folder);
 }
 
-// UPLOAD FOTO
+/* UPLOAD FOTO */
 function uploadPhoto(){
+
+    if(!isPhotographer){
+        alert("Devi fare login prima");
+        return;
+    }
 
     let widget = cloudinary.createUploadWidget({
         cloudName: cloudName,
@@ -179,7 +201,7 @@ function uploadPhoto(){
     widget.open();
 }
 
-// ZOOM FOTO
+/* ZOOM FOTO */
 function openImage(url){
     const modal = document.createElement("div");
     modal.style.position = "fixed";
@@ -194,16 +216,14 @@ function openImage(url){
     modal.style.zIndex = 9999;
     modal.style.cursor = "pointer";
 
-    modal.innerHTML = `
-        <img src="${url}" style="max-width:90%; max-height:90%; border-radius:10px;">
-    `;
+    modal.innerHTML = `<img src="${url}" style="max-width:90%; max-height:90%; border-radius:10px;">`;
 
     modal.onclick = () => modal.remove();
 
     document.body.appendChild(modal);
 }
 
-// CARICA FOTO
+/* CARICA FOTO */
 function loadImages(folder){
 
     const gallery = document.getElementById("gallery");
@@ -238,7 +258,7 @@ function loadImages(folder){
     });
 }
 
-// iniziale
+/* INIT */
 loadImages(currentFolder);
 
 </script>
