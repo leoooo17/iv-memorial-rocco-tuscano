@@ -133,6 +133,8 @@ transform:translateY(-2px);
   display: flex;
   justify-content: center;
   padding: 30px;
+  flex-direction: column;
+  align-items: center;
 }
 
 .featured-photo img {
@@ -146,6 +148,24 @@ transform:translateY(-2px);
 
 .featured-photo img:hover {
   transform: scale(1.02);
+}
+
+/* DELETE BUTTON */
+.delete-btn{
+  margin-top:10px;
+  padding:8px 12px;
+  border:none;
+  border-radius:10px;
+  background:#e74c3c;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.delete-btn:hover{
+  background:#c0392b;
+  transform:scale(1.05);
 }
 
 /* EMPTY STATE */
@@ -293,6 +313,7 @@ if(pass === "alessio2026"){
 isAdmin = true;
 document.getElementById("uploadBox").style.display = "block";
 alert("Accesso fotografo attivato");
+render();
 }else{
 alert("Password errata");
 }
@@ -303,7 +324,7 @@ currentFolder = f;
 render();
 }
 
-/* FIX RENDER SENZA ORDERBY */
+/* RENDER CON DELETE */
 function render() {
   const g = document.getElementById("gallery");
   g.innerHTML = "";
@@ -324,7 +345,7 @@ function render() {
       let photos = [];
 
       snapshot.forEach(doc => {
-        photos.push(doc.data());
+        photos.push({ id: doc.id, ...doc.data() });
       });
 
       photos.sort((a, b) => b.time - a.time);
@@ -334,9 +355,37 @@ function render() {
       g.innerHTML = `
         <div class="featured-photo">
           <img src="${last.url}" onclick="openImg('${last.url}')">
+
+          ${isAdmin ? `
+            <button class="delete-btn" onclick="deletePhoto('${last.id}')">
+              🗑 Elimina
+            </button>
+          ` : ""}
         </div>
       `;
     });
+}
+
+/* DELETE PHOTO */
+function deletePhoto(id){
+
+  if(!isAdmin){
+    alert("Non autorizzato");
+    return;
+  }
+
+  if(confirm("Vuoi eliminare questa foto?")){
+
+    db.collection("photos").doc(id).delete()
+      .then(() => {
+        alert("Foto eliminata");
+        render();
+      })
+      .catch(err => {
+        console.log("Errore eliminazione:", err);
+      });
+
+  }
 }
 
 function uploadPhoto(){
