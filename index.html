@@ -29,7 +29,9 @@ inset:0;
 background:rgba(0,0,0,0.55);
 }
 
-header h1{position:relative}
+header h1{
+position:relative;
+}
 
 button{
 padding:10px 14px;
@@ -126,7 +128,7 @@ const uploadPreset = "iv-memorial";
 let isAdmin = false;
 let currentFolder = "08-06";
 
-/* STORAGE */
+/* LOCAL STORAGE */
 let photos = JSON.parse(localStorage.getItem("photos")) || [];
 
 /* LOGIN */
@@ -141,7 +143,7 @@ if(pass === "alessio2026"){
 isAdmin = true;
 document.getElementById("uploadBox").style.display = "block";
 document.getElementById("loginBox").style.display = "none";
-alert("Accesso OK");
+alert("Accesso effettuato");
 }else{
 alert("Password errata");
 }
@@ -153,7 +155,7 @@ currentFolder = folder;
 render();
 }
 
-/* UPLOAD CON SCELTA CARTELLA */
+/* UPLOAD */
 function uploadPhoto(){
 
 if(!isAdmin){
@@ -162,7 +164,7 @@ return;
 }
 
 let scelta = prompt(
-`Dove vuoi salvare la foto?
+`Scegli cartella:
 
 08-06, 09-06, 10-06, 11-06, 12-06, 13-06,
 15-06, 16-06, 17-06, ottavi, quarti, semifinale, finale`
@@ -194,7 +196,7 @@ render();
 widget.open();
 }
 
-/* RENDER SOLO CARTELLA SELEZIONATA */
+/* RENDER GALLERIA */
 function render(){
 
 const g = document.getElementById("gallery");
@@ -207,13 +209,40 @@ g.innerHTML = "<p style='text-align:center'>Nessuna foto in questa sezione</p>";
 return;
 }
 
-filtered.forEach(p=>{
+filtered.forEach((p, index)=>{
+
 g.innerHTML += `
 <div class="card">
+
 <img src="${p.url}" onclick="openImg('${p.url}')">
+
+${isAdmin ? `
+<button onclick="deletePhoto(${index})" style="width:100%;background:red;border-radius:0;">
+🗑 Elimina
+</button>
+` : ""}
+
 </div>
 `;
 });
+}
+
+/* ELIMINA FOTO */
+function deletePhoto(index){
+
+if(!confirm("Vuoi eliminare questa foto?")) return;
+
+let filtered = photos.filter(p => p.tag === currentFolder);
+
+filtered.splice(index, 1);
+
+photos = [
+...photos.filter(p => p.tag !== currentFolder),
+...filtered
+];
+
+localStorage.setItem("photos", JSON.stringify(photos));
+render();
 }
 
 /* ZOOM */
