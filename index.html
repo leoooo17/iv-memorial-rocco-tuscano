@@ -55,11 +55,6 @@ cursor:pointer;
 font-weight:600;
 }
 
-#menuBtn:hover{
-background:#FFD700;
-color:#111;
-}
-
 /* PANEL FOTOGRAFO */
 #photographerPanel{
 position:fixed;
@@ -239,7 +234,7 @@ const db = firebase.firestore();
 let currentFolder = "08-06";
 let isAdmin = false;
 
-/* 🔥 APERTURA PANEL FOTOGRAFO */
+/* PANEL FOTOGRAFO */
 function openPhotographer(){
 document.getElementById("photographerPanel").classList.add("open");
 document.getElementById("menuBtn").style.display = "none";
@@ -257,6 +252,13 @@ alert("Accesso fotografo attivato");
 alert("Password errata");
 }
 }
+
+/* 🔥 ENTER KEY LOGIN */
+document.getElementById("pass").addEventListener("keydown", function(event){
+    if(event.key === "Enter"){
+        login();
+    }
+});
 
 /* CARTELLE */
 function setFolder(f){
