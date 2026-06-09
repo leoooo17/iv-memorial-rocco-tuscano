@@ -31,6 +31,7 @@ background:rgba(0,0,0,0.55);
 
 header h1{
 position:relative;
+text-align:center;
 }
 
 button{
@@ -75,13 +76,19 @@ height:200px;
 object-fit:cover;
 cursor:pointer;
 }
+
+#loginBox input{
+padding:10px;
+border-radius:20px;
+border:1px solid #ccc;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>IV Memorial Rocco Tuscano</h1>
+<h1>IV MEMORIAL ROCCO TUSCANO</h1>
 </header>
 
 <div class="upload">
@@ -120,13 +127,30 @@ cursor:pointer;
 
 <div class="gallery" id="gallery"></div>
 
+<!-- FIREBASE + CLOUDINARY -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+
 <script>
 
-let currentFolder = "08-06";
-let isAdmin = false;
+/* 🔥 FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
+  authDomain: "memorial-rocco-tuscano.firebaseapp.com",
+  projectId: "memorial-rocco-tuscano",
+  storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
+  messagingSenderId: "72206140774",
+  appId: "1:72206140774:web:ac817e3fcd7107e53e34a7",
+  measurementId: "G-L5K6JSWZ5W"
+};
 
-/* DATABASE LOCALE */
-let photos = JSON.parse(localStorage.getItem("photos")) || [];
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* VARIABILI */
+let isAdmin = false;
+let currentFolder = "08-06";
 
 /* LOGIN */
 function showLogin(){
@@ -138,23 +162,18 @@ const pass = document.getElementById("pass").value;
 
 if(pass === "alessio2026"){
 isAdmin = true;
-
 document.getElementById("uploadBox").style.display = "block";
 document.getElementById("loginBox").style.display = "none";
-
 alert("Accesso fotografo effettuato");
-
-// 🔥 aggiorna UI
 render();
-
 }else{
 alert("Password errata");
 }
 }
 
 /* CAMBIA CARTELLA */
-function setFolder(folder){
-currentFolder = folder;
+function setFolder(f){
+currentFolder = f;
 render();
 }
 
@@ -166,17 +185,9 @@ alert("Devi fare login");
 return;
 }
 
-let scelta = prompt(
-`Scegli cartella:
+let scelta = prompt("Scegli cartella (es: 08-06, ottavi, quarti...)");
 
-08-06, 09-06, 10-06, 11-06, 12-06, 13-06,
-15-06, 16-06, 17-06, ottavi, quarti, semifinale, finale`
-);
-
-if(!scelta){
-alert("Devi scegliere una cartella");
-return;
-}
+if(!scelta) return;
 
 let widget = cloudinary.createUploadWidget({
 cloudName: "dagfasmlx",
@@ -186,17 +197,24 @@ folder: "iv-memorial/" + scelta
 
 if(res && res.event === "success"){
 
-photos.push({
+db.collection("photos").add({
 url: res.info.secure_url,
-tag: scelta
+tag: scelta,
+time: Date.now()
 });
 
-localStorage.setItem("photos", JSON.stringify(photos));
 render();
 }
 });
 
 widget.open();
+}
+
+/* ELIMINA FOTO */
+function deletePhoto(id){
+if(!confirm("Vuoi eliminare questa foto?")) return;
+
+db.collection("photos").doc(id).delete().then(render);
 }
 
 /* RENDER GALLERIA */
@@ -205,22 +223,27 @@ function render(){
 const g = document.getElementById("gallery");
 g.innerHTML = "";
 
-const filtered = photos.filter(p => p.tag === currentFolder);
+db.collection("photos")
+.where("tag","==",currentFolder)
+.get()
+.then(snapshot=>{
 
-if(filtered.length === 0){
+if(snapshot.empty){
 g.innerHTML = "<p style='text-align:center'>Nessuna foto in questa sezione</p>";
 return;
 }
 
-filtered.forEach((p, index)=>{
+snapshot.forEach(doc=>{
+
+let data = doc.data();
 
 g.innerHTML += `
 <div class="card">
 
-<img src="${p.url}" onclick="openImg('${p.url}')">
+<img src="${data.url}" onclick="openImg('${data.url}')">
 
 ${isAdmin ? `
-<button onclick="deletePhoto(${index})"
+<button onclick="deletePhoto('${doc.id}')"
 style="width:100%;background:red;border-radius:0;">
 🗑 Elimina
 </button>
@@ -229,28 +252,11 @@ style="width:100%;background:red;border-radius:0;">
 </div>
 `;
 });
+
+});
 }
 
-/* ELIMINA FOTO */
-function deletePhoto(index){
-
-if(!confirm("Vuoi eliminare questa foto?")) return;
-
-let filtered = photos.filter(p => p.tag === currentFolder);
-
-filtered.splice(index, 1);
-
-photos = [
-...photos.filter(p => p.tag !== currentFolder),
-...filtered
-];
-
-localStorage.setItem("photos", JSON.stringify(photos));
-
-render();
-}
-
-/* ZOOM FOTO */
+/* ZOOM */
 function openImg(url){
 const m = document.createElement("div");
 m.style = "position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
@@ -263,8 +269,6 @@ document.body.appendChild(m);
 render();
 
 </script>
-
-<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 </body>
 </html>
