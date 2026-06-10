@@ -191,10 +191,74 @@ border-radius:6px;
 cursor:pointer;
 }
 
+/* =========================
+   INSTAGRAM + PH SIGNATURE
+   ========================= */
+
+/* Instagram torneo (top right) */
+.ig-torneo{
+position:fixed;
+top:12px;
+right:12px;
+z-index:3000;
+background:rgba(0,0,0,0.55);
+color:white;
+padding:10px 14px;
+border-radius:999px;
+text-decoration:none;
+font-size:13px;
+font-weight:600;
+backdrop-filter: blur(10px);
+transition:0.3s;
+}
+
+.ig-torneo:hover{
+background:#E1306C;
+transform:translateY(-2px);
+}
+
+/* PH fotografo (bottom right) */
+.ph-signature{
+position:fixed;
+bottom:12px;
+right:12px;
+z-index:3000;
+background:rgba(0,0,0,0.6);
+color:white;
+padding:10px 14px;
+border-radius:999px;
+font-size:13px;
+font-weight:600;
+display:flex;
+align-items:center;
+gap:8px;
+backdrop-filter: blur(10px);
+transition:0.3s;
+}
+
+.ph-signature:hover{
+transform:scale(1.05);
+background:rgba(0,0,0,0.8);
+}
+
 </style>
 </head>
 
 <body>
+
+<!-- INSTAGRAM TORNEO -->
+<a class="ig-torneo"
+   href="https://www.instagram.com/torneo_bovamarina2026?igsh=c3VhanNwd3d3cTlq"
+   target="_blank">
+📲 Instagram Torneo
+</a>
+
+<!-- PH FOTOGRAFO -->
+<a class="ph-signature"
+   href="https://www.instagram.com/alessio__orlando?igsh=MWZpcmFramlnMjU2OQ=="
+   target="_blank">
+📸 PH Alessio Orlando
+</a>
 
 <!-- MENU BUTTON -->
 <button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
@@ -282,13 +346,11 @@ const db = firebase.firestore();
 let currentFolder = "08-06";
 let isAdmin = false;
 
-/* LOGIN TOGGLE */
 function toggleLogin(){
 const box = document.getElementById("loginBox");
 box.style.display = (box.style.display === "block") ? "none" : "block";
 }
 
-/* LOGIN */
 function login(){
 const pass = document.getElementById("pass").value;
 
@@ -302,13 +364,11 @@ alert("Password errata");
 }
 }
 
-/* CARTELLE */
 function setFolder(f){
 currentFolder = f;
 render();
 }
 
-/* RENDER */
 function render(){
 const g = document.getElementById("gallery");
 g.innerHTML = "";
@@ -342,7 +402,6 @@ ${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</b
 });
 }
 
-/* DELETE */
 function deletePhoto(id){
 if(!isAdmin) return;
 if(confirm("Eliminare foto?")){
@@ -350,9 +409,7 @@ db.collection("photos").doc(id).delete().then(render);
 }
 }
 
-/* UPLOAD */
 function uploadPhoto(){
-
 let scelta = document.getElementById("folderSelect").value;
 
 let widget = cloudinary.createUploadWidget({
@@ -374,7 +431,6 @@ render();
 widget.open();
 }
 
-/* OPEN IMAGE */
 function openImg(url){
 const m = document.createElement("div");
 m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
