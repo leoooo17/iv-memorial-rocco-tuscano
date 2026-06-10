@@ -24,13 +24,19 @@ text-align:center;
 position:relative;
 background:url("https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg")
 center/cover no-repeat;
+overflow:hidden;
 }
 
 header::before{
 content:"";
 position:absolute;
 inset:0;
-background:rgba(0,0,0,0.65);
+background:linear-gradient(
+  180deg,
+  rgba(0,0,0,0.65),
+  rgba(0,0,0,0.75)
+);
+backdrop-filter: blur(2px);
 }
 
 .hero-text{
@@ -38,48 +44,59 @@ position:relative;
 z-index:2;
 text-align:center;
 padding:20px;
+animation: fadeUp 1s ease;
+}
+
+@keyframes fadeUp{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
 }
 
 .hero-text h1{
-font-size:58px;
+font-size:64px;
 color:white;
 margin:0;
+letter-spacing:2px;
+text-transform:uppercase;
 }
 
-.hero-text p{
+.hero-subtitle{
 color:rgba(255,255,255,0.85);
-max-width:700px;
-margin:15px auto;
-line-height:1.5;
+max-width:750px;
+margin:18px auto 0;
+line-height:1.6;
+font-size:18px;
 }
 
 /* MENU */
 .menu{
 position:sticky;
 top:0;
-background:white;
+background:rgba(255,255,255,0.85);
+backdrop-filter: blur(10px);
 z-index:999;
-padding:12px;
+padding:10px;
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-gap:6px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
+gap:8px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
 button{
-padding:10px 14px;
-border-radius:12px;
-border:1px solid #ddd;
+padding:10px 16px;
+border-radius:999px;
+border:1px solid rgba(0,0,0,0.08);
 background:white;
 cursor:pointer;
 font-weight:600;
-transition:0.2s;
+transition:0.25s;
 }
 
 button:hover{
 background:#FFD700;
-transform:translateY(-2px);
+transform:translateY(-3px);
+box-shadow:0 6px 15px rgba(0,0,0,0.15);
 }
 
 /* GALLERY */
@@ -94,21 +111,26 @@ padding:20px;
 .photo-card{
 position:relative;
 background:white;
-border-radius:12px;
+border-radius:16px;
 overflow:hidden;
-box-shadow:0 3px 12px rgba(0,0,0,0.1);
-transition:0.2s;
+box-shadow:0 8px 25px rgba(0,0,0,0.12);
+transition:0.3s;
 }
 
 .photo-card img{
 width:100%;
-height:200px;
+height:220px;
 object-fit:cover;
 cursor:pointer;
+transition:0.4s;
+}
+
+.photo-card:hover img{
+transform:scale(1.05);
 }
 
 .photo-card:hover{
-transform:scale(1.02);
+transform:translateY(-5px);
 }
 
 /* DELETE BUTTON */
@@ -208,10 +230,14 @@ cursor:pointer;
 
 <!-- HERO -->
 <header>
-<div class="hero-text">
-<h1>IV MEMORIAL ROCCO TUSCANO</h1>
-<p>Galleria ufficiale del torneo. Foto caricate dal fotografo.</p>
-</div>
+  <div class="hero-text">
+    <h1>IV MEMORIAL ROCCO TUSCANO</h1>
+
+    <p class="hero-subtitle">
+      Un torneo che unisce passione, sport e memoria.  
+      Le emozioni in campo, catturate e condivise in tempo reale dal nostro fotografo ufficiale.
+    </p>
+  </div>
 </header>
 
 <!-- MENU CARTELLE -->
