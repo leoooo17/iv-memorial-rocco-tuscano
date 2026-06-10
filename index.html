@@ -15,7 +15,7 @@ color:#1b1b1b;
 }
 
 /* =========================
-   HERO SPORT CLEAN
+   HERO
 ========================= */
 header{
 height:90vh;
@@ -67,9 +67,7 @@ box-shadow:0 4px 12px rgba(0,0,0,0.15);
 text-transform:uppercase;
 }
 
-/* =========================
-   TITOLO ORO (MODIFICATO)
-========================= */
+/* TITLE */
 .hero-text h1{
 font-size:68px;
 color:#FFD700;
@@ -88,6 +86,36 @@ margin:18px auto 0;
 line-height:1.6;
 font-size:18px;
 text-shadow:0 6px 18px rgba(0,0,0,0.5);
+}
+
+/* =========================
+   GALLERY TITLE (NUOVO)
+========================= */
+.gallery-title{
+text-align:center;
+font-size:22px;
+font-weight:700;
+letter-spacing:3px;
+margin-top:25px;
+margin-bottom:10px;
+color:#0b3d91;
+position:relative;
+}
+
+.gallery-title::after{
+content:"";
+display:block;
+width:60px;
+height:3px;
+background:#0b3d91;
+margin:8px auto 0;
+border-radius:10px;
+transition:0.3s;
+}
+
+.gallery-title:hover::after{
+width:110px;
+background:#00b4d8;
 }
 
 /* =========================
@@ -306,11 +334,17 @@ transform:translateY(-2px);
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
 
     <p class="hero-subtitle">
-      Un torneo che unisce passione, sport e memoria.
+      Il IV Memorial Rocco Tuscano è più di un torneo: è competizione, emozione e ricordo.  
+      Ogni gara è un momento unico, ogni foto un istante da rivivere.
     </p>
 
   </div>
 </header>
+
+<!-- GALLERY TITLE -->
+<div class="gallery-title">
+  GALLERY
+</div>
 
 <!-- MENU -->
 <div class="menu">
