@@ -209,7 +209,7 @@ cursor:pointer;
 }
 
 /* =========================
-   LOGIN MENU (ANIMATO + PIÙ ALTO)
+   LOGIN MENU (MODIFICA SOLO QUI)
 ========================= */
 #menuBtn{
 position:fixed;
@@ -232,19 +232,19 @@ z-index:2000;
 background:white;
 padding:10px;
 border-radius:10px;
+display:none;
 width:160px;
 box-shadow:0 6px 20px rgba(0,0,0,0.15);
 
-/* 🔥 ANIMAZIONE */
-max-height:60px;
+/* 🔥 SOLO MODIFICA: più alto quando si apre */
+max-height:80px;
 overflow:hidden;
 transition:0.3s ease;
 }
 
 /* quando aperto */
 #loginBox.open{
-max-height:260px;
-padding-bottom:12px;
+max-height:300px;
 }
 
 #loginBox input{
@@ -371,7 +371,6 @@ const db = firebase.firestore();
 let currentFolder = "08-06";
 let isAdmin = false;
 
-/* LOGIN TOGGLE ANIMATO */
 function toggleLogin(){
 const box = document.getElementById("loginBox");
 
@@ -384,7 +383,6 @@ setTimeout(()=> box.style.display = "none", 200);
 }
 }
 
-/* LOGIN */
 function login(){
 const pass=document.getElementById("pass").value;
 if(pass==="alessio2026"){
@@ -394,13 +392,11 @@ render();
 }
 }
 
-/* CARTELLE */
 function setFolder(f){
 currentFolder=f;
 render();
 }
 
-/* GALLERY */
 function render(){
 const g=document.getElementById("gallery");
 g.innerHTML="";
@@ -431,7 +427,6 @@ ${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</but
 });
 }
 
-/* OPEN IMG */
 function openImg(url){
 const m=document.createElement("div");
 m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
@@ -440,13 +435,11 @@ m.onclick=()=>m.remove();
 document.body.appendChild(m);
 }
 
-/* DELETE */
 function deletePhoto(id){
 if(!isAdmin)return;
 db.collection("photos").doc(id).delete().then(render);
 }
 
-/* UPLOAD */
 function uploadPhoto(){
 let scelta=document.getElementById("folderSelect").value;
 
