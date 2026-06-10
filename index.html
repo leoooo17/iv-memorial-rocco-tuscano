@@ -90,13 +90,39 @@ transition:0.3s;
 width:160px;
 }
 
-/* SUBTITLE */
+/* =========================
+   SUBTITLE BOX MIGLIORATO
+========================= */
+.hero-subtitle-box{
+display:flex;
+justify-content:center;
+margin-top:18px;
+}
+
 .hero-subtitle{
-color:rgba(255,255,255,0.92);
-max-width:780px;
-margin:18px auto 0;
-line-height:1.6;
-font-size:18px;
+display:inline-block;
+padding:10px 18px;
+border-radius:999px;
+font-size:16px;
+font-weight:500;
+letter-spacing:1px;
+
+background:rgba(11, 61, 145, 0.18);
+backdrop-filter: blur(10px);
+
+border:1px solid rgba(255, 215, 0, 0.55);
+
+color:rgba(255,255,255,0.95);
+text-align:center;
+
+box-shadow:0 8px 18px rgba(0,0,0,0.25);
+transition:0.3s ease;
+}
+
+.hero-subtitle:hover{
+transform:translateY(-2px);
+border-color:#FFD700;
+box-shadow:0 12px 26px rgba(0,0,0,0.35);
 }
 
 /* =========================
@@ -314,9 +340,12 @@ target="_blank">
 
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
 
-    <p class="hero-subtitle">
-      Sport, emozione e ricordo.
-    </p>
+    <div class="hero-subtitle-box">
+      <p class="hero-subtitle">
+        Sport, emozione e ricordo.
+      </p>
+    </div>
+
   </div>
 </header>
 
@@ -361,14 +390,12 @@ const db = firebase.firestore();
 let currentFolder = "08-06";
 let isAdmin = false;
 
-/* LOGIN TOGGLE */
 function toggleLogin(){
 document.getElementById("loginBox").style.display =
 document.getElementById("loginBox").style.display === "block"
 ? "none" : "block";
 }
 
-/* LOGIN */
 function login(){
 const pass = document.getElementById("pass").value;
 
@@ -376,25 +403,21 @@ if(pass === "alessio2026"){
 isAdmin = true;
 document.getElementById("uploadBox").style.display = "block";
 render();
-}else{
-alert("Password errata");
 }
 }
 
-/* ✅ ENTER KEY LOGIN */
-document.getElementById("pass").addEventListener("keypress", function(e){
+/* ENTER TO LOGIN */
+document.getElementById("pass").addEventListener("keydown", function(e){
 if(e.key === "Enter"){
 login();
 }
 });
 
-/* CARTELLE */
 function setFolder(f){
 currentFolder = f;
 render();
 }
 
-/* RENDER */
 function render(){
 const g = document.getElementById("gallery");
 g.innerHTML = "";
@@ -425,7 +448,6 @@ ${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</b
 });
 }
 
-/* OPEN IMAGE */
 function openImg(url){
 const m = document.createElement("div");
 m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
@@ -434,13 +456,11 @@ m.onclick=()=>m.remove();
 document.body.appendChild(m);
 }
 
-/* DELETE */
 function deletePhoto(id){
 if(!isAdmin) return;
 db.collection("photos").doc(id).delete().then(render);
 }
 
-/* UPLOAD */
 function uploadPhoto(){
 let scelta = document.getElementById("folderSelect").value;
 
