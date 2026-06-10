@@ -15,7 +15,7 @@ color:#1b1b1b;
 }
 
 /* =========================
-   HERO SPORT CLEAN
+   HERO SPORT CLEAN + HEADER MIGLIORATO
 ========================= */
 header{
 height:90vh;
@@ -52,25 +52,44 @@ from{opacity:0; transform:translateY(18px);}
 to{opacity:1; transform:translateY(0);}
 }
 
-.hero-text h1{
-font-size:62px;
-color:white;
-margin:0;
+/* BADGE NUOVO */
+.hero-badge{
+display:inline-block;
+padding:6px 14px;
+border-radius:999px;
+font-size:12px;
 letter-spacing:2px;
+font-weight:700;
+color:#0b3d91;
+background:rgba(255,255,255,0.9);
+margin-bottom:14px;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
 text-transform:uppercase;
-text-shadow:0 6px 20px rgba(0,0,0,0.4);
 }
 
+/* TITOLO MIGLIORATO */
+.hero-text h1{
+font-size:68px;
+color:white;
+margin:0;
+letter-spacing:3px;
+text-transform:uppercase;
+text-shadow:0 10px 30px rgba(0,0,0,0.6);
+line-height:1.05;
+}
+
+/* SUBTITLE MIGLIORATO */
 .hero-subtitle{
-color:rgba(255,255,255,0.9);
-max-width:750px;
+color:rgba(255,255,255,0.92);
+max-width:780px;
 margin:18px auto 0;
 line-height:1.6;
 font-size:18px;
+text-shadow:0 6px 18px rgba(0,0,0,0.5);
 }
 
 /* =========================
-   MENU MODERNO
+   MENU
 ========================= */
 .menu{
 position:sticky;
@@ -277,12 +296,18 @@ transform:translateY(-2px);
 <!-- HERO -->
 <header>
   <div class="hero-text">
-    <h1>IV MEMORIAL ROCCO TUSCANO</h1>
+
+    <div class="hero-badge">
+      TORNEO UFFICIALE • EDIZIONE 2026
+    </div>
+
+    <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
 
     <p class="hero-subtitle">
       Un torneo che unisce passione, sport e memoria.  
       Le emozioni in campo, catturate e condivise in tempo reale dal nostro fotografo ufficiale.
     </p>
+
   </div>
 </header>
 
