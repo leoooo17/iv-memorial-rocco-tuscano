@@ -361,71 +361,88 @@ const db = firebase.firestore();
 let currentFolder = "08-06";
 let isAdmin = false;
 
+/* LOGIN TOGGLE */
 function toggleLogin(){
 document.getElementById("loginBox").style.display =
 document.getElementById("loginBox").style.display === "block"
 ? "none" : "block";
 }
 
+/* LOGIN */
 function login(){
-const pass=document.getElementById("pass").value;
-if(pass==="alessio2026"){
-isAdmin=true;
-document.getElementById("uploadBox").style.display="block";
+const pass = document.getElementById("pass").value;
+
+if(pass === "alessio2026"){
+isAdmin = true;
+document.getElementById("uploadBox").style.display = "block";
 render();
+}else{
+alert("Password errata");
 }
 }
 
+/* ✅ ENTER KEY LOGIN */
+document.getElementById("pass").addEventListener("keypress", function(e){
+if(e.key === "Enter"){
+login();
+}
+});
+
+/* CARTELLE */
 function setFolder(f){
-currentFolder=f;
+currentFolder = f;
 render();
 }
 
+/* RENDER */
 function render(){
-const g=document.getElementById("gallery");
-g.innerHTML="";
+const g = document.getElementById("gallery");
+g.innerHTML = "";
 
 db.collection("photos").where("tag","==",currentFolder).get()
 .then(snapshot=>{
 if(snapshot.empty){
-g.innerHTML="<p style='text-align:center'>Nessuna foto</p>";
+g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
 return;
 }
 
-let photos=[];
+let photos = [];
 snapshot.forEach(doc=>{
 photos.push({id:doc.id,...doc.data()});
 });
 
 photos.sort((a,b)=>b.time-a.time);
 
-g.innerHTML=`
+g.innerHTML = `
 <div class="gallery-grid">
 ${photos.map(p=>`
 <div class="photo-card">
 <img src="${p.url}" onclick="openImg('${p.url}')">
-${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>`:""}
+${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>` : ""}
 </div>
 `).join("")}
 </div>`;
 });
 }
 
+/* OPEN IMAGE */
 function openImg(url){
-const m=document.createElement("div");
+const m = document.createElement("div");
 m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
 m.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%">`;
 m.onclick=()=>m.remove();
 document.body.appendChild(m);
 }
 
+/* DELETE */
 function deletePhoto(id){
-if(!isAdmin)return;
+if(!isAdmin) return;
 db.collection("photos").doc(id).delete().then(render);
 }
 
+/* UPLOAD */
 function uploadPhoto(){
-let scelta=document.getElementById("folderSelect").value;
+let scelta = document.getElementById("folderSelect").value;
 
 let widget = cloudinary.createUploadWidget({
 cloudName: "dagfasmlx",
