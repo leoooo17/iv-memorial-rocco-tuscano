@@ -89,7 +89,7 @@ text-shadow:0 6px 18px rgba(0,0,0,0.5);
 }
 
 /* =========================
-   GALLERY TITLE (NUOVO)
+   GALLERY TITLE (AGGIORNATO ORO)
 ========================= */
 .gallery-title{
 text-align:center;
@@ -98,24 +98,26 @@ font-weight:700;
 letter-spacing:3px;
 margin-top:25px;
 margin-bottom:10px;
-color:#0b3d91;
+color:#FFD700; /* 🔥 ORA ORO */
 position:relative;
 }
 
+/* linea sotto stessa identica colorazione */
 .gallery-title::after{
 content:"";
 display:block;
 width:60px;
 height:3px;
-background:#0b3d91;
+background:#FFD700; /* 🔥 ORA ORO */
 margin:8px auto 0;
 border-radius:10px;
 transition:0.3s;
 }
 
+/* hover leggero ma coerente */
 .gallery-title:hover::after{
 width:110px;
-background:#00b4d8;
+filter:brightness(1.1);
 }
 
 /* =========================
@@ -204,9 +206,7 @@ color:white;
 cursor:pointer;
 }
 
-/* =========================
-   LOGIN
-========================= */
+/* LOGIN */
 #menuBtn{
 position:fixed;
 top:10px;
@@ -254,10 +254,7 @@ color:white;
 font-weight:600;
 }
 
-/* =========================
-   PH ALESSIO
-========================= */
-
+/* PH ALESSIO */
 .ig-fotografo{
 position:fixed;
 top:12px;
@@ -284,24 +281,19 @@ transform:translateY(-2px);
 
 <body>
 
-<!-- PH ALESSIO -->
 <a class="ig-fotografo"
-   href="https://www.instagram.com/alessio__orlando?igsh=MWZpcmFramlnMjU2OQ=="
-   target="_blank">
+href="https://www.instagram.com/alessio__orlando?igsh=MWZpcmFramlnMjU2OQ=="
+target="_blank">
 📸 PH Alessio Orlando
 </a>
 
-<!-- MENU BUTTON -->
 <button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
 
-<!-- LOGIN BOX -->
 <div id="loginBox">
-
 <input type="password" id="pass" placeholder="Password">
 <button onclick="login()">Accedi</button>
 
 <div id="uploadBox" style="display:none;margin-top:6px;">
-
 <select id="folderSelect" style="width:100%">
 <option value="08-06">08/06</option>
 <option value="09-06">09/06</option>
@@ -319,34 +311,22 @@ transform:translateY(-2px);
 </select>
 
 <button onclick="uploadPhoto()">📸 Carica</button>
-
 </div>
 </div>
 
-<!-- HERO -->
 <header>
   <div class="hero-text">
-
-    <div class="hero-badge">
-      TORNEO UFFICIALE • EDIZIONE 2026
-    </div>
-
+    <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-
     <p class="hero-subtitle">
       Il IV Memorial Rocco Tuscano è più di un torneo: è competizione, emozione e ricordo.  
       Ogni gara è un momento unico, ogni foto un istante da rivivere.
     </p>
-
   </div>
 </header>
 
-<!-- GALLERY TITLE -->
-<div class="gallery-title">
-  GALLERY
-</div>
+<div class="gallery-title">GALLERY</div>
 
-<!-- MENU -->
 <div class="menu">
 <button onclick="setFolder('08-06')">08/06</button>
 <button onclick="setFolder('09-06')">09/06</button>
@@ -363,23 +343,20 @@ transform:translateY(-2px);
 <button onclick="setFolder('finale')">FINALE</button>
 </div>
 
-<!-- GALLERY -->
 <div id="gallery"></div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 <script>
-
 const firebaseConfig = {
-  apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
-  authDomain: "memorial-rocco-tuscano.firebaseapp.com",
-  projectId: "memorial-rocco-tuscano",
-  storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
-  messagingSenderId: "72206140774",
-  appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
+apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
+authDomain: "memorial-rocco-tuscano.firebaseapp.com",
+projectId: "memorial-rocco-tuscano",
+storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
+messagingSenderId: "72206140774",
+appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -389,8 +366,9 @@ let currentFolder = "08-06";
 let isAdmin = false;
 
 function toggleLogin(){
-const box = document.getElementById("loginBox");
-box.style.display = (box.style.display === "block") ? "none" : "block";
+document.getElementById("loginBox").style.display =
+document.getElementById("loginBox").style.display === "block"
+? "none" : "block";
 }
 
 function login(){
@@ -399,10 +377,7 @@ const pass = document.getElementById("pass").value;
 if(pass === "alessio2026"){
 isAdmin = true;
 document.getElementById("uploadBox").style.display = "block";
-alert("Accesso fotografo attivato");
 render();
-}else{
-alert("Password errata");
 }
 }
 
@@ -415,11 +390,8 @@ function render(){
 const g = document.getElementById("gallery");
 g.innerHTML = "";
 
-db.collection("photos")
-.where("tag","==",currentFolder)
-.get()
+db.collection("photos").where("tag","==",currentFolder).get()
 .then(snapshot=>{
-
 if(snapshot.empty){
 g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
 return;
@@ -444,22 +416,27 @@ ${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</b
 });
 }
 
+function openImg(url){
+const m=document.createElement("div");
+m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
+m.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%">`;
+m.onclick=()=>m.remove();
+document.body.appendChild(m);
+}
+
 function deletePhoto(id){
 if(!isAdmin) return;
-if(confirm("Eliminare foto?")){
 db.collection("photos").doc(id).delete().then(render);
-}
 }
 
 function uploadPhoto(){
-let scelta = document.getElementById("folderSelect").value;
+let scelta=document.getElementById("folderSelect").value;
 
-let widget = cloudinary.createUploadWidget({
+let widget=cloudinary.createUploadWidget({
 cloudName:"dagfasmlx",
 uploadPreset:"iv-memorial",
 folder:"iv-memorial/"+scelta
-}, (err,res)=>{
-
+},(err,res)=>{
 if(res && res.event==="success"){
 db.collection("photos").add({
 url:res.info.secure_url,
@@ -473,16 +450,7 @@ render();
 widget.open();
 }
 
-function openImg(url){
-const m = document.createElement("div");
-m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
-m.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%">`;
-m.onclick=()=>m.remove();
-document.body.appendChild(m);
-}
-
 render();
-
 </script>
 
 </body>
