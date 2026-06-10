@@ -90,9 +90,7 @@ transition:0.3s;
 width:160px;
 }
 
-/* =========================
-   SUBTITLE (NUOVO STILE)
-========================= */
+/* SUBTITLE */
 .hero-subtitle{
 color:rgba(255,255,255,0.92);
 max-width:780px;
@@ -101,7 +99,7 @@ line-height:1.6;
 font-size:18px;
 }
 
-/* pill elegante */
+/* pill stile */
 .highlight-subtitle{
 display:inline-block;
 padding:10px 18px;
@@ -189,7 +187,6 @@ color:#FFD700;
 transform:translateY(-2px) scale(1.05);
 }
 
-/* ACTIVE */
 button.active{
 background:#FFD700;
 color:#0b3d91;
@@ -197,7 +194,7 @@ border-color:#FFD700;
 }
 
 /* =========================
-   GALLERY
+   GALLERIA
 ========================= */
 .gallery-grid{
 display:grid;
@@ -298,6 +295,43 @@ border-radius:999px;
 text-decoration:none;
 font-size:13px;
 font-weight:600;
+}
+
+/* =========================
+   RESPONSIVE MOBILE FIX
+========================= */
+@media (max-width: 768px) {
+
+.hero-text h1{
+font-size:42px;
+letter-spacing:2px;
+}
+
+.hero-subtitle{
+font-size:15px;
+padding:0 10px;
+}
+
+.highlight-subtitle{
+font-size:15px;
+padding:8px 14px;
+}
+
+.gallery-title{
+font-size:18px;
+letter-spacing:2px;
+}
+
+button{
+font-size:12px;
+padding:7px 12px;
+}
+
+.hero-badge{
+font-size:10px;
+padding:5px 10px;
+}
+
 }
 
 </style>
