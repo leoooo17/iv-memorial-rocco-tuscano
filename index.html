@@ -91,30 +91,12 @@ width:160px;
 }
 
 /* SUBTITLE */
-.hero-subtitle-box{
-display:flex;
-justify-content:center;
-margin-top:18px;
-}
-
 .hero-subtitle{
-display:inline-block;
-padding:10px 18px;
-border-radius:999px;
-font-size:16px;
-font-weight:500;
-letter-spacing:1px;
-background:rgba(11, 61, 145, 0.18);
-backdrop-filter: blur(10px);
-border:1px solid rgba(255, 215, 0, 0.55);
-color:rgba(255,255,255,0.95);
-box-shadow:0 8px 18px rgba(0,0,0,0.25);
-transition:0.3s ease;
-}
-
-.hero-subtitle:hover{
-transform:translateY(-2px);
-border-color:#FFD700;
+color:rgba(255,255,255,0.92);
+max-width:780px;
+margin:18px auto 0;
+line-height:1.6;
+font-size:18px;
 }
 
 /* =========================
@@ -147,7 +129,7 @@ width:110px;
 }
 
 /* =========================
-   MENU + BOTTONI MIGLIORATI
+   MENU + BOTTONI CARTELLE (MIGLIORATI)
 ========================= */
 .menu{
 position:sticky;
@@ -164,9 +146,9 @@ box-shadow:0 8px 25px rgba(0,0,0,0.08);
 border-bottom:1px solid rgba(0,90,180,0.12);
 }
 
-/* BOTTONI CARTELLE NUOVI */
+/* BOTTONI CARTELLE */
 button{
-padding:8px 16px;
+padding:9px 16px;
 border-radius:999px;
 border:2px solid #0b3d91;
 background:white;
@@ -174,519 +156,49 @@ color:#0b3d91;
 cursor:pointer;
 font-weight:700;
 font-size:13px;
-letter-spacing:0.5px;
+letter-spacing:0.4px;
 transition:0.25s ease;
-box-shadow:0 2px 6px rgba(0,0,0,0.05);
+box-shadow:0 2px 8px rgba(0,0,0,0.05);
+position:relative;
+overflow:hidden;
 }
 
-/* HOVER */
+/* hover */
 button:hover{
 background:#0b3d91;
 color:#FFD700;
-transform:translateY(-2px) scale(1.05);
+transform:translateY(-2px) scale(1.06);
 box-shadow:0 10px 20px rgba(11,61,145,0.25);
 }
 
-/* 🔥 CARTELLA ATTIVA */
+/* CLICK EFFECT */
+button:active{
+transform:scale(0.96);
+}
+
+/* CARTELLA SELEZIONATA (ATTIVA) */
 button.active{
 background:#FFD700;
 color:#0b3d91;
 border-color:#FFD700;
-box-shadow:0 0 18px rgba(255,215,0,0.6);
-transform:scale(1.05);
+box-shadow:0 10px 22px rgba(255,215,0,0.35);
+transform:translateY(-2px);
 }
 
-/* =========================
-   GALLERIA
-========================= */
-.gallery-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
-gap:14px;
-padding:20px;
-}
-
-.photo-card{
-background:white;
-border-radius:14px;
-overflow:hidden;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
-transition:0.3s;
-position:relative;
-}
-
-.photo-card img{
-width:100%;
-height:230px;
-object-fit:cover;
-cursor:pointer;
-}
-
-.photo-card:hover{
-transform:translateY(-5px);
-}
-
-/* DELETE */
-.delete-btn{
-position:absolute;
-top:8px;
-right:8px;
-padding:6px 8px;
-font-size:12px;
-border:none;
-border-radius:8px;
-background:#e74c3c;
-color:white;
-cursor:pointer;
-}
-
-/* LOGIN */
-#menuBtn{
-position:fixed;
-top:10px;
-left:10px;
-z-index:2000;
-padding:10px 14px;
-background:#0b3d91;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
-
-#loginBox{
-position:fixed;
-top:55px;
-left:10px;
-z-index:2000;
-background:white;
-padding:10px;
-border-radius:10px;
-display:none;
-width:160px;
-box-shadow:0 6px 20px rgba(0,0,0,0.15);
-}
-
-#loginBox input{
-width:100%;
-padding:6px;
-border:1px solid #ddd;
-border-radius:6px;
-margin-bottom:6px;
-}
-
-#loginBox button{
-width:100%;
-padding:6px;
-border:none;
-border-radius:6px;
-background:#0b3d91;
-color:white;
-font-weight:600;
-}
-
-/* PH ALESSIO */
-.ig-fotografo{
-position:fixed;
-top:12px;
-right:12px;
-z-index:3000;
-background:#0b3d91;
-color:white;
-padding:10px 14px;
-border-radius:999px;
-text-decoration:none;
-font-size:13px;
-font-weight:600;
-}
-
-</style>
-</head>
-
-<body>
-
-<a class="ig-fotografo"
-href="https://www.instagram.com/alessio__orlando"
-target="_blank">
-📸 PH Alessio Orlando
-</a>
-
-<button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
-
-<div id="loginBox">
-<input type="password" id="pass" placeholder="Password">
-<button onclick="login()">Accedi</button>
-
-<div id="uploadBox" style="display:none;margin-top:6px;">
-<select id="folderSelect" style="width:100%">
-<option value="08-06">08/06</option>
-<option value="09-06">09/06</option>
-<option value="10-06">10/06</option>
-<option value="11-06">11/06</option>
-<option value="12-06">12/06</option>
-<option value="13-06">13/06</option>
-<option value="15-06">15/06</option>
-<option value="16-06">16/06</option>
-<option value="17-06">17/06</option>
-<option value="ottavi">OTTAVI</option>
-<option value="quarti">QUARTI</option>
-<option value="semifinale">SEMIFINALE</option>
-<option value="finale">FINALE</option>
-</select>
-
-<button onclick="uploadPhoto()">📸 Carica</button>
-</div>
-</div>
-
-<header>
-  <div class="hero-text">
-    <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
-
-    <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-
-    <div class="hero-subtitle-box">
-      <p class="hero-subtitle">
-        Sport, emozione e ricordo.
-      </p>
-    </div>
-  </div>
-</header>
-
-<div class="gallery-title">GALLERY</div>
-
-<div class="menu">
-<button onclick="setFolder('08-06')">08/06</button>
-<button onclick="setFolder('09-06')">09/06</button>
-<button onclick="setFolder('10-06')">10/06</button>
-<button onclick="setFolder('11-06')">11/06</button>
-<button onclick="setFolder('12-06')">12/06</button>
-<button onclick="setFolder('13-06')">13/06</button>
-<button onclick="setFolder('15-06')">15/06</button>
-<button onclick="setFolder('16-06')">16/06</button>
-<button onclick="setFolder('17-06')">17/06</button>
-<button onclick="setFolder('ottavi')">OTTAVI</button>
-<button onclick="setFolder('quarti')">QUARTI</button>
-<button onclick="setFolder('semifinale')">SEMIFINALE</button>
-<button onclick="setFolder('finale')">FINALE</button>
-</div>
-
-<div id="gallery"></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
-
-<script>
-
-const firebaseConfig = {
-apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
-authDomain: "memorial-rocco-tuscano.firebaseapp.com",
-projectId: "memorial-rocco-tuscano",
-storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
-messagingSenderId: "72206140774",
-appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-let currentFolder = "08-06";
-let isAdmin = false;
-
-function toggleLogin(){
-document.getElementById("loginBox").style.display =
-document.getElementById("loginBox").style.display === "block"
-? "none" : "block";
-}
-
-function login(){
-const pass = document.getElementById("pass").value;
-
-if(pass === "alessio2026"){
-isAdmin = true;
-document.getElementById("uploadBox").style.display = "block";
-render();
-}
-}
-
-function setFolder(f){
-currentFolder = f;
-render();
-
-/* 🔥 FIX: evidenzia bottone attivo */
-document.querySelectorAll(".menu button").forEach(btn=>{
-btn.classList.remove("active");
-if(btn.textContent.includes(f.replace("-","/"))){
-btn.classList.add("active");
-}
-});
-}
-
-function render(){
-const g = document.getElementById("gallery");
-g.innerHTML = "";
-
-db.collection("photos").where("tag","==",currentFolder).get()
-.then(snapshot=>{
-if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
-return;
-}
-
-let photos = [];
-snapshot.forEach(doc=>{
-photos.push({id:doc.id,...doc.data()});
-});
-
-photos.sort((a,b)=>b.time-a.time);
-
-g.innerHTML = `
-<div class="gallery-grid">
-${photos.map(p=>`
-<div class="photo-card">
-<img src="${p.url}" onclick="openImg('${p.url}')">
-${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>` : ""}
-</div>
-`).join("")}
-</div>`;
-});
-}
-
-function openImg(url){
-const m=document.createElement("div");
-m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
-m.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%">`;
-m.onclick=()=>m.remove();
-document.body.appendChild(m);
-}
-
-function deletePhoto(id){
-if(!isAdmin)return;
-db.collection("photos").doc(id).delete().then(render);
-}
-
-function uploadPhoto(){
-let scelta=document.getElementById("folderSelect").value;
-
-let widget=cloudinary.createUploadWidget({
-cloudName:"dagfasmlx",
-uploadPreset:"iv-memorial",
-folder:"iv-memorial/"+scelta
-},(err,res)=>{
-if(res&&res.event==="success"){
-db.collection("photos").add({
-url:res.info.secure_url,
-tag:scelta,
-time:Date.now()
-});
-render();
-}
-});
-
-widget.open();
-}
-
-render();
-
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8">
-<title>IV Memorial Rocco Tuscano</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#f5f7fb;
-color:#1b1b1b;
-}
-
-/* =========================
-   HERO
-========================= */
-header{
-height:90vh;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-position:relative;
-background:url("https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg")
-center/cover no-repeat;
-overflow:hidden;
-}
-
-header::before{
+/* piccolo glow animato quando attiva */
+button.active::after{
 content:"";
 position:absolute;
 inset:0;
-background:linear-gradient(
-180deg,
-rgba(0,40,90,0.65),
-rgba(0,0,0,0.55)
-);
-}
-
-.hero-text{
-position:relative;
-z-index:2;
-padding:20px;
-animation: fadeUp 0.9s ease;
-}
-
-@keyframes fadeUp{
-from{opacity:0; transform:translateY(18px);}
-to{opacity:1; transform:translateY(0);}
-}
-
-.hero-badge{
-display:inline-block;
-padding:6px 14px;
 border-radius:999px;
-font-size:12px;
-letter-spacing:2px;
-font-weight:700;
-color:#0b3d91;
-background:rgba(255,255,255,0.9);
-margin-bottom:14px;
+box-shadow:0 0 0 0 rgba(255,215,0,0.6);
+animation:pulse 1.6s infinite;
 }
 
-/* TITLE */
-.hero-text h1{
-font-size:68px;
-color:#FFD700;
-margin:0;
-letter-spacing:3px;
-text-transform:uppercase;
-text-shadow:0 10px 30px rgba(0,0,0,0.6);
-}
-
-/* LINEA SOTTO TITOLO */
-.hero-text h1::after{
-content:"";
-display:block;
-width:120px;
-height:3px;
-background:#FFD700;
-margin:14px auto 0;
-border-radius:10px;
-transition:0.3s;
-}
-
-.hero-text h1:hover::after{
-width:160px;
-}
-
-/* SUBTITLE */
-.hero-subtitle-box{
-display:flex;
-justify-content:center;
-margin-top:18px;
-}
-
-.hero-subtitle{
-display:inline-block;
-padding:10px 18px;
-border-radius:999px;
-font-size:16px;
-font-weight:500;
-letter-spacing:1px;
-background:rgba(11, 61, 145, 0.18);
-backdrop-filter: blur(10px);
-border:1px solid rgba(255, 215, 0, 0.55);
-color:rgba(255,255,255,0.95);
-box-shadow:0 8px 18px rgba(0,0,0,0.25);
-transition:0.3s ease;
-}
-
-.hero-subtitle:hover{
-transform:translateY(-2px);
-border-color:#FFD700;
-}
-
-/* =========================
-   GALLERY TITLE
-========================= */
-.gallery-title{
-text-align:center;
-font-size:22px;
-font-weight:700;
-letter-spacing:3px;
-margin-top:25px;
-margin-bottom:10px;
-color:#0b3d91;
-position:relative;
-}
-
-.gallery-title::after{
-content:"";
-display:block;
-width:60px;
-height:3px;
-background:#0b3d91;
-margin:8px auto 0;
-border-radius:10px;
-transition:0.3s;
-}
-
-.gallery-title:hover::after{
-width:110px;
-}
-
-/* =========================
-   MENU + BOTTONI MIGLIORATI
-========================= */
-.menu{
-position:sticky;
-top:0;
-background:rgba(255,255,255,0.92);
-backdrop-filter: blur(14px);
-z-index:999;
-padding:14px 10px;
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
-border-bottom:1px solid rgba(0,90,180,0.12);
-}
-
-/* BOTTONI CARTELLE NUOVI */
-button{
-padding:8px 16px;
-border-radius:999px;
-border:2px solid #0b3d91;
-background:white;
-color:#0b3d91;
-cursor:pointer;
-font-weight:700;
-font-size:13px;
-letter-spacing:0.5px;
-transition:0.25s ease;
-box-shadow:0 2px 6px rgba(0,0,0,0.05);
-}
-
-/* HOVER */
-button:hover{
-background:#0b3d91;
-color:#FFD700;
-transform:translateY(-2px) scale(1.05);
-box-shadow:0 10px 20px rgba(11,61,145,0.25);
-}
-
-/* 🔥 CARTELLA ATTIVA */
-button.active{
-background:#FFD700;
-color:#0b3d91;
-border-color:#FFD700;
-box-shadow:0 0 18px rgba(255,215,0,0.6);
-transform:scale(1.05);
+@keyframes pulse{
+0%{box-shadow:0 0 0 0 rgba(255,215,0,0.5);}
+70%{box-shadow:0 0 0 10px rgba(255,215,0,0);}
+100%{box-shadow:0 0 0 0 rgba(255,215,0,0);}
 }
 
 /* =========================
@@ -733,7 +245,7 @@ color:white;
 cursor:pointer;
 }
 
-/* LOGIN */
+/* LOGIN MENU */
 #menuBtn{
 position:fixed;
 top:10px;
@@ -837,11 +349,9 @@ target="_blank">
 
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
 
-    <div class="hero-subtitle-box">
-      <p class="hero-subtitle">
-        Sport, emozione e ricordo.
-      </p>
-    </div>
+    <p class="hero-subtitle">
+      Sport, emozione e ricordo.
+    </p>
   </div>
 </header>
 
@@ -893,506 +403,15 @@ document.getElementById("loginBox").style.display === "block"
 }
 
 function login(){
-const pass = document.getElementById("pass").value;
-
-if(pass === "alessio2026"){
-isAdmin = true;
-document.getElementById("uploadBox").style.display = "block";
+const pass=document.getElementById("pass").value;
+if(pass==="alessio2026"){
+isAdmin=true;
+document.getElementById("uploadBox").style.display="block";
 render();
 }
 }
 
-function setFolder(f){
-currentFolder = f;
-render();
-
-/* 🔥 FIX: evidenzia bottone attivo */
-document.querySelectorAll(".menu button").forEach(btn=>{
-btn.classList.remove("active");
-if(btn.textContent.includes(f.replace("-","/"))){
-btn.classList.add("active");
-}
-});
-}
-
-function render(){
-const g = document.getElementById("gallery");
-g.innerHTML = "";
-
-db.collection("photos").where("tag","==",currentFolder).get()
-.then(snapshot=>{
-if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
-return;
-}
-
-let photos = [];
-snapshot.forEach(doc=>{
-photos.push({id:doc.id,...doc.data()});
-});
-
-photos.sort((a,b)=>b.time-a.time);
-
-g.innerHTML = `
-<div class="gallery-grid">
-${photos.map(p=>`
-<div class="photo-card">
-<img src="${p.url}" onclick="openImg('${p.url}')">
-${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>` : ""}
-</div>
-`).join("")}
-</div>`;
-});
-}
-
-function openImg(url){
-const m=document.createElement("div");
-m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
-m.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%">`;
-m.onclick=()=>m.remove();
-document.body.appendChild(m);
-}
-
-function deletePhoto(id){
-if(!isAdmin)return;
-db.collection("photos").doc(id).delete().then(render);
-}
-
-function uploadPhoto(){
-let scelta=document.getElementById("folderSelect").value;
-
-let widget=cloudinary.createUploadWidget({
-cloudName:"dagfasmlx",
-uploadPreset:"iv-memorial",
-folder:"iv-memorial/"+scelta
-},(err,res)=>{
-if(res&&res.event==="success"){
-db.collection("photos").add({
-url:res.info.secure_url,
-tag:scelta,
-time:Date.now()
-});
-render();
-}
-});
-
-widget.open();
-}
-
-render();
-
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8">
-<title>IV Memorial Rocco Tuscano</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#f5f7fb;
-color:#1b1b1b;
-}
-
-/* =========================
-   HERO
-========================= */
-header{
-height:90vh;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-position:relative;
-background:url("https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg")
-center/cover no-repeat;
-overflow:hidden;
-}
-
-header::before{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(
-180deg,
-rgba(0,40,90,0.65),
-rgba(0,0,0,0.55)
-);
-}
-
-.hero-text{
-position:relative;
-z-index:2;
-padding:20px;
-animation: fadeUp 0.9s ease;
-}
-
-@keyframes fadeUp{
-from{opacity:0; transform:translateY(18px);}
-to{opacity:1; transform:translateY(0);}
-}
-
-.hero-badge{
-display:inline-block;
-padding:6px 14px;
-border-radius:999px;
-font-size:12px;
-letter-spacing:2px;
-font-weight:700;
-color:#0b3d91;
-background:rgba(255,255,255,0.9);
-margin-bottom:14px;
-}
-
-/* TITLE */
-.hero-text h1{
-font-size:68px;
-color:#FFD700;
-margin:0;
-letter-spacing:3px;
-text-transform:uppercase;
-text-shadow:0 10px 30px rgba(0,0,0,0.6);
-}
-
-/* LINEA SOTTO TITOLO */
-.hero-text h1::after{
-content:"";
-display:block;
-width:120px;
-height:3px;
-background:#FFD700;
-margin:14px auto 0;
-border-radius:10px;
-transition:0.3s;
-}
-
-.hero-text h1:hover::after{
-width:160px;
-}
-
-/* =========================
-   SUBTITLE BOX MIGLIORATO
-========================= */
-.hero-subtitle-box{
-display:flex;
-justify-content:center;
-margin-top:18px;
-}
-
-.hero-subtitle{
-display:inline-block;
-padding:10px 18px;
-border-radius:999px;
-font-size:16px;
-font-weight:500;
-letter-spacing:1px;
-
-background:rgba(11, 61, 145, 0.18);
-backdrop-filter: blur(10px);
-
-border:1px solid rgba(255, 215, 0, 0.55);
-
-color:rgba(255,255,255,0.95);
-text-align:center;
-
-box-shadow:0 8px 18px rgba(0,0,0,0.25);
-transition:0.3s ease;
-}
-
-.hero-subtitle:hover{
-transform:translateY(-2px);
-border-color:#FFD700;
-box-shadow:0 12px 26px rgba(0,0,0,0.35);
-}
-
-/* =========================
-   GALLERY TITLE
-========================= */
-.gallery-title{
-text-align:center;
-font-size:22px;
-font-weight:700;
-letter-spacing:3px;
-margin-top:25px;
-margin-bottom:10px;
-color:#0b3d91;
-position:relative;
-}
-
-.gallery-title::after{
-content:"";
-display:block;
-width:60px;
-height:3px;
-background:#0b3d91;
-margin:8px auto 0;
-border-radius:10px;
-transition:0.3s;
-}
-
-.gallery-title:hover::after{
-width:110px;
-}
-
-/* =========================
-   MENU
-========================= */
-.menu{
-position:sticky;
-top:0;
-background:rgba(255,255,255,0.92);
-backdrop-filter: blur(14px);
-z-index:999;
-padding:14px 10px;
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
-border-bottom:1px solid rgba(0,90,180,0.12);
-}
-
-button{
-padding:8px 14px;
-border-radius:999px;
-border:2px solid #0b3d91;
-background:white;
-color:#0b3d91;
-cursor:pointer;
-font-weight:700;
-font-size:13px;
-transition:0.25s;
-}
-
-button:hover{
-background:#0b3d91;
-color:#FFD700;
-transform:translateY(-2px) scale(1.05);
-}
-
-/* =========================
-   GALLERIA
-========================= */
-.gallery-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
-gap:14px;
-padding:20px;
-}
-
-.photo-card{
-background:white;
-border-radius:14px;
-overflow:hidden;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
-transition:0.3s;
-position:relative;
-}
-
-.photo-card img{
-width:100%;
-height:230px;
-object-fit:cover;
-cursor:pointer;
-}
-
-.photo-card:hover{
-transform:translateY(-5px);
-}
-
-/* DELETE */
-.delete-btn{
-position:absolute;
-top:8px;
-right:8px;
-padding:6px 8px;
-font-size:12px;
-border:none;
-border-radius:8px;
-background:#e74c3c;
-color:white;
-cursor:pointer;
-}
-
-/* =========================
-   LOGIN MENU
-========================= */
-#menuBtn{
-position:fixed;
-top:10px;
-left:10px;
-z-index:2000;
-padding:10px 14px;
-background:#0b3d91;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
-
-#loginBox{
-position:fixed;
-top:55px;
-left:10px;
-z-index:2000;
-background:white;
-padding:10px;
-border-radius:10px;
-display:none;
-width:160px;
-box-shadow:0 6px 20px rgba(0,0,0,0.15);
-}
-
-#loginBox input{
-width:100%;
-padding:6px;
-border:1px solid #ddd;
-border-radius:6px;
-margin-bottom:6px;
-}
-
-#loginBox button{
-width:100%;
-padding:6px;
-border:none;
-border-radius:6px;
-background:#0b3d91;
-color:white;
-font-weight:600;
-}
-
-/* PH ALESSIO */
-.ig-fotografo{
-position:fixed;
-top:12px;
-right:12px;
-z-index:3000;
-background:#0b3d91;
-color:white;
-padding:10px 14px;
-border-radius:999px;
-text-decoration:none;
-font-size:13px;
-font-weight:600;
-}
-
-</style>
-</head>
-
-<body>
-
-<a class="ig-fotografo"
-href="https://www.instagram.com/alessio__orlando"
-target="_blank">
-📸 PH Alessio Orlando
-</a>
-
-<button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
-
-<div id="loginBox">
-<input type="password" id="pass" placeholder="Password">
-<button onclick="login()">Accedi</button>
-
-<div id="uploadBox" style="display:none;margin-top:6px;">
-<select id="folderSelect" style="width:100%">
-<option value="08-06">08/06</option>
-<option value="09-06">09/06</option>
-<option value="10-06">10/06</option>
-<option value="11-06">11/06</option>
-<option value="12-06">12/06</option>
-<option value="13-06">13/06</option>
-<option value="15-06">15/06</option>
-<option value="16-06">16/06</option>
-<option value="17-06">17/06</option>
-<option value="ottavi">OTTAVI</option>
-<option value="quarti">QUARTI</option>
-<option value="semifinale">SEMIFINALE</option>
-<option value="finale">FINALE</option>
-</select>
-
-<button onclick="uploadPhoto()">📸 Carica</button>
-</div>
-</div>
-
-<header>
-  <div class="hero-text">
-    <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
-
-    <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-
-    <div class="hero-subtitle-box">
-      <p class="hero-subtitle">
-        Sport, emozione e ricordo.
-      </p>
-    </div>
-
-  </div>
-</header>
-
-<div class="gallery-title">GALLERY</div>
-
-<div class="menu">
-<button onclick="setFolder('08-06')">08/06</button>
-<button onclick="setFolder('09-06')">09/06</button>
-<button onclick="setFolder('10-06')">10/06</button>
-<button onclick="setFolder('11-06')">11/06</button>
-<button onclick="setFolder('12-06')">12/06</button>
-<button onclick="setFolder('13-06')">13/06</button>
-<button onclick="setFolder('15-06')">15/06</button>
-<button onclick="setFolder('16-06')">16/06</button>
-<button onclick="setFolder('17-06')">17/06</button>
-<button onclick="setFolder('ottavi')">OTTAVI</button>
-<button onclick="setFolder('quarti')">QUARTI</button>
-<button onclick="setFolder('semifinale')">SEMIFINALE</button>
-<button onclick="setFolder('finale')">FINALE</button>
-</div>
-
-<div id="gallery"></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
-
-<script>
-
-const firebaseConfig = {
-apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
-authDomain: "memorial-rocco-tuscano.firebaseapp.com",
-projectId: "memorial-rocco-tuscano",
-storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
-messagingSenderId: "72206140774",
-appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-let currentFolder = "08-06";
-let isAdmin = false;
-
-function toggleLogin(){
-document.getElementById("loginBox").style.display =
-document.getElementById("loginBox").style.display === "block"
-? "none" : "block";
-}
-
-function login(){
-const pass = document.getElementById("pass").value;
-
-if(pass === "alessio2026"){
-isAdmin = true;
-document.getElementById("uploadBox").style.display = "block";
-render();
-}
-}
-
-/* ENTER TO LOGIN */
+/* ENTER LOGIN */
 document.getElementById("pass").addEventListener("keydown", function(e){
 if(e.key === "Enter"){
 login();
@@ -1400,34 +419,43 @@ login();
 });
 
 function setFolder(f){
-currentFolder = f;
+currentFolder=f;
+
+/* ACTIVE BUTTON */
+document.querySelectorAll(".menu button").forEach(btn=>{
+btn.classList.remove("active");
+if(btn.textContent.includes(f.replace("-","/"))){
+btn.classList.add("active");
+}
+});
+
 render();
 }
 
 function render(){
-const g = document.getElementById("gallery");
-g.innerHTML = "";
+const g=document.getElementById("gallery");
+g.innerHTML="";
 
 db.collection("photos").where("tag","==",currentFolder).get()
 .then(snapshot=>{
 if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
+g.innerHTML="<p style='text-align:center'>Nessuna foto</p>";
 return;
 }
 
-let photos = [];
+let photos=[];
 snapshot.forEach(doc=>{
 photos.push({id:doc.id,...doc.data()});
 });
 
 photos.sort((a,b)=>b.time-a.time);
 
-g.innerHTML = `
+g.innerHTML=`
 <div class="gallery-grid">
 ${photos.map(p=>`
 <div class="photo-card">
 <img src="${p.url}" onclick="openImg('${p.url}')">
-${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>` : ""}
+${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>`:""}
 </div>
 `).join("")}
 </div>`;
@@ -1435,7 +463,7 @@ ${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</b
 }
 
 function openImg(url){
-const m = document.createElement("div");
+const m=document.createElement("div");
 m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
 m.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%">`;
 m.onclick=()=>m.remove();
@@ -1443,23 +471,23 @@ document.body.appendChild(m);
 }
 
 function deletePhoto(id){
-if(!isAdmin) return;
+if(!isAdmin)return;
 db.collection("photos").doc(id).delete().then(render);
 }
 
 function uploadPhoto(){
-let scelta = document.getElementById("folderSelect").value;
+let scelta=document.getElementById("folderSelect").value;
 
-let widget = cloudinary.createUploadWidget({
-cloudName: "dagfasmlx",
-uploadPreset: "iv-memorial",
-folder: "iv-memorial/" + scelta
-}, (err, res) => {
-if (res && res.event === "success") {
+let widget=cloudinary.createUploadWidget({
+cloudName:"dagfasmlx",
+uploadPreset:"iv-memorial",
+folder:"iv-memorial/"+scelta
+},(err,res)=>{
+if(res&&res.event==="success"){
 db.collection("photos").add({
-url: res.info.secure_url,
-tag: scelta,
-time: Date.now()
+url:res.info.secure_url,
+tag:scelta,
+time:Date.now()
 });
 render();
 }
