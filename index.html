@@ -129,7 +129,7 @@ width:110px;
 }
 
 /* =========================
-   MENU + BOTTONI CARTELLE (MIGLIORATI)
+   MENU + BOTTONI CARTELLE
 ========================= */
 .menu{
 position:sticky;
@@ -146,7 +146,6 @@ box-shadow:0 8px 25px rgba(0,0,0,0.08);
 border-bottom:1px solid rgba(0,90,180,0.12);
 }
 
-/* BOTTONI CARTELLE */
 button{
 padding:9px 16px;
 border-radius:999px;
@@ -156,11 +155,7 @@ color:#0b3d91;
 cursor:pointer;
 font-weight:700;
 font-size:13px;
-letter-spacing:0.4px;
 transition:0.25s ease;
-box-shadow:0 2px 8px rgba(0,0,0,0.05);
-position:relative;
-overflow:hidden;
 }
 
 /* hover */
@@ -168,37 +163,13 @@ button:hover{
 background:#0b3d91;
 color:#FFD700;
 transform:translateY(-2px) scale(1.06);
-box-shadow:0 10px 20px rgba(11,61,145,0.25);
 }
 
-/* CLICK EFFECT */
-button:active{
-transform:scale(0.96);
-}
-
-/* CARTELLA SELEZIONATA (ATTIVA) */
+/* active */
 button.active{
 background:#FFD700;
 color:#0b3d91;
 border-color:#FFD700;
-box-shadow:0 10px 22px rgba(255,215,0,0.35);
-transform:translateY(-2px);
-}
-
-/* piccolo glow animato quando attiva */
-button.active::after{
-content:"";
-position:absolute;
-inset:0;
-border-radius:999px;
-box-shadow:0 0 0 0 rgba(255,215,0,0.6);
-animation:pulse 1.6s infinite;
-}
-
-@keyframes pulse{
-0%{box-shadow:0 0 0 0 rgba(255,215,0,0.5);}
-70%{box-shadow:0 0 0 10px rgba(255,215,0,0);}
-100%{box-shadow:0 0 0 0 rgba(255,215,0,0);}
 }
 
 /* =========================
@@ -227,10 +198,6 @@ object-fit:cover;
 cursor:pointer;
 }
 
-.photo-card:hover{
-transform:translateY(-5px);
-}
-
 /* DELETE */
 .delete-btn{
 position:absolute;
@@ -245,7 +212,7 @@ color:white;
 cursor:pointer;
 }
 
-/* LOGIN MENU */
+/* LOGIN */
 #menuBtn{
 position:fixed;
 top:10px;
@@ -280,14 +247,25 @@ border-radius:6px;
 margin-bottom:6px;
 }
 
-#loginBox button{
-width:100%;
-padding:6px;
-border:none;
-border-radius:6px;
-background:#0b3d91;
-color:white;
-font-weight:600;
+/* =========================
+   🔥 OVERLAY FOTO FULLSCREEN
+========================= */
+.img-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.95);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
+cursor:pointer;
+}
+
+.img-overlay img{
+max-width:95%;
+max-height:95%;
+box-shadow:0 10px 40px rgba(0,0,0,0.6);
+border-radius:8px;
 }
 
 /* PH ALESSIO */
@@ -413,24 +391,46 @@ render();
 
 /* ENTER LOGIN */
 document.getElementById("pass").addEventListener("keydown", function(e){
-if(e.key === "Enter"){
-login();
-}
+if(e.key==="Enter") login();
 });
 
 function setFolder(f){
 currentFolder=f;
 
-/* ACTIVE BUTTON */
-document.querySelectorAll(".menu button").forEach(btn=>{
-btn.classList.remove("active");
-if(btn.textContent.includes(f.replace("-","/"))){
-btn.classList.add("active");
+document.querySelectorAll(".menu button").forEach(b=>{
+b.classList.remove("active");
+if(b.textContent.includes(f.replace("-","/"))){
+b.classList.add("active");
 }
 });
 
 render();
 }
+
+/* =========================
+   🔥 FULLSCREEN IMAGE FIX
+========================= */
+function openImg(url){
+const overlay=document.createElement("div");
+overlay.className="img-overlay";
+
+overlay.innerHTML=`<img src="${url}" />`;
+
+overlay.onclick=()=>overlay.remove();
+
+document.body.appendChild(overlay);
+
+/* blocca scroll e nasconde tutto sotto */
+document.body.style.overflow="hidden";
+}
+
+document.addEventListener("click", function(e){
+const o=document.querySelector(".img-overlay");
+if(o && e.target===o){
+o.remove();
+document.body.style.overflow="auto";
+}
+});
 
 function render(){
 const g=document.getElementById("gallery");
@@ -460,14 +460,6 @@ ${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</but
 `).join("")}
 </div>`;
 });
-}
-
-function openImg(url){
-const m=document.createElement("div");
-m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
-m.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%">`;
-m.onclick=()=>m.remove();
-document.body.appendChild(m);
 }
 
 function deletePhoto(id){
