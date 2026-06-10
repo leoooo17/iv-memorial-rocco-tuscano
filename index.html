@@ -64,7 +64,14 @@ background:rgba(255,255,255,0.9);
 margin-bottom:14px;
 }
 
-/* TITLE */
+/* =========================
+   TITOLONE + LINEA
+========================= */
+.hero-title-wrapper{
+display:inline-block;
+position:relative;
+}
+
 .hero-text h1{
 font-size:68px;
 color:#FFD700;
@@ -72,8 +79,26 @@ margin:0;
 letter-spacing:3px;
 text-transform:uppercase;
 text-shadow:0 10px 30px rgba(0,0,0,0.6);
+line-height:1.05;
 }
 
+/* LINEA SOTTO TITOLO (NUOVA) */
+.hero-title-wrapper::after{
+content:"";
+display:block;
+width:45px; /* più piccola della GALLERY */
+height:3px;
+background:#FFD700;
+margin:12px auto 0;
+border-radius:10px;
+transition:0.3s;
+}
+
+.hero-title-wrapper:hover::after{
+width:80px;
+}
+
+/* SUBTITLE */
 .hero-subtitle{
 color:rgba(255,255,255,0.92);
 max-width:780px;
@@ -112,7 +137,7 @@ width:110px;
 }
 
 /* =========================
-   MENU (NUOVO LAYOUT)
+   MENU
 ========================= */
 .menu{
 position:sticky;
@@ -129,7 +154,6 @@ box-shadow:0 8px 25px rgba(0,0,0,0.08);
 border-bottom:1px solid rgba(0,90,180,0.12);
 }
 
-/* BOTTONI CARTELLE */
 button{
 padding:8px 14px;
 border-radius:999px;
@@ -139,12 +163,9 @@ color:#0b3d91;
 cursor:pointer;
 font-weight:700;
 font-size:13px;
-letter-spacing:0.5px;
 transition:0.25s;
-box-shadow:0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* HOVER */
 button:hover{
 background:#0b3d91;
 color:#FFD700;
@@ -152,7 +173,6 @@ transform:translateY(-2px) scale(1.05);
 box-shadow:0 10px 20px rgba(11,61,145,0.25);
 }
 
-/* CARTELLA ATTIVA */
 button.active{
 background:#FFD700;
 color:#0b3d91;
@@ -190,7 +210,6 @@ cursor:pointer;
 transform:translateY(-5px);
 }
 
-/* DELETE */
 .delete-btn{
 position:absolute;
 top:8px;
@@ -305,10 +324,14 @@ target="_blank">
 <header>
   <div class="hero-text">
     <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
-    <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
+
+    <div class="hero-title-wrapper">
+      <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
+    </div>
+
     <p class="hero-subtitle">
-      Il IV Memorial Rocco Tuscano è più di un torneo: è competizione, emozione e ricordo.  
-      <br>Ogni gara è un momento unico,ogni foto un istante da rivivere.
+      Il IV Memorial Rocco Tuscano è più di un torneo: è competizione, emozione e ricordo.<br>
+      Ogni gara è un momento unico, ogni foto un istante da rivivere.
     </p>
   </div>
 </header>
@@ -338,7 +361,6 @@ target="_blank">
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 <script>
-
 const firebaseConfig = {
 apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
 authDomain: "memorial-rocco-tuscano.firebaseapp.com",
@@ -448,7 +470,6 @@ widget.open();
 }
 
 render();
-
 </script>
 
 </body>
