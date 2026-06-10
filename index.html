@@ -192,11 +192,10 @@ cursor:pointer;
 }
 
 /* =========================
-   INSTAGRAM + PH SIGNATURE
+   INSTAGRAM FOTOGRAFO
    ========================= */
 
-/* Instagram torneo (top right) */
-.ig-torneo{
+.ig-fotografo{
 position:fixed;
 top:12px;
 right:12px;
@@ -212,12 +211,12 @@ backdrop-filter: blur(10px);
 transition:0.3s;
 }
 
-.ig-torneo:hover{
+.ig-fotografo:hover{
 background:#E1306C;
 transform:translateY(-2px);
 }
 
-/* PH fotografo (bottom right) */
+/* PH SIGNATURE */
 .ph-signature{
 position:fixed;
 bottom:12px;
@@ -246,19 +245,17 @@ background:rgba(0,0,0,0.8);
 
 <body>
 
-<!-- INSTAGRAM TORNEO -->
-<a class="ig-torneo"
-   href="https://www.instagram.com/torneo_bovamarina2026?igsh=c3VhanNwd3d3cTlq"
+<!-- INSTAGRAM FOTOGRAFO (SOLO QUESTO) -->
+<a class="ig-fotografo"
+   href="https://www.instagram.com/alessio__orlando?igsh=MWZpcmFramlnMjU2OQ=="
    target="_blank">
-📲 Instagram Torneo
+📷 Instagram Fotografo
 </a>
 
 <!-- PH FOTOGRAFO -->
-<a class="ph-signature"
-   href="https://www.instagram.com/alessio__orlando?igsh=MWZpcmFramlnMjU2OQ=="
-   target="_blank">
+<div class="ph-signature">
 📸 PH Alessio Orlando
-</a>
+</div>
 
 <!-- MENU BUTTON -->
 <button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
