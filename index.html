@@ -74,13 +74,11 @@ text-transform:uppercase;
 text-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
 
-/* =========================
-   LINEA SOTTO TITOLO (AGGIORNATA)
-========================= */
+/* LINEA SOTTO TITOLO */
 .hero-text h1::after{
 content:"";
 display:block;
-width:120px;   /* 🔥 più lunga */
+width:120px;
 height:3px;
 background:#FFD700;
 margin:14px auto 0;
@@ -88,18 +86,42 @@ border-radius:10px;
 transition:0.3s;
 }
 
-/* hover leggero */
 .hero-text h1:hover::after{
 width:160px;
 }
 
-/* SUBTITLE */
+/* =========================
+   SUBTITLE (NUOVO STILE)
+========================= */
 .hero-subtitle{
 color:rgba(255,255,255,0.92);
 max-width:780px;
 margin:18px auto 0;
 line-height:1.6;
 font-size:18px;
+}
+
+/* pill elegante */
+.highlight-subtitle{
+display:inline-block;
+padding:10px 18px;
+border-radius:999px;
+border:1px solid rgba(255, 215, 0, 0.6);
+background:rgba(255, 255, 255, 0.08);
+backdrop-filter: blur(6px);
+color:rgba(255,255,255,0.92);
+font-size:18px;
+font-weight:500;
+letter-spacing:1px;
+margin-top:18px;
+box-shadow:0 6px 18px rgba(0,0,0,0.25);
+transition:0.3s ease;
+}
+
+.highlight-subtitle:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+border-color:#FFD700;
 }
 
 /* =========================
@@ -158,27 +180,24 @@ color:#0b3d91;
 cursor:pointer;
 font-weight:700;
 font-size:13px;
-letter-spacing:0.5px;
 transition:0.25s;
-box-shadow:0 2px 6px rgba(0,0,0,0.05);
 }
 
 button:hover{
 background:#0b3d91;
 color:#FFD700;
 transform:translateY(-2px) scale(1.05);
-box-shadow:0 10px 20px rgba(11,61,145,0.25);
 }
 
+/* ACTIVE */
 button.active{
 background:#FFD700;
 color:#0b3d91;
 border-color:#FFD700;
-box-shadow:0 10px 20px rgba(255,213,79,0.35);
 }
 
 /* =========================
-   GALLERIA
+   GALLERY
 ========================= */
 .gallery-grid{
 display:grid;
@@ -188,12 +207,12 @@ padding:20px;
 }
 
 .photo-card{
-position:relative;
 background:white;
 border-radius:14px;
 overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.08);
 transition:0.3s;
+position:relative;
 }
 
 .photo-card img{
@@ -325,10 +344,8 @@ target="_blank">
 
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
 
-    <p class="hero-subtitle">
-      Il IV Memorial Rocco Tuscano è più di un torneo: è competizione, emozione e ricordo.<br>
-      Ogni gara è un momento unico,<br>
-      ogni foto un istante da rivivere.
+    <p class="hero-subtitle highlight-subtitle">
+      Sport, emozione e ricordo.
     </p>
   </div>
 </header>
@@ -358,7 +375,6 @@ target="_blank">
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 <script>
-
 const firebaseConfig = {
 apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
 authDomain: "memorial-rocco-tuscano.firebaseapp.com",
@@ -391,14 +407,6 @@ render();
 
 function setFolder(f){
 currentFolder=f;
-
-document.querySelectorAll(".menu button").forEach(btn=>{
-btn.classList.remove("active");
-if(btn.textContent.includes(f.replace("-","/"))){
-btn.classList.add("active");
-}
-});
-
 render();
 }
 
@@ -467,7 +475,6 @@ widget.open();
 }
 
 render();
-
 </script>
 
 </body>
