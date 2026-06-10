@@ -113,13 +113,6 @@ font-weight:500;
 letter-spacing:1px;
 margin-top:18px;
 box-shadow:0 6px 18px rgba(0,0,0,0.25);
-transition:0.3s ease;
-}
-
-.highlight-subtitle:hover{
-transform:translateY(-2px);
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-border-color:#FFD700;
 }
 
 /* =========================
@@ -237,7 +230,7 @@ color:white;
 cursor:pointer;
 }
 
-/* LOGIN */
+/* LOGIN BUTTON */
 #menuBtn{
 position:fixed;
 top:10px;
@@ -251,37 +244,40 @@ border-radius:10px;
 cursor:pointer;
 }
 
+/* 🔥 LOGIN BOX PIÙ COMPATTO */
 #loginBox{
 position:fixed;
 top:55px;
 left:10px;
 z-index:2000;
 background:white;
-padding:10px;
+padding:6px;
 border-radius:10px;
 display:none;
-width:160px;
+width:130px;   /* 🔥 più stretto */
 box-shadow:0 6px 20px rgba(0,0,0,0.15);
 }
 
-/* 🔧 INPUT PIÙ PICCOLO */
+/* INPUT PIÙ COMPATTO */
 #loginBox input{
 width:100%;
-padding:5px;
+padding:4px;
 border:1px solid #ddd;
 border-radius:6px;
 margin-bottom:6px;
-font-size:12px;
+font-size:11px;
 }
 
+/* BOTTONE LOGIN PIÙ PICCOLO */
 #loginBox button{
 width:100%;
-padding:6px;
+padding:5px;
 border:none;
 border-radius:6px;
 background:#0b3d91;
 color:white;
 font-weight:600;
+font-size:12px;
 }
 
 /* PH ALESSIO */
@@ -440,13 +436,6 @@ document.getElementById("uploadBox").style.display="block";
 render();
 }
 }
-
-/* ENTER LOGIN */
-document.getElementById("pass").addEventListener("keydown", function(event){
-if(event.key === "Enter"){
-login();
-}
-});
 
 function setFolder(f){
 currentFolder=f;
