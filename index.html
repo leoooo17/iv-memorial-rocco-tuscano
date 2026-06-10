@@ -195,7 +195,6 @@ object-fit:cover;
 cursor:pointer;
 }
 
-/* DELETE */
 .delete-btn{
 position:absolute;
 top:8px;
@@ -277,13 +276,39 @@ font-size:13px;
 font-weight:600;
 }
 
-/* 🔥 EMPTY STATE */
-.empty-state{
-text-align:center;
-padding:40px 20px;
-font-size:16px;
-color:#0b3d91;
-font-weight:600;
+/* =========================
+   RESPONSIVE HERO TITLE
+========================= */
+
+@media (max-width: 900px){
+.hero-text h1{
+font-size:48px;
+letter-spacing:2px;
+}
+}
+
+@media (max-width: 600px){
+.hero-text h1{
+font-size:34px;
+letter-spacing:1.5px;
+line-height:1.2;
+}
+
+.hero-subtitle{
+font-size:15px;
+padding:0 10px;
+}
+
+.hero-badge{
+font-size:11px;
+padding:5px 12px;
+}
+}
+
+@media (max-width: 400px){
+.hero-text h1{
+font-size:28px;
+}
 }
 
 </style>
@@ -327,8 +352,12 @@ target="_blank">
 <header>
   <div class="hero-text">
     <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
+
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-    <p class="hero-subtitle">Sport, emozione e ricordo.</p>
+
+    <p class="hero-subtitle">
+      Sport, emozione e ricordo.
+    </p>
   </div>
 </header>
 
@@ -370,7 +399,7 @@ appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let currentFolder = null;   // 🔥 MODIFICA IMPORTANTE
+let currentFolder = "08-06";
 let isAdmin = false;
 
 function toggleLogin(){
@@ -388,7 +417,7 @@ render();
 }
 }
 
-document.getElementById("pass").addEventListener("keydown", e=>{
+document.getElementById("pass").addEventListener("keydown", function(e){
 if(e.key==="Enter") login();
 });
 
@@ -405,16 +434,9 @@ b.classList.add("active");
 render();
 }
 
-/* 🔥 BLOCCO: niente foto se non selezioni cartella */
 function render(){
-
 const g=document.getElementById("gallery");
 g.innerHTML="";
-
-if(!currentFolder){
-g.innerHTML="<div class='empty-state'>📁 Seleziona una cartella per visualizzare le foto</div>";
-return;
-}
 
 db.collection("photos").where("tag","==",currentFolder).get()
 .then(snapshot=>{
