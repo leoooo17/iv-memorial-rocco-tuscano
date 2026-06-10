@@ -74,31 +74,6 @@ text-transform:uppercase;
 text-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
 
-/* LINEA SOTTO TITOLO */
-.hero-text h1::after{
-content:"";
-display:block;
-width:120px;
-height:3px;
-background:#FFD700;
-margin:14px auto 0;
-border-radius:10px;
-transition:0.3s;
-}
-
-.hero-text h1:hover::after{
-width:160px;
-}
-
-/* SUBTITLE */
-.hero-subtitle{
-color:rgba(255,255,255,0.92);
-max-width:780px;
-margin:18px auto 0;
-line-height:1.6;
-font-size:18px;
-}
-
 /* =========================
    GALLERY TITLE
 ========================= */
@@ -110,22 +85,6 @@ letter-spacing:3px;
 margin-top:25px;
 margin-bottom:10px;
 color:#0b3d91;
-position:relative;
-}
-
-.gallery-title::after{
-content:"";
-display:block;
-width:60px;
-height:3px;
-background:#0b3d91;
-margin:8px auto 0;
-border-radius:10px;
-transition:0.3s;
-}
-
-.gallery-title:hover::after{
-width:110px;
 }
 
 /* =========================
@@ -142,8 +101,6 @@ display:flex;
 flex-wrap:wrap;
 justify-content:center;
 gap:10px;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
-border-bottom:1px solid rgba(0,90,180,0.12);
 }
 
 button{
@@ -155,26 +112,20 @@ color:#0b3d91;
 cursor:pointer;
 font-weight:700;
 font-size:13px;
-transition:0.25s ease;
 }
 
-/* hover */
 button:hover{
 background:#0b3d91;
 color:#FFD700;
-transform:translateY(-2px) scale(1.06);
 }
 
-/* active */
 button.active{
 background:#FFD700;
 color:#0b3d91;
 border-color:#FFD700;
 }
 
-/* =========================
-   GALLERIA
-========================= */
+/* GALLERY */
 .gallery-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
@@ -187,7 +138,6 @@ background:white;
 border-radius:14px;
 overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.08);
-transition:0.3s;
 position:relative;
 }
 
@@ -198,18 +148,13 @@ object-fit:cover;
 cursor:pointer;
 }
 
-/* DELETE */
-.delete-btn{
-position:absolute;
-top:8px;
-right:8px;
-padding:6px 8px;
-font-size:12px;
-border:none;
-border-radius:8px;
-background:#e74c3c;
-color:white;
-cursor:pointer;
+/* EMPTY STATE */
+#emptyState{
+text-align:center;
+padding:40px;
+font-size:18px;
+color:#0b3d91;
+font-weight:600;
 }
 
 /* LOGIN */
@@ -247,9 +192,7 @@ border-radius:6px;
 margin-bottom:6px;
 }
 
-/* =========================
-   🔥 OVERLAY FOTO FULLSCREEN
-========================= */
+/* FULLSCREEN */
 .img-overlay{
 position:fixed;
 inset:0;
@@ -264,11 +207,9 @@ cursor:pointer;
 .img-overlay img{
 max-width:95%;
 max-height:95%;
-box-shadow:0 10px 40px rgba(0,0,0,0.6);
-border-radius:8px;
 }
 
-/* PH ALESSIO */
+/* IG */
 .ig-fotografo{
 position:fixed;
 top:12px;
@@ -324,12 +265,7 @@ target="_blank">
 <header>
   <div class="hero-text">
     <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
-
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-
-    <p class="hero-subtitle">
-      Sport, emozione e ricordo.
-    </p>
   </div>
 </header>
 
@@ -349,6 +285,10 @@ target="_blank">
 <button onclick="setFolder('quarti')">QUARTI</button>
 <button onclick="setFolder('semifinale')">SEMIFINALE</button>
 <button onclick="setFolder('finale')">FINALE</button>
+</div>
+
+<div id="emptyState">
+📁 Seleziona una cartella per visualizzare le foto
 </div>
 
 <div id="gallery"></div>
@@ -371,7 +311,7 @@ appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let currentFolder = "08-06";
+let currentFolder = "";
 let isAdmin = false;
 
 function toggleLogin(){
@@ -397,6 +337,8 @@ if(e.key==="Enter") login();
 function setFolder(f){
 currentFolder=f;
 
+document.getElementById("emptyState").style.display="none";
+
 document.querySelectorAll(".menu button").forEach(b=>{
 b.classList.remove("active");
 if(b.textContent.includes(f.replace("-","/"))){
@@ -407,37 +349,19 @@ b.classList.add("active");
 render();
 }
 
-/* =========================
-   🔥 FULLSCREEN IMAGE FIX
-========================= */
-function openImg(url){
-const overlay=document.createElement("div");
-overlay.className="img-overlay";
-
-overlay.innerHTML=`<img src="${url}" />`;
-
-overlay.onclick=()=>overlay.remove();
-
-document.body.appendChild(overlay);
-
-/* blocca scroll e nasconde tutto sotto */
-document.body.style.overflow="hidden";
-}
-
-document.addEventListener("click", function(e){
-const o=document.querySelector(".img-overlay");
-if(o && e.target===o){
-o.remove();
-document.body.style.overflow="auto";
-}
-});
-
 function render(){
 const g=document.getElementById("gallery");
 g.innerHTML="";
 
+/* 🔥 NESSUNA CARTELLA SELEZIONATA */
+if(currentFolder===""){
+document.getElementById("emptyState").style.display="block";
+return;
+}
+
 db.collection("photos").where("tag","==",currentFolder).get()
 .then(snapshot=>{
+
 if(snapshot.empty){
 g.innerHTML="<p style='text-align:center'>Nessuna foto</p>";
 return;
@@ -455,37 +379,18 @@ g.innerHTML=`
 ${photos.map(p=>`
 <div class="photo-card">
 <img src="${p.url}" onclick="openImg('${p.url}')">
-${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>`:""}
 </div>
 `).join("")}
 </div>`;
 });
 }
 
-function deletePhoto(id){
-if(!isAdmin)return;
-db.collection("photos").doc(id).delete().then(render);
-}
-
-function uploadPhoto(){
-let scelta=document.getElementById("folderSelect").value;
-
-let widget=cloudinary.createUploadWidget({
-cloudName:"dagfasmlx",
-uploadPreset:"iv-memorial",
-folder:"iv-memorial/"+scelta
-},(err,res)=>{
-if(res&&res.event==="success"){
-db.collection("photos").add({
-url:res.info.secure_url,
-tag:scelta,
-time:Date.now()
-});
-render();
-}
-});
-
-widget.open();
+function openImg(url){
+const o=document.createElement("div");
+o.className="img-overlay";
+o.innerHTML=`<img src="${url}">`;
+o.onclick=()=>o.remove();
+document.body.appendChild(o);
 }
 
 render();
