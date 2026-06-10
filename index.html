@@ -89,7 +89,7 @@ text-shadow:0 6px 18px rgba(0,0,0,0.5);
 }
 
 /* =========================
-   GALLERY TITLE (AGGIORNATO ORO)
+   GALLERY TITLE (BLU)
 ========================= */
 .gallery-title{
 text-align:center;
@@ -98,26 +98,24 @@ font-weight:700;
 letter-spacing:3px;
 margin-top:25px;
 margin-bottom:10px;
-color:#FFD700; /* 🔥 ORA ORO */
+color:#0b3d91; /* 🔵 blu menu */
 position:relative;
 }
 
-/* linea sotto stessa identica colorazione */
 .gallery-title::after{
 content:"";
 display:block;
 width:60px;
 height:3px;
-background:#FFD700; /* 🔥 ORA ORO */
+background:#0b3d91; /* 🔵 blu */
 margin:8px auto 0;
 border-radius:10px;
 transition:0.3s;
 }
 
-/* hover leggero ma coerente */
 .gallery-title:hover::after{
 width:110px;
-filter:brightness(1.1);
+background:#0b3d91;
 }
 
 /* =========================
@@ -138,22 +136,24 @@ box-shadow:0 8px 25px rgba(0,0,0,0.08);
 border-bottom:1px solid rgba(0,90,180,0.15);
 }
 
+/* 🟡 BOTTONI CARTELLE */
 button{
 padding:10px 16px;
 border-radius:999px;
-border:1px solid rgba(0,90,180,0.15);
+border:1px solid rgba(255,213,79,0.6);
 background:white;
-color:#0b3d91;
+color:#FFD700; /* giallo titolo */
 cursor:pointer;
 font-weight:600;
 transition:0.25s;
 }
 
+/* 🟡 HOVER CARTELLE */
 button:hover{
-background:#0b3d91;
-color:white;
+background:#FFD700;
+color:#0b3d91;
 transform:translateY(-3px);
-box-shadow:0 8px 20px rgba(11,61,145,0.25);
+box-shadow:0 8px 20px rgba(255,213,79,0.35);
 }
 
 /* =========================
@@ -372,44 +372,43 @@ document.getElementById("loginBox").style.display === "block"
 }
 
 function login(){
-const pass = document.getElementById("pass").value;
-
-if(pass === "alessio2026"){
-isAdmin = true;
-document.getElementById("uploadBox").style.display = "block";
+const pass=document.getElementById("pass").value;
+if(pass==="alessio2026"){
+isAdmin=true;
+document.getElementById("uploadBox").style.display="block";
 render();
 }
 }
 
 function setFolder(f){
-currentFolder = f;
+currentFolder=f;
 render();
 }
 
 function render(){
-const g = document.getElementById("gallery");
-g.innerHTML = "";
+const g=document.getElementById("gallery");
+g.innerHTML="";
 
 db.collection("photos").where("tag","==",currentFolder).get()
 .then(snapshot=>{
 if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
+g.innerHTML="<p style='text-align:center'>Nessuna foto</p>";
 return;
 }
 
-let photos = [];
+let photos=[];
 snapshot.forEach(doc=>{
 photos.push({id:doc.id,...doc.data()});
 });
 
 photos.sort((a,b)=>b.time-a.time);
 
-g.innerHTML = `
+g.innerHTML=`
 <div class="gallery-grid">
 ${photos.map(p=>`
 <div class="photo-card">
 <img src="${p.url}" onclick="openImg('${p.url}')">
-${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>` : ""}
+${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>`:""}
 </div>
 `).join("")}
 </div>`;
@@ -425,7 +424,7 @@ document.body.appendChild(m);
 }
 
 function deletePhoto(id){
-if(!isAdmin) return;
+if(!isAdmin)return;
 db.collection("photos").doc(id).delete().then(render);
 }
 
@@ -437,7 +436,7 @@ cloudName:"dagfasmlx",
 uploadPreset:"iv-memorial",
 folder:"iv-memorial/"+scelta
 },(err,res)=>{
-if(res && res.event==="success"){
+if(res&&res.event==="success"){
 db.collection("photos").add({
 url:res.info.secure_url,
 tag:scelta,
