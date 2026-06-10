@@ -74,6 +74,26 @@ text-transform:uppercase;
 text-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
 
+/* =========================
+   🔥 NUOVA LINEA SOTTO TITOLO
+========================= */
+
+.hero-text h1::after{
+content:"";
+display:block;
+width:60px;
+height:3px;
+background:#FFD700;
+margin:12px auto 0;
+border-radius:10px;
+transition:0.3s;
+}
+
+.hero-text h1:hover::after{
+width:110px;
+}
+
+/* SUBTITLE */
 .hero-subtitle{
 color:rgba(255,255,255,0.92);
 max-width:780px;
@@ -112,7 +132,7 @@ width:110px;
 }
 
 /* =========================
-   MENU (NUOVO LAYOUT)
+   MENU
 ========================= */
 .menu{
 position:sticky;
@@ -144,7 +164,6 @@ transition:0.25s;
 box-shadow:0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* HOVER */
 button:hover{
 background:#0b3d91;
 color:#FFD700;
@@ -152,7 +171,6 @@ transform:translateY(-2px) scale(1.05);
 box-shadow:0 10px 20px rgba(11,61,145,0.25);
 }
 
-/* CARTELLA ATTIVA */
 button.active{
 background:#FFD700;
 color:#0b3d91;
@@ -305,9 +323,11 @@ target="_blank">
 <header>
   <div class="hero-text">
     <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
+
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
+
     <p class="hero-subtitle">
-      Il IV Memorial Rocco Tuscano è più di un torneo: è competizione, emozione e ricordo.  
+      Il IV Memorial Rocco Tuscano è più di un torneo: è competizione, emozione e ricordo.<br>
       Ogni gara è un momento unico,<br>
       ogni foto un istante da rivivere.
     </p>
