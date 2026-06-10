@@ -10,162 +10,110 @@
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background:#f4f4f6;
-color:#222;
+background:#0f0f0f;
+color:white;
 }
 
-/* HERO */
+/* HEADER */
 header{
-height:90vh;
+height:70vh;
 display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-position:relative;
 background:url("https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg")
 center/cover no-repeat;
+position:relative;
 }
 
 header::before{
 content:"";
 position:absolute;
 inset:0;
-background:rgba(0,0,0,0.65);
+background:rgba(0,0,0,0.6);
 }
 
-.hero-text{
+header h1{
+position:relative;
+font-size:50px;
+z-index:2;
+}
+
+header p{
 position:relative;
 z-index:2;
-padding:20px;
-}
-
-.hero-text h1{
-font-size:58px;
-color:white;
-margin:0;
-}
-
-.hero-text p{
-color:rgba(255,255,255,0.85);
 max-width:700px;
-margin:15px auto;
+margin:10px auto;
+color:rgba(255,255,255,0.85);
 }
 
-/* MENU CARTELLE */
+/* MENU */
 .menu{
 position:sticky;
 top:0;
-background:white;
-z-index:999;
-padding:12px;
+background:#111;
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-gap:6px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
+gap:8px;
+padding:10px;
+z-index:999;
+border-bottom:1px solid #333;
 }
 
-button{
+.menu button{
 padding:10px 14px;
-border-radius:12px;
-border:1px solid #ddd;
-background:white;
+border:none;
+border-radius:10px;
 cursor:pointer;
-font-weight:600;
+font-weight:bold;
+background:#222;
+color:white;
 transition:0.2s;
 }
 
-button:hover{
+.menu button:hover{
 background:#FFD700;
+color:black;
 transform:translateY(-2px);
 }
 
 /* GALLERY */
-.gallery-grid{
+.gallery{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
-gap:12px;
-padding:20px;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+padding:15px;
 }
 
-/* PHOTO */
-.photo-card{
-position:relative;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 3px 12px rgba(0,0,0,0.1);
-background:white;
-transition:0.2s;
-}
-
-.photo-card:hover{
-transform:scale(1.02);
-}
-
-.photo-card img{
+.gallery img{
 width:100%;
 height:200px;
 object-fit:cover;
-cursor:pointer;
-}
-
-/* DELETE */
-.delete-btn{
-position:absolute;
-top:8px;
-right:8px;
-background:#e74c3c;
-color:white;
-border:none;
-padding:6px 8px;
-border-radius:8px;
-font-size:12px;
-cursor:pointer;
-}
-
-/* MENU BUTTON FIX */
-#menuBtn{
-position:fixed;
-top:10px;
-left:10px;
-z-index:2000;
-padding:10px 14px;
-background:#111;
-color:white;
-border:none;
 border-radius:10px;
 cursor:pointer;
+transition:0.2s;
 }
 
-/* LOGIN BOX FIX */
-#loginBox{
+.gallery img:hover{
+transform:scale(1.03);
+}
+
+/* MODAL */
+.modal{
 position:fixed;
-top:55px;
-left:10px;
-z-index:2000;
-background:#111;
-padding:10px;
-border-radius:10px;
+inset:0;
+background:rgba(0,0,0,0.9);
 display:none;
-width:160px;
-color:white;
+justify-content:center;
+align-items:center;
+z-index:1000;
 }
 
-#loginBox input{
-width:100%;
-padding:6px;
-border:none;
-border-radius:6px;
-margin-bottom:6px;
-font-size:12px;
-}
-
-#loginBox button{
-width:100%;
-padding:6px;
-border:none;
-border-radius:6px;
-cursor:pointer;
+.modal img{
+max-width:90%;
+max-height:90%;
+border-radius:10px;
 }
 
 </style>
@@ -173,44 +121,13 @@ cursor:pointer;
 
 <body>
 
-<!-- MENU BUTTON -->
-<button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
-
-<!-- LOGIN BOX -->
-<div id="loginBox">
-
-<input type="password" id="pass" placeholder="Password">
-<button onclick="login()">Accedi</button>
-
-<div id="uploadBox" style="display:none;margin-top:6px;">
-
-<select id="folderSelect" style="width:100%">
-<option value="08-06">08/06</option>
-<option value="09-06">09/06</option>
-<option value="10-06">10/06</option>
-<option value="11-06">11/06</option>
-<option value="12-06">12/06</option>
-<option value="13-06">13/06</option>
-<option value="15-06">15/06</option>
-<option value="16-06">16/06</option>
-<option value="17-06">17/06</option>
-<option value="ottavi">OTTAVI</option>
-<option value="quarti">QUARTI</option>
-<option value="semifinale">SEMIFINALE</option>
-<option value="finale">FINALE</option>
-</select>
-
-<button onclick="uploadPhoto()">📸 Carica</button>
-
-</div>
-</div>
-
-<!-- HERO -->
 <header>
-<div class="hero-text">
-<h1>IV MEMORIAL ROCCO TUSCANO</h1>
-<p>Galleria ufficiale del torneo. Foto caricate dal fotografo.</p>
-</div>
+  <div>
+    <h1>IV MEMORIAL ROCCO TUSCANO</h1>
+    <p>
+      Galleria ufficiale del torneo. Tutte le foto sono caricate su Google Foto dal fotografo.
+    </p>
+  </div>
 </header>
 
 <!-- MENU CARTELLE -->
@@ -231,131 +148,75 @@ cursor:pointer;
 </div>
 
 <!-- GALLERY -->
-<div id="gallery"></div>
+<div class="gallery" id="gallery"></div>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal()">
+<img id="modalImg">
+</div>
 
 <script>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
-  authDomain: "memorial-rocco-tuscano.firebaseapp.com",
-  projectId: "memorial-rocco-tuscano",
-  storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
-  messagingSenderId: "72206140774",
-  appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
+/* 🔥 QUI METTI I LINK GOOGLE FOTO (PER CARTELLA) */
+const albums = {
+  "08-06": [
+    "https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg"
+  ],
+
+  "09-06": [
+    "https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg"
+  ],
+
+  "10-06": [
+    "https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg"
+  ],
+
+  "ottavi": [
+    "https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg"
+  ],
+
+  "quarti": [
+    "https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg"
+  ],
+
+  "finale": [
+    "https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg"
+  ]
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
 let currentFolder = "08-06";
-let isAdmin = false;
 
-/* FIX MENU TOGGLE */
-function toggleLogin(){
-  const box = document.getElementById("loginBox");
-  if(!box) return;
-
-  box.style.display = (box.style.display === "block") ? "none" : "block";
+function setFolder(folder){
+  currentFolder = folder;
+  render();
 }
 
-/* LOGIN */
-function login(){
-const pass = document.getElementById("pass").value;
-
-if(pass === "alessio2026"){
-isAdmin = true;
-document.getElementById("uploadBox").style.display = "block";
-alert("Accesso fotografo attivato");
-render();
-}else{
-alert("Password errata");
-}
-}
-
-/* CARTELLE */
-function setFolder(f){
-currentFolder = f;
-render();
-}
-
-/* RENDER GALLERY */
 function render(){
-const g = document.getElementById("gallery");
-g.innerHTML = "";
+  const g = document.getElementById("gallery");
+  g.innerHTML = "";
 
-db.collection("photos")
-.where("tag","==",currentFolder)
-.get()
-.then(snapshot=>{
+  const images = albums[currentFolder] || [];
 
-if(snapshot.empty){
-g.innerHTML = "<p style='text-align:center'>Nessuna foto</p>";
-return;
+  if(images.length === 0){
+    g.innerHTML = "<p style='text-align:center'>Nessuna foto disponibile</p>";
+    return;
+  }
+
+  images.forEach(url=>{
+    const img = document.createElement("img");
+    img.src = url;
+    img.onclick = ()=>openModal(url);
+    g.appendChild(img);
+  });
 }
 
-let photos = [];
-snapshot.forEach(doc=>{
-photos.push({id:doc.id,...doc.data()});
-});
-
-photos.sort((a,b)=>b.time-a.time);
-
-g.innerHTML = `
-<div class="gallery-grid">
-${photos.map(p=>`
-<div class="photo-card">
-<img src="${p.url}" onclick="openImg('${p.url}')">
-${isAdmin ? `<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>` : ""}
-</div>
-`).join("")}
-</div>`;
-});
+function openModal(url){
+  document.getElementById("modal").style.display="flex";
+  document.getElementById("modalImg").src=url;
 }
 
-/* DELETE */
-function deletePhoto(id){
-if(!isAdmin) return;
-if(confirm("Eliminare foto?")){
-db.collection("photos").doc(id).delete().then(render);
-}
-}
-
-/* UPLOAD */
-function uploadPhoto(){
-
-let scelta = document.getElementById("folderSelect").value;
-
-let widget = cloudinary.createUploadWidget({
-cloudName:"dagfasmlx",
-uploadPreset:"iv-memorial",
-folder:"iv-memorial/"+scelta
-}, (err,res)=>{
-
-if(res && res.event==="success"){
-db.collection("photos").add({
-url:res.info.secure_url,
-tag:scelta,
-time:Date.now()
-});
-render();
-}
-});
-
-widget.open();
-}
-
-/* OPEN IMAGE */
-function openImg(url){
-const m = document.createElement("div");
-m.style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center";
-m.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%">`;
-m.onclick=()=>m.remove();
-document.body.appendChild(m);
+function closeModal(){
+  document.getElementById("modal").style.display="none";
 }
 
 render();
