@@ -75,22 +75,22 @@ text-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
 
 /* =========================
-   🔥 NUOVA LINEA SOTTO TITOLO
+   LINEA SOTTO TITOLO (AGGIORNATA)
 ========================= */
-
 .hero-text h1::after{
 content:"";
 display:block;
-width:60px;
+width:120px;   /* 🔥 più lunga */
 height:3px;
 background:#FFD700;
-margin:12px auto 0;
+margin:14px auto 0;
 border-radius:10px;
 transition:0.3s;
 }
 
+/* hover leggero */
 .hero-text h1:hover::after{
-width:110px;
+width:160px;
 }
 
 /* SUBTITLE */
@@ -149,7 +149,6 @@ box-shadow:0 8px 25px rgba(0,0,0,0.08);
 border-bottom:1px solid rgba(0,90,180,0.12);
 }
 
-/* BOTTONI CARTELLE */
 button{
 padding:8px 14px;
 border-radius:999px;
@@ -393,7 +392,6 @@ render();
 function setFolder(f){
 currentFolder=f;
 
-/* active button */
 document.querySelectorAll(".menu button").forEach(btn=>{
 btn.classList.remove("active");
 if(btn.textContent.includes(f.replace("-","/"))){
@@ -451,7 +449,7 @@ function uploadPhoto(){
 let scelta=document.getElementById("folderSelect").value;
 
 let widget=cloudinary.createUploadWidget({
-cloudName:"dagfasmlx",
+cloudCloud:"dagfasmlx",
 uploadPreset:"iv-memorial",
 folder:"iv-memorial/"+scelta
 },(err,res)=>{
