@@ -74,7 +74,6 @@ text-transform:uppercase;
 text-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
 
-/* LINEA SOTTO TITOLO */
 .hero-text h1::after{
 content:"";
 display:block;
@@ -158,14 +157,12 @@ font-size:13px;
 transition:0.25s ease;
 }
 
-/* hover */
 button:hover{
 background:#0b3d91;
 color:#FFD700;
 transform:translateY(-2px) scale(1.06);
 }
 
-/* active */
 button.active{
 background:#FFD700;
 color:#0b3d91;
@@ -247,9 +244,7 @@ border-radius:6px;
 margin-bottom:6px;
 }
 
-/* =========================
-   🔥 OVERLAY FOTO FULLSCREEN
-========================= */
+/* OVERLAY FOTO */
 .img-overlay{
 position:fixed;
 inset:0;
@@ -264,11 +259,10 @@ cursor:pointer;
 .img-overlay img{
 max-width:95%;
 max-height:95%;
-box-shadow:0 10px 40px rgba(0,0,0,0.6);
 border-radius:8px;
 }
 
-/* PH ALESSIO */
+/* PH */
 .ig-fotografo{
 position:fixed;
 top:12px;
@@ -280,6 +274,15 @@ padding:10px 14px;
 border-radius:999px;
 text-decoration:none;
 font-size:13px;
+font-weight:600;
+}
+
+/* 🔥 EMPTY STATE */
+.empty-state{
+text-align:center;
+padding:40px 20px;
+font-size:16px;
+color:#0b3d91;
 font-weight:600;
 }
 
@@ -324,12 +327,8 @@ target="_blank">
 <header>
   <div class="hero-text">
     <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
-
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-
-    <p class="hero-subtitle">
-      Sport, emozione e ricordo.
-    </p>
+    <p class="hero-subtitle">Sport, emozione e ricordo.</p>
   </div>
 </header>
 
@@ -371,7 +370,7 @@ appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let currentFolder = "08-06";
+let currentFolder = null;   // 🔥 MODIFICA IMPORTANTE
 let isAdmin = false;
 
 function toggleLogin(){
@@ -389,8 +388,7 @@ render();
 }
 }
 
-/* ENTER LOGIN */
-document.getElementById("pass").addEventListener("keydown", function(e){
+document.getElementById("pass").addEventListener("keydown", e=>{
 if(e.key==="Enter") login();
 });
 
@@ -407,37 +405,20 @@ b.classList.add("active");
 render();
 }
 
-/* =========================
-   🔥 FULLSCREEN IMAGE FIX
-========================= */
-function openImg(url){
-const overlay=document.createElement("div");
-overlay.className="img-overlay";
-
-overlay.innerHTML=`<img src="${url}" />`;
-
-overlay.onclick=()=>overlay.remove();
-
-document.body.appendChild(overlay);
-
-/* blocca scroll e nasconde tutto sotto */
-document.body.style.overflow="hidden";
-}
-
-document.addEventListener("click", function(e){
-const o=document.querySelector(".img-overlay");
-if(o && e.target===o){
-o.remove();
-document.body.style.overflow="auto";
-}
-});
-
+/* 🔥 BLOCCO: niente foto se non selezioni cartella */
 function render(){
+
 const g=document.getElementById("gallery");
 g.innerHTML="";
 
+if(!currentFolder){
+g.innerHTML="<div class='empty-state'>📁 Seleziona una cartella per visualizzare le foto</div>";
+return;
+}
+
 db.collection("photos").where("tag","==",currentFolder).get()
 .then(snapshot=>{
+
 if(snapshot.empty){
 g.innerHTML="<p style='text-align:center'>Nessuna foto</p>";
 return;
@@ -460,6 +441,15 @@ ${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</but
 `).join("")}
 </div>`;
 });
+}
+
+function openImg(url){
+const overlay=document.createElement("div");
+overlay.className="img-overlay";
+overlay.innerHTML=`<img src="${url}">`;
+overlay.onclick=()=>overlay.remove();
+document.body.appendChild(overlay);
+document.body.style.overflow="hidden";
 }
 
 function deletePhoto(id){
@@ -487,8 +477,6 @@ render();
 
 widget.open();
 }
-
-render();
 
 </script>
 
