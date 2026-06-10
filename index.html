@@ -99,6 +99,29 @@ line-height:1.6;
 font-size:18px;
 }
 
+/* pill stile */
+.highlight-subtitle{
+display:inline-block;
+padding:10px 18px;
+border-radius:999px;
+border:1px solid rgba(255, 215, 0, 0.6);
+background:rgba(255, 255, 255, 0.08);
+backdrop-filter: blur(6px);
+color:rgba(255,255,255,0.92);
+font-size:18px;
+font-weight:500;
+letter-spacing:1px;
+margin-top:18px;
+box-shadow:0 6px 18px rgba(0,0,0,0.25);
+transition:0.3s ease;
+}
+
+.highlight-subtitle:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+border-color:#FFD700;
+}
+
 /* =========================
    GALLERY TITLE
 ========================= */
@@ -164,6 +187,12 @@ color:#FFD700;
 transform:translateY(-2px) scale(1.05);
 }
 
+button.active{
+background:#FFD700;
+color:#0b3d91;
+border-color:#FFD700;
+}
+
 /* =========================
    GALLERIA
 ========================= */
@@ -208,9 +237,7 @@ color:white;
 cursor:pointer;
 }
 
-/* =========================
-   LOGIN MENU (MODIFICA SOLO QUI)
-========================= */
+/* LOGIN */
 #menuBtn{
 position:fixed;
 top:10px;
@@ -235,16 +262,6 @@ border-radius:10px;
 display:none;
 width:160px;
 box-shadow:0 6px 20px rgba(0,0,0,0.15);
-
-/* 🔥 SOLO MODIFICA: più alto quando si apre */
-max-height:80px;
-overflow:hidden;
-transition:0.3s ease;
-}
-
-/* quando aperto */
-#loginBox.open{
-max-height:300px;
 }
 
 #loginBox input{
@@ -278,6 +295,43 @@ border-radius:999px;
 text-decoration:none;
 font-size:13px;
 font-weight:600;
+}
+
+/* =========================
+   RESPONSIVE MOBILE FIX
+========================= */
+@media (max-width: 768px) {
+
+.hero-text h1{
+font-size:42px;
+letter-spacing:2px;
+}
+
+.hero-subtitle{
+font-size:15px;
+padding:0 10px;
+}
+
+.highlight-subtitle{
+font-size:15px;
+padding:8px 14px;
+}
+
+.gallery-title{
+font-size:18px;
+letter-spacing:2px;
+}
+
+button{
+font-size:12px;
+padding:7px 12px;
+}
+
+.hero-badge{
+font-size:10px;
+padding:5px 10px;
+}
+
 }
 
 </style>
@@ -324,7 +378,7 @@ target="_blank">
 
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
 
-    <p class="hero-subtitle">
+    <p class="hero-subtitle highlight-subtitle">
       Sport, emozione e ricordo.
     </p>
   </div>
@@ -355,7 +409,6 @@ target="_blank">
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 <script>
-
 const firebaseConfig = {
 apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
 authDomain: "memorial-rocco-tuscano.firebaseapp.com",
@@ -372,15 +425,9 @@ let currentFolder = "08-06";
 let isAdmin = false;
 
 function toggleLogin(){
-const box = document.getElementById("loginBox");
-
-box.classList.toggle("open");
-
-if(box.classList.contains("open")){
-box.style.display = "block";
-} else {
-setTimeout(()=> box.style.display = "none", 200);
-}
+document.getElementById("loginBox").style.display =
+document.getElementById("loginBox").style.display === "block"
+? "none" : "block";
 }
 
 function login(){
@@ -444,7 +491,7 @@ function uploadPhoto(){
 let scelta=document.getElementById("folderSelect").value;
 
 let widget=cloudinary.createUploadWidget({
-cloudName:"dagfasmlx",
+cloudCloud:"dagfasmlx",
 uploadPreset:"iv-memorial",
 folder:"iv-memorial/"+scelta
 },(err,res)=>{
@@ -462,7 +509,6 @@ widget.open();
 }
 
 render();
-
 </script>
 
 </body>
