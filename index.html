@@ -7,18 +7,21 @@
 
 <style>
 
+/* =========================
+   BASE CHAMPIONS THEME
+========================= */
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background:#f5f7fb;
-color:#1b1b1b;
+background:#0b1220;
+color:#fff;
 }
 
 /* =========================
-   HERO
+   HERO CHAMPIONS
 ========================= */
 header{
-height:90vh;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -35,20 +38,21 @@ position:absolute;
 inset:0;
 background:linear-gradient(
 180deg,
-rgba(0,40,90,0.65),
-rgba(0,0,0,0.55)
+rgba(5,10,25,.55),
+rgba(0,0,0,.85)
 );
 }
 
 .hero-text{
 position:relative;
 z-index:2;
+max-width:900px;
 padding:20px;
-animation: fadeUp 0.9s ease;
+animation:fadeUp .8s ease;
 }
 
 @keyframes fadeUp{
-from{opacity:0; transform:translateY(18px);}
+from{opacity:0; transform:translateY(20px);}
 to{opacity:1; transform:translateY(0);}
 }
 
@@ -56,125 +60,70 @@ to{opacity:1; transform:translateY(0);}
 display:inline-block;
 padding:6px 14px;
 border-radius:999px;
+background:rgba(255,255,255,.12);
+border:1px solid rgba(255,255,255,.2);
 font-size:12px;
 letter-spacing:2px;
-font-weight:700;
-color:#0b3d91;
-background:rgba(255,255,255,0.9);
-margin-bottom:14px;
+margin-bottom:15px;
+color:#fff;
 }
 
-/* TITLE */
 .hero-text h1{
-font-size:68px;
-color:#FFD700;
+font-size:clamp(38px,8vw,80px);
 margin:0;
-letter-spacing:3px;
+font-weight:900;
+letter-spacing:4px;
+color:#FFD700;
 text-transform:uppercase;
-text-shadow:0 10px 30px rgba(0,0,0,0.6);
+text-shadow:0 10px 40px rgba(0,0,0,.8);
 }
 
-.hero-text h1::after{
-content:"";
-display:block;
-width:120px;
-height:3px;
-background:#FFD700;
-margin:14px auto 0;
-border-radius:10px;
-transition:0.3s;
-}
-
-.hero-text h1:hover::after{
-width:160px;
-}
-
-/* SUBTITLE */
 .hero-subtitle{
-color:rgba(255,255,255,0.92);
-max-width:780px;
-margin:18px auto 0;
-line-height:1.6;
+margin-top:18px;
 font-size:18px;
+opacity:.9;
 }
 
 /* =========================
-   GALLERY TITLE
-========================= */
-.gallery-title{
-text-align:center;
-font-size:22px;
-font-weight:700;
-letter-spacing:3px;
-margin-top:25px;
-margin-bottom:10px;
-color:#0b3d91;
-position:relative;
-}
-
-.gallery-title::after{
-content:"";
-display:block;
-width:60px;
-height:3px;
-background:#0b3d91;
-margin:8px auto 0;
-border-radius:10px;
-transition:0.3s;
-}
-
-.gallery-title:hover::after{
-width:110px;
-}
-
-/* =========================
-   MENU + BOTTONI CARTELLE
+   MENU CHAMPIONS
 ========================= */
 .menu{
 position:sticky;
 top:0;
-background:rgba(255,255,255,0.92);
-backdrop-filter: blur(14px);
 z-index:999;
-padding:14px 10px;
 display:flex;
-flex-wrap:wrap;
-justify-content:center;
 gap:10px;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
-border-bottom:1px solid rgba(0,90,180,0.12);
+justify-content:center;
+flex-wrap:wrap;
+padding:12px;
+background:rgba(10,15,30,.85);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 button{
-padding:9px 16px;
+padding:10px 16px;
 border-radius:999px;
-border:2px solid #0b3d91;
-background:white;
-color:#0b3d91;
+border:none;
+background:rgba(255,255,255,0.08);
+color:#fff;
 cursor:pointer;
 font-weight:700;
-font-size:13px;
-transition:0.25s ease;
+transition:.3s;
 }
 
 button:hover{
-background:#0b3d91;
-color:#FFD700;
-transform:translateY(-2px) scale(1.06);
+transform:translateY(-2px);
 }
 
 button.active{
-background:#FFD700;
-color:#0b3d91;
-border-color:#FFD700;
+background:linear-gradient(135deg,#FFD700,#ffea70);
+color:#111;
 }
 
-
 /* =========================
-   CHAMPIONS GALLERY
+   GALLERY CHAMPIONS
 ========================= */
-/* ================= CHAMPIONS GALLERY ================= */
-
 #gallery{
 width:100%;
 padding:30px 10px 60px;
@@ -215,7 +164,6 @@ transition:0.4s ease;
 transform:scale(1.08);
 }
 
-/* DELETE */
 .delete-btn{
 position:absolute;
 top:8px;
@@ -240,18 +188,20 @@ opacity:1;
 transform:translateY(0);
 }
 }
-   
-/* LOGIN (MODIFICATO) */
+
+/* =========================
+   LOGIN
+========================= */
 #menuBtn{
 position:fixed;
 top:10px;
 left:10px;
 z-index:2000;
 padding:10px 14px;
-background:#0b3d91;
-color:white;
 border:none;
 border-radius:10px;
+background:#111a2e;
+color:#fff;
 cursor:pointer;
 }
 
@@ -260,89 +210,38 @@ position:fixed;
 top:55px;
 left:10px;
 z-index:2000;
-background:white;
-padding:8px;
+background:#111a2e;
+padding:10px;
 border-radius:10px;
 display:none;
-width:140px;
-box-shadow:0 6px 20px rgba(0,0,0,0.15);
+width:160px;
 }
 
 #loginBox input{
 width:100%;
-padding:5px;
-font-size:12px;
-border:1px solid #ddd;
-border-radius:6px;
-margin-bottom:6px;
-box-sizing:border-box;
-}
-
-#loginBox button{
-width:100%;
 padding:6px;
-font-size:12px;
+margin-bottom:6px;
 border-radius:6px;
+border:none;
 }
 
-#gallery{
-width:100%;
-padding-bottom:40px;
-}
-
-#folderSelect{
-width:100%;
-font-size:12px;
-padding:5px;
-box-sizing:border-box;
-}
-
-/* OVERLAY FOTO */
+/* =========================
+   LIGHTBOX
+========================= */
 .img-overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.95);
+background:rgba(0,0,0,.95);
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 z-index:99999;
-cursor:pointer;
 }
 
 .img-overlay img{
 max-width:95%;
 max-height:95%;
-border-radius:8px;
-}
-
-/* PH */
-.ig-fotografo{
-position:fixed;
-top:12px;
-right:12px;
-z-index:3000;
-background:#0b3d91;
-color:white;
-padding:10px 14px;
-border-radius:999px;
-text-decoration:none;
-font-size:13px;
-font-weight:600;
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px){
-.hero-text h1{font-size:40px;}
-}
-
-@media (max-width: 600px){
-.hero-text h1{font-size:50px;}
-.hero-subtitle{font-size:17px;}
-.hero-badge{font-size:10px;}
-}
-
-@media (max-width: 400px){
-.hero-text h1{font-size:35px;}
+border-radius:10px;
 }
 
 </style>
@@ -350,19 +249,13 @@ font-weight:600;
 
 <body>
 
-<a class="ig-fotografo"
-href="https://www.instagram.com/alessio__orlando"
-target="_blank">
-📸 PH Alessio Orlando
-</a>
-
 <button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
 
 <div id="loginBox">
 <input type="password" id="pass" placeholder="Password">
 <button onclick="login()">Accedi</button>
 
-<div id="uploadBox" style="display:none;margin-top:6px;">
+<div id="uploadBox">
 <select id="folderSelect">
 <option value="gironi">GIRONI</option>
 <option value="ottavi">OTTAVI</option>
@@ -370,24 +263,17 @@ target="_blank">
 <option value="semifinale">SEMIFINALI</option>
 <option value="finale">FINALE</option>
 </select>
-
-<button onclick="uploadPhoto()">📸 Carica</button>
+<button onclick="uploadPhoto()">Carica</button>
 </div>
 </div>
 
 <header>
-  <div class="hero-text">
-    <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
-
-    <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-
-    <p class="hero-subtitle">
-      Sport, emozione e ricordo.
-    </p>
-  </div>
+<div class="hero-text">
+<div class="hero-badge">TORNEO UFFICIALE 2026</div>
+<h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
+<div class="hero-subtitle">Sport • Emozioni • Ricordo</div>
+</div>
 </header>
-
-<div class="gallery-title">GALLERY</div>
 
 <div class="menu">
 <button onclick="setFolder('gironi')">GIRONI</button>
@@ -417,99 +303,89 @@ appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let currentFolder = "gironi";
-let isAdmin = false;
+let currentFolder="gironi";
+let isAdmin=false;
 
+/* LOGIN */
 function toggleLogin(){
 document.getElementById("loginBox").style.display =
-document.getElementById("loginBox").style.display === "block"
-? "none" : "block";
+document.getElementById("loginBox").style.display==="block"?"none":"block";
 }
 
 function login(){
-const pass=document.getElementById("pass").value;
-if(pass==="alessio2026"){
+if(document.getElementById("pass").value==="alessio2026"){
 isAdmin=true;
 document.getElementById("uploadBox").style.display="block";
 render();
 }
 }
 
-document.getElementById("pass").addEventListener("keydown", function(e){
-if(e.key==="Enter") login();
-});
-
+/* FOLDER */
 function setFolder(f){
 currentFolder=f;
-
 document.querySelectorAll(".menu button").forEach(b=>{
 b.classList.remove("active");
-
-if(b.textContent.toLowerCase().includes(f.toLowerCase())){
-b.classList.add("active");
-}
+if(b.textContent.toLowerCase().includes(f)) b.classList.add("active");
 });
-
 render();
 }
 
+/* RENDER */
 function render(){
 const g=document.getElementById("gallery");
 g.innerHTML="";
 
-db.collection("photos").where("tag","==",currentFolder).get()
-.then(snapshot=>{
-
-if(snapshot.empty){
+db.collection("photos")
+.where("tag","==",currentFolder)
+.get()
+.then(snap=>{
+if(snap.empty){
 g.innerHTML="<p style='text-align:center'>Nessuna foto</p>";
 return;
 }
 
 let photos=[];
-snapshot.forEach(doc=>{
-photos.push({id:doc.id,...doc.data()});
-});
-
+snap.forEach(d=>photos.push({id:d.id,...d.data()}));
 photos.sort((a,b)=>b.time-a.time);
 
-g.innerHTML=`
-<div class="gallery-grid">
+g.innerHTML=`<div class="gallery-grid">
 ${photos.map(p=>`
 <div class="photo-card">
 <img src="${p.url}" onclick="openImg('${p.url}')">
 ${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>`:""}
-</div>
-`).join("")}
+</div>`).join("")}
 </div>`;
 });
 }
 
+/* LIGHTBOX */
 function openImg(url){
 const overlay=document.createElement("div");
 overlay.className="img-overlay";
 overlay.innerHTML=`<img src="${url}">`;
 overlay.onclick=()=>overlay.remove();
 document.body.appendChild(overlay);
-document.body.style.overflow="hidden";
 }
 
+/* DELETE */
 function deletePhoto(id){
 if(!isAdmin)return;
 db.collection("photos").doc(id).delete().then(render);
 }
 
+/* UPLOAD */
 function uploadPhoto(){
-let scelta=document.getElementById("folderSelect").value;
+let folder=document.getElementById("folderSelect").value;
 
 let widget=cloudinary.createUploadWidget({
 cloudName:"dagfasmlx",
 uploadPreset:"iv-memorial",
-folder:"iv-memorial/"+scelta
+folder:"iv-memorial/"+folder
 },(err,res)=>{
 if(res&&res.event==="success"){
 db.collection("photos").add({
 url:res.info.secure_url,
-tag:scelta,
+tag:folder,
 time:Date.now()
 });
 render();
@@ -519,6 +395,7 @@ render();
 widget.open();
 }
 
+render();
 </script>
 
 </body>
