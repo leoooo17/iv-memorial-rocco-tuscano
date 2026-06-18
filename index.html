@@ -407,17 +407,17 @@ if(activeBtn) activeBtn.classList.add("active");
 fetchPhotos();
 }
 
-// Questa funzione interroga direttamente Cloudinary senza passare da database esterni
+// Chiamata API ottimizzata direttamente a Cloudinary
 function fetchPhotos(){
 const g=document.getElementById("gallery");
 g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>Caricamento immagini...</p>";
 
-// Cloudinary genera in automatico un file JSON con la lista dei file taggati
+// Otteniamo la lista JSON dei file con il tag specifico, bypassando la cache per i nuovi upload
 const url = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/${currentFolder}.json?v=${Date.now()}`;
 
 fetch(url)
 .then(res => {
-    if(!res.ok) throw new Error("Nessuna foto");
+    if(!res.ok) throw new Error("Nessuna foto trovata");
     return res.json();
 })
 .then(data => {
@@ -426,17 +426,21 @@ fetch(url)
         return;
     }
 
-    // Ordiniamo le foto dalle più recenti alle più vecchie
+    // Ordina i file dal più recente al più vecchio basandosi sulla data di creazione
     let photos = data.resources.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     g.innerHTML=`
     <div class="gallery-grid">
     ${photos.map(p=>{
-        // Costruiamo l'URL corretto dell'immagine originale
-        const imgUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/v${p.version}/${p.public_id}.${p.format}`;
+        // URL originale ad alta risoluzione (usato per l'apertura a tutto schermo)
+        const originalUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/v${p.version}/${p.public_id}.${p.format}`;
+        
+        // URL ultra-ottimizzato per le miniature della griglia (compresso, ridimensionato e velocissimo)
+        const optimizedThumbUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_500,c_scale/v${p.version}/${p.public_id}.${p.format}`;
+        
         return `
         <div class="photo-card">
-        <img src="${imgUrl}" onclick="openImg('${imgUrl}')" alt="Foto Torneo">
+        <img src="${optimizedThumbUrl}" onclick="openImg('${originalUrl}')" alt="Foto Torneo" loading="lazy">
         </div>`;
     }).join("")}
     </div>`;
@@ -465,11 +469,10 @@ let widget=cloudinary.createUploadWidget({
 cloudName: CLOUD_NAME,
 uploadPreset: PRESET_NAME,
 folder: "iv-memorial/" + scelta,
-// Assegniamo alla foto un "tag" uguale al nome della categoria (gironi, ottavi, ecc.)
-tags: [scelta] 
+tags: [scelta] // Applica automaticamente il tag per permettere al codice di raggrupparle
 },(err,res)=>{
 if(res&&res.event==="success"){
-    // Aspettiamo un secondo per dare tempo a Cloudinary di elaborare il tag, poi aggiorniamo la vista
+    // Un piccolo delay per essere sicuri che Cloudinary registri il tag prima del refresh
     setTimeout(() => { fetchPhotos(); }, 1500);
 }
 });
