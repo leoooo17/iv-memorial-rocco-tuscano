@@ -379,7 +379,7 @@ appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let currentFolder = "08-06";
+let currentFolder = "gironi";
 let isAdmin = false;
 
 function toggleLogin(){
@@ -406,7 +406,8 @@ currentFolder=f;
 
 document.querySelectorAll(".menu button").forEach(b=>{
 b.classList.remove("active");
-if(b.textContent.includes(f.replace("-","/"))){
+
+if(b.textContent.toLowerCase().includes(f.toLowerCase())){
 b.classList.add("active");
 }
 });
