@@ -416,9 +416,13 @@ transition: 0.2s;
 }
 
 @media (max-width: 600px) {
-/* MODIFICA: Riduce l'altezza dell'header da 90vh a 65vh per mostrare subito la Gallery su smartphone */
+/* MODIFICA: Altezza bilanciata a 78vh per mantenere l'impatto ma svelare la Gallery sotto */
 header {
-  height: 65vh; 
+  height: 78vh; 
+}
+/* Compattiamo leggermente il padding della sezione per guadagnare altri pixel */
+.gallery-section {
+  padding: 25px 0;
 }
 .hero-text h1{font-size:35px;}
 .hero-subtitle{font-size:13px; letter-spacing: 2px;} 
@@ -606,7 +610,7 @@ const likedPhotos = getLikedPhotos();
 
 fetch(url)
 .then(res => {
-    if(!res.ok) throw new Error("Nessuna foto trovata");
+    if(!res.ok) throw new Error("Nessuna foto trouvata");
     return res.json();
 })
 .then(data => {
