@@ -181,14 +181,6 @@ transform: translateX(-50%);
 .menu button.active{ color:#0b3d91; background: transparent; }
 .menu button.active::after { width: 70%; }
 
-/* Stile speciale per il tasto preferiti rosso nel menu */
-#btn-favorites {
-color: #ff3040;
-}
-#btn-favorites i {
-margin-right: 4px;
-}
-
 .gallery-grid{
 display:grid;
 grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
@@ -447,7 +439,7 @@ transition: 0.2s;
         <button id="btn-quarti" onclick="setFolder('quarti')">QUARTI</button>
         <button id="btn-semifinale" onclick="setFolder('semifinale')">SEMIFINALI</button>
         <button id="btn-finale" onclick="setFolder('finale')">FINALE</button>
-        <button id="btn-favorites" onclick="showFavorites()"><i class="fa-solid fa-heart"></i> PREFERITI</button>
+        <button id="btn-favorites" onclick="showFavorites()">PREFERITI</button>
     </div>
 
     <div id="gallery"></div>
@@ -461,7 +453,7 @@ const PRESET_NAME = "iv-memorial";
 
 let currentFolder = "gironi";
 let isAdmin = false;
-let allLoadedPhotos = []; // Salva temporaneamente le foto scaricate per poterle filtrare nei preferiti
+let allLoadedPhotos = []; 
 let viewingFavorites = false;
 
 window.onload = () => { fetchPhotos(); };
@@ -487,7 +479,7 @@ if(e.key==="Enter") login();
 
 function setFolder(f){
 currentFolder = f;
-viewingFavorites = false; // Esci dalla modalità preferiti se clicchi una fase
+viewingFavorites = false; 
 document.querySelectorAll(".menu button").forEach(b => b.classList.remove("active"));
 const activeBtn = document.getElementById("btn-" + f);
 if(activeBtn) activeBtn.classList.add("active");
@@ -526,7 +518,6 @@ function toggleLike(photoId, event) {
         }
     });
 
-    // Se l'utente sta guardando la sezione "Preferiti" e toglie il cuore, rimuovi la foto dalla vista all'istante
     if (viewingFavorites && !isNowLiked) {
         const card = document.getElementById(`card-${photoId}`);
         if (card) {
@@ -570,7 +561,6 @@ fetch(url)
 });
 }
 
-// Funzione separata per stampare la griglia a schermo
 function renderGrid(photos, container, likedPhotos) {
     if(photos.length === 0) {
         container.innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NESSUNA FOTO DISPONIBILE...</p>";
@@ -597,7 +587,6 @@ function renderGrid(photos, container, likedPhotos) {
     </div>`;
 }
 
-// NUOVA FUNZIONE: FILTRA E MOSTRA SOLO I PREFERITI DELL'UTENTE
 function showFavorites() {
     viewingFavorites = true;
     document.querySelectorAll(".menu button").forEach(b => b.classList.remove("active"));
@@ -606,7 +595,6 @@ function showFavorites() {
     const g = document.getElementById("gallery");
     const likedPhotos = getLikedPhotos();
 
-    // Filtra la lista globale delle foto attuali tenendo solo quelle che hanno il ID nei preferiti
     const favoritePhotos = allLoadedPhotos.filter(p => {
         const pId = p.public_id.replace(/\//g, '_');
         return likedPhotos.includes(pId);
