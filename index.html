@@ -127,23 +127,21 @@ margin:8px auto 0;
 border-radius:10px;
 }
 
-/* BANNER BOTTONI - CON SCROLL ORIZZONTALE */
+/* NUOVO BANNER STRUTTURATO E OMOGENEO */
 .menu{
 position:sticky;
 top:0;
-background:rgba(255, 255, 255, 0.95);
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
+background:#ffffff;
 z-index:999;
-padding:14px 20px;
 display:flex;
 justify-content: center;
-gap:10px;
-box-shadow:0 8px 25px rgba(0,0,0,0.05);
-border-bottom:1px solid rgba(0,90,180,0.1);
+gap:0; /* Rimosso lo stacco tra i bottoni */
+box-shadow:0 10px 30px rgba(0,0,0,0.04);
+border-bottom:2px solid rgba(11,61,145,0.08);
 overflow-x: auto;
 white-space: nowrap;
 scrollbar-width: none;
+padding: 0;
 }
 
 .menu::-webkit-scrollbar {
@@ -151,30 +149,45 @@ display: none;
 }
 
 .menu button{
-padding:10px 20px;
-border-radius:999px;
-border:2px solid #0b3d91;
-background:white;
-color:#0b3d91;
+padding:18px 28px;
+border: none;
+background:none;
+color:#666666;
 cursor:pointer;
 font-weight:700;
-font-size:13px;
-letter-spacing: 0.5px;
-transition:0.25s ease;
+font-size:14px;
+letter-spacing: 1px;
+transition: all 0.3s ease;
 flex-shrink: 0;
+position: relative;
+text-transform: uppercase;
 }
 
 .menu button:hover{
-background:#0b3d91;
-color:#FFD700;
-transform:translateY(-2px);
+color:#0b3d91;
+background: rgba(11,61,145,0.03);
+}
+
+/* Indicatore di selezione lineare sotto il testo */
+.menu button::after {
+content: "";
+position: absolute;
+bottom: 0;
+left: 50%;
+width: 0;
+height: 3px;
+background: #FFD700;
+transition: all 0.3s ease;
+transform: translateX(-50%);
 }
 
 .menu button.active{
-background:#FFD700;
 color:#0b3d91;
-border-color:#FFD700;
-box-shadow: 0 4px 12px rgba(255,215,0,0.3);
+background: transparent;
+}
+
+.menu button.active::after {
+width: 70%; /* Linea dorata sotto il testo attivo */
 }
 
 /* GRID FOTO */
@@ -344,7 +357,8 @@ color:#FFD700;
 /* MODIFICHE RESPONSIVE PER SMARTPHONE */
 @media (max-width: 900px){
 .hero-text h1{font-size:45px;}
-.menu { justify-content: flex-start; padding: 12px 15px; }
+.menu { justify-content: flex-start; padding: 0 10px; }
+.menu button{ padding: 15px 20px; font-size: 13px; }
 }
 
 @media (max-width: 600px) {
@@ -454,12 +468,10 @@ if(e.key==="Enter") login();
 function setFolder(f){
 currentFolder = f;
 
-// Rimuove l'illuminazione da tutti i bottoni del menu
 document.querySelectorAll(".menu button").forEach(b => {
 b.classList.remove("active");
 });
 
-// Illumina specificamente il bottone cliccato usando il suo ID univoco (anche per btn-semifinale)
 const activeQueryButton = document.getElementById("btn-" + f);
 if(activeQueryButton) {
   activeQueryButton.classList.add("active");
