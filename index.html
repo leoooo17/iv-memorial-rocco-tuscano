@@ -354,7 +354,9 @@ background:#0b3d91;
 color:#FFD700;
 }
 
-/* MODIFICHE RESPONSIVE PER SMARTPHONE */
+/* ===================================================
+   MODIFICHE RESPONSIVE PER SMARTPHONE (AGGIORNATE)
+   =================================================== */
 @media (max-width: 900px){
 .hero-text h1{font-size:45px;}
 .menu { justify-content: flex-start; padding: 0 10px; }
@@ -364,6 +366,29 @@ color:#FFD700;
 @media (max-width: 600px) {
 .hero-text h1{font-size:35px;}
 .hero-subtitle{font-size:16px;}
+
+/* Forza il menu ad occupare esattamente la larghezza dello schermo senza scroll */
+.menu {
+  justify-content: space-between;
+  overflow-x: hidden;
+  white-space: normal;
+  padding: 0;
+  width: 100%;
+}
+
+/* Divide lo spazio equamente per i 5 bottoni e adatta il testo */
+.menu button {
+  flex: 1;
+  padding: 14px 2px;
+  font-size: 10px;
+  letter-spacing: 0px;
+  text-align: center;
+}
+
+/* Ottimizza la barra dorata inferiore per lo spazio ridotto */
+.menu button.active::after {
+  width: 85%;
+}
 }
 
 </style>
