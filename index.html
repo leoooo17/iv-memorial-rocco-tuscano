@@ -5,6 +5,8 @@
 <title>IV Memorial Rocco Tuscano</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 <style>
 body{
 margin:0;
@@ -212,52 +214,55 @@ transition: 0.4s ease;
 .photo-card:hover img{ transform:scale(1.05); }
 
 /* =========================
-   SISTEMA INTERAZIONE LIKE
+   PULSANTE LIKE STILE INSTAGRAM
 ========================= */
 .like-btn {
 position: absolute;
 bottom: 12px;
 right: 12px;
-background: rgba(255, 255, 255, 0.85);
+background: rgba(255, 255, 255, 0.9);
 backdrop-filter: blur(4px);
 border: none;
 border-radius: 50%;
-width: 36px;
-height: 36px;
+width: 38px;
+height: 38px;
 display: flex;
 justify-content: center;
 align-items: center;
 cursor: pointer;
-box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.2s;
+box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 z-index: 10;
-font-size: 18px;
-user-select: none;
+font-size: 16px;
+color: #262626; /* Colore scuro tipico dei bordi di Instagram */
 }
 
 .like-btn:hover {
-transform: scale(1.15);
+transform: scale(1.1);
 background: #ffffff;
+box-shadow: 0 6px 16px rgba(0,0,0,0.18);
 }
 
 .like-btn:active {
 transform: scale(0.9);
 }
 
+/* Quando la foto ha il "Like" */
 .like-btn.liked {
-color: #e0245e;
-animation: heartBeat 0.3s forwards;
+color: #ff3040; /* Rosso Instagram */
+animation: instagramHeart 0.4s ease-in-out forwards;
 }
 
-@keyframes heartBeat {
+@keyframes instagramHeart {
 0% { transform: scale(1); }
-50% { transform: scale(1.3); }
-100% { transform: scale(1.1); }
+35% { transform: scale(1.3); }
+65% { transform: scale(0.92); }
+100% { transform: scale(1.05); }
 }
 
 /* PANNELLO DI LOGIN */
 #menuBtn{
-display: none; /* <--- Rimuovi questa riga per far ricomparire il menu */
+display: none; 
 position:fixed;
 top:15px;
 left:15px;
@@ -322,7 +327,7 @@ margin-bottom:8px;
 border: 1px solid #ddd;
 }
 
-/* OVERLAY FOTO SCHERMO INTERO ENHANCED WITH LIKE */
+/* OVERLAY SCHERMO INTERO */
 .img-overlay{
 position:fixed;
 inset:0;
@@ -352,10 +357,10 @@ cursor: pointer;
 .img-overlay .like-btn {
 bottom: 20px;
 right: 20px;
-width: 46px;
-height: 46px;
-font-size: 24px;
-background: rgba(255, 255, 255, 0.9);
+width: 48px;
+height: 48px;
+font-size: 20px;
+background: rgba(255, 255, 255, 0.95);
 }
 
 /* PH CREDITS */
@@ -479,14 +484,13 @@ if(activeBtn) activeBtn.classList.add("active");
 fetchPhotos();
 }
 
-/* GESTIONE CUORICINI SALVATI */
 function getLikedPhotos() {
     const saved = localStorage.getItem("liked_photos");
     return saved ? JSON.parse(saved) : [];
 }
 
 function toggleLike(photoId, event) {
-    if(event) event.stopPropagation(); // Evita di aprire lo schermo intero se clicchi il cuore dalla griglia
+    if(event) event.stopPropagation(); 
     
     let likedPhotos = getLikedPhotos();
     const index = likedPhotos.indexOf(photoId);
@@ -501,14 +505,14 @@ function toggleLike(photoId, event) {
 
     localStorage.setItem("liked_photos", JSON.stringify(likedPhotos));
     
-    // Aggiorna l'icona in tutta la pagina (sia griglia che eventuale overlay aperto)
+    // Aggiorna le classi e le icone FontAwesome su tutti i pulsanti duplicati della stessa foto
     document.querySelectorAll(`.btn-like-${photoId}`).forEach(btn => {
         if (isNowLiked) {
             btn.classList.add("liked");
-            btn.innerHTML = "❤️";
+            btn.innerHTML = `<i class="fa-solid fa-heart"></i>`;
         } else {
             btn.classList.remove("liked");
-            btn.innerHTML = "🤍";
+            btn.innerHTML = `<i class="fa-regular fa-heart"></i>`;
         }
     });
 }
@@ -518,7 +522,6 @@ const g=document.getElementById("gallery");
 g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>Caricamento immagini...</p>";
 
 const url = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/${currentFolder}.json?v=${Date.now()}`;
-
 const likedPhotos = getLikedPhotos();
 
 fetch(url)
@@ -540,7 +543,6 @@ fetch(url)
         const originalUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/v${p.version}/${p.public_id}.${p.format}`;
         const optimizedThumbUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_500,c_scale/v${p.version}/${p.public_id}.${p.format}`;
         
-        // Identificativo univoco dell'immagine basato sul public_id di Cloudinary
         const pId = p.public_id.replace(/\//g, '_'); 
         const isLiked = likedPhotos.includes(pId);
 
@@ -548,7 +550,7 @@ fetch(url)
         <div class="photo-card">
             <img src="${optimizedThumbUrl}" onclick="openImg('${originalUrl}', '${pId}')" alt="Foto Torneo" loading="lazy">
             <button class="like-btn btn-like-${pId} ${isLiked ? 'liked' : ''}" onclick="toggleLike('${pId}', event)">
-                ${isLiked ? '❤️' : '🤍'}
+                ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
             </button>
         </div>`;
     }).join("")}
@@ -570,12 +572,11 @@ overlay.innerHTML=`
     <div class="img-overlay-wrapper">
         <img src="${url}" id="fullImg">
         <button class="like-btn btn-like-${pId} ${isLiked ? 'liked' : ''}" onclick="toggleLike('${pId}', event)">
-            ${isLiked ? '❤️' : '🤍'}
+            ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
         </button>
     </div>
 `;
 
-// Chiude l'overlay cliccando sullo sfondo nero o sull'immagine stessa
 overlay.onclick=(e)=>{
     if(e.target.className === "img-overlay" || e.target.id === "fullImg") {
         overlay.remove();
