@@ -355,7 +355,7 @@ color:#FFD700;
 }
 
 /* ===================================================
-   MODIFICHE RESPONSIVE PER SMARTPHONE (AGGIORNATE)
+   MODIFICHE RESPONSIVE PER SMARTPHONE
    =================================================== */
 @media (max-width: 900px){
 .hero-text h1{font-size:45px;}
@@ -367,7 +367,7 @@ color:#FFD700;
 .hero-text h1{font-size:35px;}
 .hero-subtitle{font-size:16px;}
 
-/* Forza il menu ad occupare esattamente la larghezza dello schermo senza scroll */
+/* Barra categorie fissa e senza scorrimento su mobile */
 .menu {
   justify-content: space-between;
   overflow-x: hidden;
@@ -376,7 +376,7 @@ color:#FFD700;
   width: 100%;
 }
 
-/* Divide lo spazio equamente per i 5 bottoni e adatta il testo */
+/* Distribuzione equa dei pulsanti */
 .menu button {
   flex: 1;
   padding: 14px 2px;
@@ -385,18 +385,16 @@ color:#FFD700;
   text-align: center;
 }
 
-/* Ottimizza la barra dorata inferiore per lo spazio ridotto */
 .menu button.active::after {
   width: 85%;
 }
 
-/* --- MODIFICA PER GRIGLIA A 2 COLONNE SU MOBILE --- */
+/* Griglia a 2 colonne affiancate su mobile */
 .gallery-grid {
-  grid-template-columns: repeat(2, 1fr); /* Due colonne uguali */
-  gap: 10px; /* Riduciamo leggermente lo spazio tra le foto */
-  padding: 15px; /* Riduciamo il padding laterale */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 15px;
 }
-/* -------------------------------------------------- */
 }
 
 </style>
@@ -517,7 +515,11 @@ function render(){
 const g=document.getElementById("gallery");
 g.innerHTML="";
 
-db.collection("photos").where("tag","==",currentFolder).get()
+// Richiesta ottimizzata: ordina direttamente sul server di Firebase
+db.collection("photos")
+  .where("tag","==",currentFolder)
+  .orderBy("time", "desc")
+  .get()
 .then(snapshot=>{
 
 if(snapshot.empty){
@@ -530,8 +532,6 @@ snapshot.forEach(doc=>{
 photos.push({id:doc.id,...doc.data()});
 });
 
-photos.sort((a,b)=>b.time-a.time);
-
 g.innerHTML=`
 <div class="gallery-grid">
 ${photos.map(p=>`
@@ -541,6 +541,9 @@ ${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</but
 </div>
 `).join("")}
 </div>`;
+})
+.catch(error => {
+  console.error("Errore Firebase:", error);
 });
 }
 
