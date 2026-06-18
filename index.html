@@ -5,6 +5,7 @@
 <title>IV Memorial Rocco Tuscano</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- INCLUSIONE FONTAWESOME PER LE ICONE STILE INSTAGRAM -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
@@ -526,7 +527,8 @@ function toggleLike(photoId, event) {
             setTimeout(() => {
                 card.remove();
                 if (document.querySelectorAll('.photo-card').length === 0) {
-                    document.getElementById("gallery").innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NON HAI ANCORA SALVATO NESSUNA FOTO NEI PREFERITI...</p>";
+                    // OPZIONE 2: TESTO CORTO OTTIMIZZATO PER SMARTPHONE
+                    document.getElementById("gallery").innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0; font-size:14px; letter-spacing:1px;'>LISTA PREFERITI VUOTA</p>";
                 }
             }, 300);
         }
@@ -601,7 +603,8 @@ function showFavorites() {
     });
 
     if(favoritePhotos.length === 0) {
-        g.innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NON HAI ANCORA SALVATO NESSUNA FOTO DI QUESTA SEZIONE NEI PREFERITI...</p>";
+        // OPZIONE 2: TESTO CORTO OTTIMIZZATO PER SMARTPHONE
+        g.innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0; font-size:14px; letter-spacing:1px;'>LISTA PREFERITI VUOTA</p>";
     } else {
         renderGrid(favoritePhotos, g, likedPhotos);
     }
