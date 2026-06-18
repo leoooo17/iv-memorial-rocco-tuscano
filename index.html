@@ -223,12 +223,12 @@ position: absolute;
 top: 50%;
 left: 50%;
 transform: translate(-50%, -50%) scale(0);
-color: #ffffff;
-font-size: 50px;
+color: #ff3040;
+font-size: 55px;
 opacity: 0;
 pointer-events: none;
 z-index: 5;
-text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+text-shadow: 0 4px 15px rgba(0,0,0,0.3);
 animation: instaHeartFade 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
@@ -240,7 +240,7 @@ animation: instaHeartFade 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 /* =========================
-   PULSANTE LIKE STILE INSTAGRAM
+   PULSANTE LIKE STILE INSTAGRAM (RIDOTTO)
 ========================= */
 .like-btn {
 position: absolute;
@@ -283,35 +283,6 @@ animation: instagramHeart 0.4s ease-in-out forwards;
 35% { transform: scale(1.3); }
 65% { transform: scale(0.92); }
 100% { transform: scale(1.05); }
-}
-
-/* PULSANTE SCARICA NELL'OVERLAY */
-.download-btn {
-position: absolute;
-bottom: 15px;
-left: 15px;
-background: rgba(255, 255, 255, 0.95);
-backdrop-filter: blur(4px);
-border: none;
-border-radius: 50%;
-width: 38px;  
-height: 38px; 
-display: flex;
-justify-content: center;
-align-items: center;
-cursor: pointer;
-box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-transition: all 0.2s ease;
-z-index: 10;
-font-size: 16px;
-color: #0b3d91;
-text-decoration: none;
-}
-
-.download-btn:hover {
-transform: scale(1.1);
-background: #ffffff;
-color: #082d6b;
 }
 
 /* PANNELLO DI LOGIN */
@@ -588,32 +559,35 @@ function toggleLike(photoId, event) {
     }
 }
 
-// FUNZIONE PER IL GESTO DEL DOPPIO CLIC / TOCCO VELOCE
+// GESTIONE DEL DOPPIO TOCCO / DOPPIO CLIC STILE INSTAGRAM
 let lastTap = 0;
 function handlePhotoClick(cardElement, photoId, url) {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
     
     if ((now - lastTap) < DOUBLE_PRESS_DELAY) {
-        // Rilevato doppio clic/tocco: Metti like stile Instagram
+        // Se non ha ancora il like, lo aggiunge (lo manda nei preferiti)
         let likedPhotos = getLikedPhotos();
         if (!likedPhotos.includes(photoId)) {
             toggleLike(photoId);
         }
         
-        // Crea il cuoricione pop-up al centro della card
+        // Creazione del cuore pop-up centrale
         const heart = document.createElement("div");
         heart.className = "insta-heart-overlay";
-        heart.innerHTML = `<i class="fa-solid fa-heart" style="color: #ff3040;"></i>`;
+        heart.innerHTML = `<i class="fa-solid fa-heart"></i>`;
         cardElement.appendChild(heart);
         
-        // Rimuovi l'elemento del cuore dopo la fine dell'animazione
+        // Rimuove il cuore dopo l'animazione CSS
         setTimeout(() => { heart.remove(); }, 700);
     } else {
-        // Singolo clic: apri la foto ingrandita a schermo intero (dopo un piccolissimo delay per evitare conflitti)
+        // Clic singolo: apre l'overlay dopo il delay (per verificare che non sia un doppio clic)
         setTimeout(() => {
             if (Date.now() - now >= DOUBLE_PRESS_DELAY) {
-                openImg(url, photoId);
+                // Controlla che l'overlay non sia già aperto prima di avviarlo
+                if (!document.querySelector('.img-overlay')) {
+                    openImg(url, photoId);
+                }
             }
         }, DOUBLE_PRESS_DELAY);
     }
@@ -701,14 +675,9 @@ overlay.className="img-overlay";
 const likedPhotos = getLikedPhotos();
 const isLiked = likedPhotos.includes(pId);
 
-const downloadUrl = url.replace("/upload/", "/upload/fl_attachment/");
-
 overlay.innerHTML=`
     <div class="img-overlay-wrapper" onclick="handlePhotoClick(this, '${pId}', '${url}')">
         <img src="${url}" id="fullImg">
-        <a class="download-btn" href="${downloadUrl}" download="foto_torneo_${pId}.jpg" onclick="event.stopPropagation();">
-            <i class="fa-solid fa-download"></i>
-        </a>
         <button class="like-btn btn-like-${pId} ${isLiked ? 'liked' : ''}" onclick="toggleLike('${pId}', event)">
             ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
         </button>
