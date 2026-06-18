@@ -361,7 +361,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 z-index:99999;
-cursor: pointer; /* Indica visivamente che si può cliccare ovunque per chiudere */
+cursor: pointer; 
 }
 
 .img-overlay-wrapper {
@@ -416,6 +416,10 @@ transition: 0.2s;
 }
 
 @media (max-width: 600px) {
+/* MODIFICA: Riduce l'altezza dell'header da 90vh a 65vh per mostrare subito la Gallery su smartphone */
+header {
+  height: 65vh; 
+}
 .hero-text h1{font-size:35px;}
 .hero-subtitle{font-size:13px; letter-spacing: 2px;} 
 .menu { justify-content: space-between; overflow-x: hidden; white-space: normal; padding: 0; width: 100%; }
@@ -581,10 +585,8 @@ function handlePhotoClick(cardElement, photoId, url, isOverlay = false) {
         setTimeout(() => {
             if (Date.now() - now >= DOUBLE_PRESS_DELAY) {
                 if (isOverlay) {
-                    // Se siamo già nell'overlay, il singolo clic chiude la foto ovunque si clicchi
                     closeOverlay();
                 } else {
-                    // Se siamo sulla griglia, il singolo clic apre l'overlay
                     if (!document.querySelector('.img-overlay')) {
                         openImg(url, photoId);
                     }
@@ -677,7 +679,6 @@ overlay.id="globalOverlay";
 const likedPhotos = getLikedPhotos();
 const isLiked = likedPhotos.includes(pId);
 
-// Il clic sull'intero overlay avvia il controllo del clic/doppio clic
 overlay.setAttribute("onclick", `handlePhotoClick(this, '${pId}', '${url}', true)`);
 
 overlay.innerHTML=`
