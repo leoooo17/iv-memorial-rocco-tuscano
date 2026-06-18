@@ -81,11 +81,20 @@ transition:0.3s;
 .hero-text h1:hover::after{ width:160px; }
 
 .hero-subtitle{
-color:rgba(255,255,255,0.92);
+color:rgba(255,255,255,0.95);
 max-width:780px;
-margin:18px auto 0;
+margin:22px auto 0;
 line-height:1.6;
-font-size:18px;
+font-size:20px;
+font-weight: bold;
+letter-spacing: 4px;
+text-transform: uppercase;
+text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+.hero-subtitle span {
+color: #FFD700;
+margin: 0 8px;
 }
 
 /* =========================
@@ -316,7 +325,7 @@ transition: 0.2s;
 
 @media (max-width: 600px) {
 .hero-text h1{font-size:35px;}
-.hero-subtitle{font-size:16px;}
+.hero-subtitle{font-size:13px; letter-spacing: 2px;} /* Ridotto il distanziamento sui telefoni piccoli */
 .menu { justify-content: space-between; overflow-x: hidden; white-space: normal; padding: 0; width: 100%; }
 .menu button { flex: 1; padding: 14px 2px; font-size: 10px; letter-spacing: 0px; text-align: center; }
 .menu button.active::after { width: 85%; }
@@ -351,7 +360,8 @@ transition: 0.2s;
   <div class="hero-text">
     <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-    <p class="hero-subtitle">Sport, emozione e ricordo.</p>
+    <!-- NUOVO SOTTOTITOLO STILIZZATO -->
+    <p class="hero-subtitle">Sport<span>•</span>Emozione<span>•</span>Ricordo</p>
   </div>
 </header>
 
@@ -475,7 +485,6 @@ widget.open();
 }
 </script>
 
-<!-- SOLUZIONE INVISIBILE: SOLO TU VEDRAI I DATI DALLA DASHBOARD DI VERCEL -->
 <script defer src="/_vercel/insights/script.js"></script>
 
 </body>
