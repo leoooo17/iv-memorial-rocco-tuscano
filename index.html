@@ -5,6 +5,7 @@
 <title>IV Memorial Rocco Tuscano</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- INCLUSIONE FONTAWESOME PER LE ICONE STILE INSTAGRAM -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
@@ -259,7 +260,7 @@ animation: instagramHeart 0.4s ease-in-out forwards;
 100% { transform: scale(1.05); }
 }
 
-/* NUOVO PULSANTE CONDIVIDI/SALVA NELL'OVERLAY */
+/* PULSANTE INTERFACCIA CONDIVISIONE IPHONE (iOS STILE) */
 .share-btn {
 position: absolute;
 bottom: 15px;
@@ -277,14 +278,44 @@ cursor: pointer;
 box-shadow: 0 4px 12px rgba(0,0,0,0.18);
 transition: all 0.2s ease;
 z-index: 10;
-font-size: 15px; 
-color: #0b3d91;
+}
+
+/* Icona quadrata con freccia verso l'alto tipica dell'iPhone */
+.ios-share-icon {
+width: 14px;
+height: 14px;
+border: 2px solid #0b3d91;
+border-radius: 2px;
+position: relative;
+margin-top: 4px;
+box-sizing: border-box;
+}
+
+.ios-share-icon::before {
+content: "";
+position: absolute;
+top: -7px;
+left: 3px;
+width: 0;
+height: 0;
+border-left: 4px solid transparent;
+border-right: 4px solid transparent;
+border-bottom: 5px solid #0b3d91;
+}
+
+.ios-share-icon::after {
+content: "";
+position: absolute;
+top: -3px;
+left: 4px;
+width: 2px;
+height: 6px;
+background: #0b3d91;
 }
 
 .share-btn:hover {
 transform: scale(1.1);
 background: #ffffff;
-color: #082d6b;
 }
 
 /* PANNELLO DI LOGIN */
@@ -570,7 +601,7 @@ const likedPhotos = getLikedPhotos();
 
 fetch(url)
 .then(res => {
-    if(!res.ok) throw new Error("Nessuna foto trouvata");
+    if(!res.ok) throw new Error("Nessuna foto trovata");
     return res.json();
 })
 .then(data => {
@@ -635,19 +666,16 @@ function showFavorites() {
     }
 }
 
-// NUOVA FUNZIONE: CONDIVISIONE O COPIA LINK DELLA FOTO
 function sharePhoto(url, event) {
     if(event) event.stopPropagation();
 
     if (navigator.share) {
-        // Se siamo su smartphone, usa la condivisione nativa del sistema operativo
         navigator.share({
             title: 'Foto IV Memorial Rocco Tuscano',
             text: 'Guarda questa foto del torneo!',
             url: url
         }).catch(err => console.log("Errore condivisione:", err));
     } else {
-        // Se siamo su computer o browser non supportato, copia il link negli appunti
         navigator.clipboard.writeText(url).then(() => {
             alert("Link della foto copiato negli appunti!");
         }).catch(err => {
@@ -666,8 +694,9 @@ const isLiked = likedPhotos.includes(pId);
 overlay.innerHTML=`
     <div class="img-overlay-wrapper">
         <img src="${url}" id="fullImg">
+        <!-- PULSANTE CONDIVIDI IPHONE STYLE -->
         <button class="share-btn" onclick="sharePhoto('${url}', event)">
-            <i class="fa-solid fa-share-node"></i>
+            <div class="ios-share-icon"></div>
         </button>
         <button class="like-btn btn-like-${pId} ${isLiked ? 'liked' : ''}" onclick="toggleLike('${pId}', event)">
             ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
