@@ -204,6 +204,7 @@ transition: 0.4s ease;
 
 /* PANNELLO DI LOGIN */
 #menuBtn{
+display: none; /* <--- NASCONDE IL TASTO MENU DALLA PAGINA */
 position:fixed;
 top:15px;
 left:15px;
@@ -407,12 +408,10 @@ if(activeBtn) activeBtn.classList.add("active");
 fetchPhotos();
 }
 
-// Chiamata API ottimizzata direttamente a Cloudinary
 function fetchPhotos(){
 const g=document.getElementById("gallery");
 g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>Caricamento immagini...</p>";
 
-// Otteniamo la lista JSON dei file con il tag specifico, bypassando la cache per i nuovi upload
 const url = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/${currentFolder}.json?v=${Date.now()}`;
 
 fetch(url)
@@ -426,16 +425,12 @@ fetch(url)
         return;
     }
 
-    // Ordina i file dal più recente al più vecchio basandosi sulla data di creazione
     let photos = data.resources.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     g.innerHTML=`
     <div class="gallery-grid">
     ${photos.map(p=>{
-        // URL originale ad alta risoluzione (usato per l'apertura a tutto schermo)
         const originalUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/v${p.version}/${p.public_id}.${p.format}`;
-        
-        // URL ultra-ottimizzato per le miniature della griglia (compresso, ridimensionato e velocissimo)
         const optimizedThumbUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_500,c_scale/v${p.version}/${p.public_id}.${p.format}`;
         
         return `
@@ -469,10 +464,9 @@ let widget=cloudinary.createUploadWidget({
 cloudName: CLOUD_NAME,
 uploadPreset: PRESET_NAME,
 folder: "iv-memorial/" + scelta,
-tags: [scelta] // Applica automaticamente il tag per permettere al codice di raggrupparle
+tags: [scelta]
 },(err,res)=>{
 if(res&&res.event==="success"){
-    // Un piccolo delay per essere sicuri che Cloudinary registri il tag prima del refresh
     setTimeout(() => { fetchPhotos(); }, 1500);
 }
 });
