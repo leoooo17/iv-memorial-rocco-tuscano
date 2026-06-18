@@ -127,7 +127,7 @@ margin:8px auto 0;
 border-radius:10px;
 }
 
-/* NUOVO BANNER STRUTTURATO E OMOGENEO */
+/* BANNER MENU STRUTTURATO */
 .menu{
 position:sticky;
 top:0;
@@ -135,7 +135,7 @@ background:#ffffff;
 z-index:999;
 display:flex;
 justify-content: center;
-gap:0; /* Rimosso lo stacco tra i bottoni */
+gap:0;
 box-shadow:0 10px 30px rgba(0,0,0,0.04);
 border-bottom:2px solid rgba(11,61,145,0.08);
 overflow-x: auto;
@@ -187,7 +187,7 @@ background: transparent;
 }
 
 .menu button.active::after {
-width: 70%; /* Linea dorata sotto il testo attivo */
+width: 70%; 
 }
 
 /* GRID FOTO */
@@ -389,6 +389,14 @@ color:#FFD700;
 .menu button.active::after {
   width: 85%;
 }
+
+/* --- MODIFICA PER GRIGLIA A 2 COLONNE SU MOBILE --- */
+.gallery-grid {
+  grid-template-columns: repeat(2, 1fr); /* Due colonne uguali */
+  gap: 10px; /* Riduciamo leggermente lo spazio tra le foto */
+  padding: 15px; /* Riduciamo il padding laterale */
+}
+/* -------------------------------------------------- */
 }
 
 </style>
