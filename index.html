@@ -127,7 +127,7 @@ margin:8px auto 0;
 border-radius:10px;
 }
 
-/* BANNER BOTTONI - CON SCROLL ORIZZONTALE */
+/* BANNER BOTTONI - CON SCROLL ORIZZONTALE MOVER */
 .menu{
 position:sticky;
 top:0;
@@ -231,7 +231,7 @@ transition:0.2s ease;
 transform:scale(1.1);
 }
 
-/* PANNELLO DI LOGIN (In alto a sinistra) */
+/* PANNELLO DI LOGIN (Spostato in alto a sinistra con testo Menu) */
 #menuBtn{
 position:fixed;
 top:15px;
@@ -451,17 +451,13 @@ document.getElementById("pass").addEventListener("keydown", function(e){
 if(e.key==="Enter") login();
 });
 
-// Funzione modificata e resa flessibile per risolvere il bug del pulsante "SEMIFINALI"
 function setFolder(f){
 currentFolder=f;
 
 document.querySelectorAll(".menu button").forEach(b=>{
 b.classList.remove("active");
 
-const buttonText = b.textContent.toLowerCase();
-const folderText = f.toLowerCase();
-
-if(buttonText.includes(folderText) || folderText.includes(buttonText)){
+if(b.textContent.toLowerCase().includes(f.toLowerCase())){
 b.classList.add("active");
 }
 });
