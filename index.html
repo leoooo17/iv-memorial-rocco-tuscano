@@ -98,7 +98,7 @@ margin: 0 8px;
 }
 
 /* =========================
-   SEZIONE GALLERY E MENU
+   SEZIONE GALLERY 
 ========================= */
 .gallery-section {
 padding: 40px 0;
@@ -179,49 +179,6 @@ transform: translateX(-50%);
 .menu button.active{ color:#0b3d91; background: transparent; }
 .menu button.active::after { width: 70%; }
 
-/* =========================
-   SEZIONE FILTRI PARTITE
-========================= */
-.filter-container {
-display: flex;
-justify-content: center;
-gap: 10px;
-padding: 15px 25px 5px;
-overflow-x: auto;
-scrollbar-width: none;
-}
-.filter-container::-webkit-scrollbar { display: none; }
-
-.filter-btn {
-padding: 8px 16px;
-border: 1px solid rgba(11,61,145,0.15);
-background: #ffffff;
-color: #666666;
-border-radius: 20px;
-font-size: 12px;
-font-weight: 700;
-cursor: pointer;
-transition: all 0.2s ease;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-flex-shrink: 0;
-}
-
-.filter-btn:hover {
-background: rgba(11,61,145,0.05);
-color: #0b3d91;
-}
-
-.filter-btn.active {
-background: #0b3d91;
-color: #ffffff;
-border-color: #0b3d91;
-box-shadow: 0 4px 10px rgba(11,61,145,0.2);
-}
-
-/* =========================
-   GRID FOTO
-========================= */
 .gallery-grid{
 display:grid;
 grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
@@ -237,10 +194,6 @@ box-shadow:0 10px 30px rgba(0,0,0,0.08);
 transition: 0.3s ease;
 position:relative;
 aspect-ratio: 4/3;
-}
-
-.photo-card.hidden {
-display: none;
 }
 
 .photo-card:hover{
@@ -315,7 +268,7 @@ font-weight: bold;
 cursor: pointer;
 }
 
-#folderSelect, #tagSelect{
+#folderSelect{
 width:100%;
 font-size:13px;
 padding:8px;
@@ -372,11 +325,10 @@ transition: 0.2s;
 
 @media (max-width: 600px) {
 .hero-text h1{font-size:35px;}
-.hero-subtitle{font-size:13px; letter-spacing: 2px;}
+.hero-subtitle{font-size:13px; letter-spacing: 2px;} /* Ridotto il distanziamento sui telefoni piccoli */
 .menu { justify-content: space-between; overflow-x: hidden; white-space: normal; padding: 0; width: 100%; }
 .menu button { flex: 1; padding: 14px 2px; font-size: 10px; letter-spacing: 0px; text-align: center; }
 .menu button.active::after { width: 85%; }
-.filter-container { justify-content: flex-start; padding: 10px 15px 5px; }
 .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
 }
 </style>
@@ -393,7 +345,6 @@ transition: 0.2s;
 <button onclick="login()">Accedi</button>
 
 <div id="uploadBox" style="display:none; margin-top:6px;">
-<label style="font-size: 11px; font-weight: bold; color: #666;">Fase Torneo:</label>
 <select id="folderSelect">
 <option value="gironi">GIRONI</option>
 <option value="ottavi">OTTAVI</option>
@@ -401,15 +352,6 @@ transition: 0.2s;
 <option value="semifinale">SEMIFINALI</option>
 <option value="finale">FINALE</option>
 </select>
-
-<label style="font-size: 11px; font-weight: bold; color: #666;">Seleziona Partita/Turno:</label>
-<select id="tagSelect">
-<option value="giornata1">1ª Giornata</option>
-<option value="giornata2">2ª Giornata</option>
-<option value="giornata3">3ª Giornata</option>
-<option value="premiazioni">Premiazioni</option>
-</select>
-
 <button onclick="uploadPhoto()" style="background:#FFD700; color:#0b3d91; margin-top:5px;">📸 Carica Foto</button>
 </div>
 </div>
@@ -418,6 +360,7 @@ transition: 0.2s;
   <div class="hero-text">
     <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
+    <!-- NUOVO SOTTOTITOLO STILIZZATO -->
     <p class="hero-subtitle">Sport<span>•</span>Emozione<span>•</span>Ricordo</p>
   </div>
 </header>
@@ -425,22 +368,12 @@ transition: 0.2s;
 <section class="gallery-section">
     <div class="gallery-title">Gallery</div>
 
-    <!-- MENU PRINCIPALE (FASI) -->
     <div class="menu">
         <button id="btn-gironi" onclick="setFolder('gironi')" class="active">GIRONI</button>
         <button id="btn-ottavi" onclick="setFolder('ottavi')">OTTAVI</button>
         <button id="btn-quarti" onclick="setFolder('quarti')">QUARTI</button>
         <button id="btn-semifinale" onclick="setFolder('semifinale')">SEMIFINALI</button>
         <button id="btn-finale" onclick="setFolder('finale')">FINALE</button>
-    </div>
-
-    <!-- FILTRI AGGIORNATI PER LE PARTITE -->
-    <div class="filter-container">
-        <button class="filter-btn active" onclick="filterPhotos('all', this)">Tutte le foto</button>
-        <button class="filter-btn" onclick="filterPhotos('giornata1', this)">1ª Giornata</button>
-        <button class="filter-btn" onclick="filterPhotos('giornata2', this)">2ª Giornata</button>
-        <button class="filter-btn" onclick="filterPhotos('giornata3', this)">3ª Giornata</button>
-        <button class="filter-btn" onclick="filterPhotos('premiazioni', this)">Premiazioni</button>
     </div>
 
     <div id="gallery"></div>
@@ -482,30 +415,7 @@ document.querySelectorAll(".menu button").forEach(b => b.classList.remove("activ
 const activeBtn = document.getElementById("btn-" + f);
 if(activeBtn) activeBtn.classList.add("active");
 
-// Torna su "Tutte" quando cambi fase
-document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-document.querySelector(".filter-btn[onclick*='all']").classList.add("active");
-
 fetchPhotos();
-}
-
-function filterPhotos(tag, buttonElement) {
-    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-    buttonElement.classList.add("active");
-
-    const cards = document.querySelectorAll(".photo-card");
-    cards.forEach(card => {
-        if (tag === "all") {
-            card.classList.remove("hidden");
-        } else {
-            const cardTags = card.getAttribute("data-tags").split(",");
-            if (cardTags.includes(tag)) {
-                card.classList.remove("hidden");
-            } else {
-                card.classList.add("hidden");
-            }
-        }
-    });
 }
 
 function fetchPhotos(){
@@ -521,7 +431,7 @@ fetch(url)
 })
 .then(data => {
     if(!data.resources || data.resources.length === 0){
-        g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NON E' PRESENTE NESSUNA IMMAGINE AL MOMENTO</p>";
+        g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NON E' PRESENTE NESSUNA IMMAGINE...</p>";
         return;
     }
 
@@ -533,17 +443,15 @@ fetch(url)
         const originalUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/v${p.version}/${p.public_id}.${p.format}`;
         const optimizedThumbUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_500,c_scale/v${p.version}/${p.public_id}.${p.format}`;
         
-        const tagsAttribute = p.tags ? p.tags.join(",") : "";
-
         return `
-        <div class="photo-card" data-tags="${tagsAttribute}">
+        <div class="photo-card">
         <img src="${optimizedThumbUrl}" onclick="openImg('${originalUrl}')" alt="Foto Torneo" loading="lazy">
         </div>`;
     }).join("")}
     </div>`;
 })
 .catch(err => {
-    g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NON E' PRESENTE NESSUNA IMMAGINE AL MOMENTO</p>";
+    g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NON E' PRESENTE NESSUNA IMMAGINE...</p>";
 });
 }
 
@@ -561,13 +469,12 @@ document.body.style.overflow="hidden";
 
 function uploadPhoto(){
 let scelta=document.getElementById("folderSelect").value;
-let tagScelto=document.getElementById("tagSelect").value;
 
 let widget=cloudinary.createUploadWidget({
 cloudName: CLOUD_NAME,
 uploadPreset: PRESET_NAME,
 folder: "iv-memorial/" + scelta,
-tags: [scelta, tagScelto]
+tags: [scelta]
 },(err,res)=>{
 if(res&&res.event==="success"){
     setTimeout(() => { fetchPhotos(); }, 1500);
