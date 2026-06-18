@@ -1,11 +1,10 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <title>IV Memorial Rocco Tuscano</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- INCLUSIONE FONTAWESOME PER LE ICONE STILE INSTAGRAM -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
@@ -197,6 +196,8 @@ box-shadow:0 10px 30px rgba(0,0,0,0.08);
 transition: 0.3s ease;
 position:relative;
 aspect-ratio: 4/3;
+user-select: none; /* Evita la selezione blu del testo facendo doppio clic */
+-webkit-user-select: none;
 }
 
 .photo-card:hover{
@@ -215,7 +216,31 @@ transition: 0.4s ease;
 .photo-card:hover img{ transform:scale(1.05); }
 
 /* =========================
-   PULSANTE LIKE STILE INSTAGRAM (RIDOTTO)
+   CUORE ANIMATO DOPPIO CLIC (INSTAGRAM STYLE)
+========================= */
+.insta-heart-overlay {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%) scale(0);
+color: #ffffff;
+font-size: 50px;
+opacity: 0;
+pointer-events: none;
+z-index: 5;
+text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+animation: instaHeartFade 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes instaHeartFade {
+0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+30% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+80% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+}
+
+/* =========================
+   PULSANTE LIKE STILE INSTAGRAM
 ========================= */
 .like-btn {
 position: absolute;
@@ -258,6 +283,35 @@ animation: instagramHeart 0.4s ease-in-out forwards;
 35% { transform: scale(1.3); }
 65% { transform: scale(0.92); }
 100% { transform: scale(1.05); }
+}
+
+/* PULSANTE SCARICA NELL'OVERLAY */
+.download-btn {
+position: absolute;
+bottom: 15px;
+left: 15px;
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(4px);
+border: none;
+border-radius: 50%;
+width: 38px;  
+height: 38px; 
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
+box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+transition: all 0.2s ease;
+z-index: 10;
+font-size: 16px;
+color: #0b3d91;
+text-decoration: none;
+}
+
+.download-btn:hover {
+transform: scale(1.1);
+background: #ffffff;
+color: #082d6b;
 }
 
 /* PANNELLO DI LOGIN */
@@ -527,12 +581,43 @@ function toggleLike(photoId, event) {
             setTimeout(() => {
                 card.remove();
                 if (document.querySelectorAll('.photo-card').length === 0) {
-                    // OPZIONE 2: TESTO CORTO OTTIMIZZATO PER SMARTPHONE
                     document.getElementById("gallery").innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0; font-size:14px; letter-spacing:1px;'>LISTA PREFERITI VUOTA</p>";
                 }
             }, 300);
         }
     }
+}
+
+// FUNZIONE PER IL GESTO DEL DOPPIO CLIC / TOCCO VELOCE
+let lastTap = 0;
+function handlePhotoClick(cardElement, photoId, url) {
+    const now = Date.now();
+    const DOUBLE_PRESS_DELAY = 300;
+    
+    if ((now - lastTap) < DOUBLE_PRESS_DELAY) {
+        // Rilevato doppio clic/tocco: Metti like stile Instagram
+        let likedPhotos = getLikedPhotos();
+        if (!likedPhotos.includes(photoId)) {
+            toggleLike(photoId);
+        }
+        
+        // Crea il cuoricione pop-up al centro della card
+        const heart = document.createElement("div");
+        heart.className = "insta-heart-overlay";
+        heart.innerHTML = `<i class="fa-solid fa-heart" style="color: #ff3040;"></i>`;
+        cardElement.appendChild(heart);
+        
+        // Rimuovi l'elemento del cuore dopo la fine dell'animazione
+        setTimeout(() => { heart.remove(); }, 700);
+    } else {
+        // Singolo clic: apri la foto ingrandita a schermo intero (dopo un piccolissimo delay per evitare conflitti)
+        setTimeout(() => {
+            if (Date.now() - now >= DOUBLE_PRESS_DELAY) {
+                openImg(url, photoId);
+            }
+        }, DOUBLE_PRESS_DELAY);
+    }
+    lastTap = now;
 }
 
 function fetchPhotos(){
@@ -579,8 +664,8 @@ function renderGrid(photos, container, likedPhotos) {
         const isLiked = likedPhotos.includes(pId);
 
         return `
-        <div class="photo-card" id="card-${pId}" style="transition: all 0.3s ease;">
-            <img src="${optimizedThumbUrl}" onclick="openImg('${originalUrl}', '${pId}')" alt="Foto Torneo" loading="lazy">
+        <div class="photo-card" id="card-${pId}" onclick="handlePhotoClick(this, '${pId}', '${originalUrl}')" style="transition: all 0.3s ease;">
+            <img src="${optimizedThumbUrl}" alt="Foto Torneo" loading="lazy">
             <button class="like-btn btn-like-${pId} ${isLiked ? 'liked' : ''}" onclick="toggleLike('${pId}', event)">
                 ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
             </button>
@@ -603,7 +688,6 @@ function showFavorites() {
     });
 
     if(favoritePhotos.length === 0) {
-        // OPZIONE 2: TESTO CORTO OTTIMIZZATO PER SMARTPHONE
         g.innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0; font-size:14px; letter-spacing:1px;'>LISTA PREFERITI VUOTA</p>";
     } else {
         renderGrid(favoritePhotos, g, likedPhotos);
@@ -617,9 +701,14 @@ overlay.className="img-overlay";
 const likedPhotos = getLikedPhotos();
 const isLiked = likedPhotos.includes(pId);
 
+const downloadUrl = url.replace("/upload/", "/upload/fl_attachment/");
+
 overlay.innerHTML=`
-    <div class="img-overlay-wrapper">
+    <div class="img-overlay-wrapper" onclick="handlePhotoClick(this, '${pId}', '${url}')">
         <img src="${url}" id="fullImg">
+        <a class="download-btn" href="${downloadUrl}" download="foto_torneo_${pId}.jpg" onclick="event.stopPropagation();">
+            <i class="fa-solid fa-download"></i>
+        </a>
         <button class="like-btn btn-like-${pId} ${isLiked ? 'liked' : ''}" onclick="toggleLike('${pId}', event)">
             ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
         </button>
