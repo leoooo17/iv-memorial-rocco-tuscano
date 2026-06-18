@@ -99,269 +99,279 @@ font-size:18px;
 }
 
 /* =========================
-   GALLERY TITLE
+   SEZIONE GALLERY (RIVISITATA)
 ========================= */
+.gallery-section {
+padding: 60px 20px;
+max-width: 1200px;
+margin: 0 auto;
+}
+
 .gallery-title{
 text-align:center;
-font-size:22px;
-font-weight:700;
-letter-spacing:3px;
-margin-top:25px;
-margin-bottom:10px;
+font-size:28px;
+font-weight:800;
+letter-spacing:4px;
+margin-bottom:30px;
 color:#0b3d91;
+text-transform: uppercase;
 position:relative;
 }
 
 .gallery-title::after{
 content:"";
 display:block;
-width:60px;
-height:3px;
-background:#0b3d91;
-margin:8px auto 0;
+width:50px;
+height:4px;
+background:#FFD700; /* Richiamo oro dell'header */
+margin:10px auto 0;
 border-radius:10px;
-transition:0.3s;
+transition:0.3s ease;
 }
 
 .gallery-title:hover::after{
-width:110px;
+width:90px;
 }
 
-/* =========================
-   MENU + BOTTONI CARTELLE
-========================= */
+/* MENU FILTRI */
 .menu{
 position:sticky;
-top:0;
-background:rgba(255,255,255,0.92);
-backdrop-filter: blur(14px);
+top:15px;
+background:rgba(255, 255, 255, 0.85);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
 z-index:999;
-padding:14px 10px;
+padding:10px;
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-gap:10px;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
-border-bottom:1px solid rgba(0,90,180,0.12);
+gap:12px;
+border-radius: 999px;
+box-shadow:0 10px 30px rgba(11,61,145,0.08);
+border:1px solid rgba(11,61,145,0.1);
+margin-bottom: 40px;
 }
 
-button{
-padding:9px 16px;
+.menu button{
+padding:10px 22px;
 border-radius:999px;
 border:2px solid #0b3d91;
-background:white;
+background:transparent;
 color:#0b3d91;
 cursor:pointer;
 font-weight:700;
 font-size:13px;
-transition:0.25s ease;
+letter-spacing: 1px;
+transition:all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-button:hover{
+.menu button:hover{
 background:#0b3d91;
 color:#FFD700;
-transform:translateY(-2px) scale(1.06);
+transform:translateY(-2px);
+box-shadow: 0 4px 12px rgba(11,61,145,0.2);
 }
 
-button.active{
-background:#FFD700;
-color:#0b3d91;
-border-color:#FFD700;
+.menu button.active{
+background:#0b3d91;
+color:#FFD700;
+border-color:#0b3d91;
+box-shadow: 0 4px 15px rgba(11,61,145,0.3);
 }
 
-
-/* =========================
-   CHAMPIONS GALLERY
-========================= */
-
+/* GRID & CARD FOTO */
 .gallery-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
-gap:18px;
-padding:25px;
-max-width:1200px;
-margin:auto;
+grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+gap:25px;
 }
 
 .photo-card{
-background:linear-gradient(145deg,#ffffff,#eef3ff);
-border-radius:18px;
+background:#ffffff;
+border-radius:16px;
 overflow:hidden;
-box-shadow:0 12px 35px rgba(0,0,0,0.15);
-transition:0.35s ease;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+transition:all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 position:relative;
-border:1px solid rgba(11,61,145,0.15);
+border:1px solid rgba(0,0,0,0.04);
+aspect-ratio: 4/3;
 }
 
 .photo-card:hover{
-transform:translateY(-8px);
-box-shadow:0 25px 60px rgba(0,0,0,0.2);
+transform:translateY(-6px);
+box-shadow:0 20px 40px rgba(11,61,145,0.15);
 }
 
 .photo-card img{
 width:100%;
-height:240px;
+height:100%;
 object-fit:cover;
 cursor:pointer;
-transition:0.5s ease;
-filter:contrast(1.05) saturate(1.1);
+transition:transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .photo-card:hover img{
-transform:scale(1.08);
+transform:scale(1.05);
 }
 
-/* DELETE BUTTON (più elegante) */
+/* DELETE BUTTON */
 .delete-btn{
 position:absolute;
-top:10px;
-right:10px;
-padding:6px 8px;
-font-size:12px;
+top:12px;
+right:12px;
+padding:8px 10px;
+font-size:14px;
 border:none;
-border-radius:8px;
-background:rgba(231,76,60,0.95);
+border-radius:50%;
+background:rgba(231,76,60,0.9);
 color:white;
 cursor:pointer;
 transition:0.2s ease;
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 .delete-btn:hover{
 transform:scale(1.1);
+background:rgb(231,76,60);
 }
 
-/* animazione ingresso foto */
+/* Animazione ingresso foto */
 .photo-card{
-animation:fadeChamp 0.4s ease;
+animation:fadeChamp 0.5s ease backwards;
 }
 
 @keyframes fadeChamp{
-from{
-opacity:0;
-transform:translateY(12px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-.photo-card{
-animation:fadeChamp 0.4s ease;
-}
-
-@keyframes fadeChamp{
-from{
-opacity:0;
-transform:translateY(12px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+from{ opacity:0; transform:translateY(20px); }
+to{ opacity:1; transform:translateY(0); }
 }
    
-/* LOGIN (MODIFICATO) */
+/* PANNELLO LOGIN ADM */
 #menuBtn{
 position:fixed;
-top:10px;
-left:10px;
+top:15px;
+left:15px;
 z-index:2000;
-padding:10px 14px;
+padding:10px 16px;
 background:#0b3d91;
 color:white;
 border:none;
-border-radius:10px;
+border-radius:30px;
+font-weight: bold;
 cursor:pointer;
+box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+transition: 0.2s;
 }
+#menuBtn:hover{ transform: scale(1.05); background:#082d6b; }
 
 #loginBox{
 position:fixed;
-top:55px;
-left:10px;
+top:65px;
+left:15px;
 z-index:2000;
 background:white;
-padding:8px;
-border-radius:10px;
+padding:12px;
+border-radius:14px;
 display:none;
-width:140px;
-box-shadow:0 6px 20px rgba(0,0,0,0.15);
+width:180px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+border: 1px solid rgba(11,61,145,0.1);
 }
 
 #loginBox input{
 width:100%;
-padding:5px;
-font-size:12px;
+padding:8px;
+font-size:13px;
 border:1px solid #ddd;
-border-radius:6px;
-margin-bottom:6px;
+border-radius:8px;
+margin-bottom:8px;
 box-sizing:border-box;
 }
 
 #loginBox button{
 width:100%;
-padding:6px;
-font-size:12px;
-border-radius:6px;
-}
-
-#gallery{
-width:100%;
-padding-bottom:40px;
+padding:8px;
+font-size:13px;
+border-radius:8px;
+background: #0b3d91;
+color: white;
+border: none;
+font-weight: bold;
+cursor: pointer;
 }
 
 #folderSelect{
 width:100%;
-font-size:12px;
-padding:5px;
+font-size:13px;
+padding:8px;
 box-sizing:border-box;
+border-radius:8px;
+margin-bottom:8px;
+border: 1px solid #ddd;
 }
 
-/* OVERLAY FOTO */
+/* OVERLAY VISUALIZZAZIONE FOTO */
 .img-overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.95);
+background:rgba(11, 40, 90, 0.95); /* Tonalità blu scuro invece di nero assoluto */
 display:flex;
 justify-content:center;
 align-items:center;
 z-index:99999;
-cursor:pointer;
+cursor:zoom-out;
+animation: fadeIn 0.3s ease;
 }
 
 .img-overlay img{
-max-width:95%;
-max-height:95%;
-border-radius:8px;
+max-width:90%;
+max-height:90vh;
+border-radius:12px;
+box-shadow:0 20px 50px rgba(0,0,0,0.5);
+animation: fadeUp 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-/* PH */
+@keyframes fadeIn {
+from { opacity: 0; } to { opacity: 1; }
+}
+
+/* PH BUTTON */
 .ig-fotografo{
 position:fixed;
-top:12px;
-right:12px;
+top:15px;
+right:15px;
 z-index:3000;
-background:#0b3d91;
-color:white;
-padding:10px 14px;
+background:rgba(255,255,255,0.9);
+color:#0b3d91;
+padding:10px 18px;
 border-radius:999px;
 text-decoration:none;
 font-size:13px;
-font-weight:600;
+font-weight:700;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+transition: 0.3s ease;
+border: 1px solid rgba(11,61,145,0.1);
+}
+
+.ig-fotografo:hover{
+background:#0b3d91;
+color:#FFD700;
+transform: translateY(-2px);
 }
 
 /* RESPONSIVE */
 @media (max-width: 900px){
-.hero-text h1{font-size:40px;}
+.hero-text h1{font-size:48px;}
+.menu { border-radius: 20px; top: 10px; margin-bottom: 25px; }
 }
 
-@media (max-width: 600px){
-.hero-text h1{font-size:50px;}
-.hero-subtitle{font-size:17px;}
-.hero-badge{font-size:10px;}
-}
-
-@media (max-width: 400px){
-.hero-text h1{font-size:35px;}
+@media (max-width: 600px) {
+.hero-text h1{font-size:38px;}
+.hero-subtitle{font-size:16px;}
+.gallery-section { padding: 40px 15px; }
+.menu button { padding: 8px 14px; font-size: 12px; }
 }
 
 </style>
@@ -390,7 +400,7 @@ target="_blank">
 <option value="finale">FINALE</option>
 </select>
 
-<button onclick="uploadPhoto()">📸 Carica</button>
+<button onclick="uploadPhoto()" style="background:#FFD700; color:#0b3d91; margin-top:5px;">📸 Carica</button>
 </div>
 </div>
 
@@ -406,17 +416,19 @@ target="_blank">
   </div>
 </header>
 
-<div class="gallery-title">GALLERY</div>
+<section class="gallery-section">
+    <div class="gallery-title">Gallery</div>
 
-<div class="menu">
-<button onclick="setFolder('gironi')">GIRONI</button>
-<button onclick="setFolder('ottavi')">OTTAVI</button>
-<button onclick="setFolder('quarti')">QUARTI</button>
-<button onclick="setFolder('semifinale')">SEMIFINALI</button>
-<button onclick="setFolder('finale')">FINALE</button>
-</div>
+    <div class="menu">
+        <button onclick="setFolder('gironi')" class="active">GIRONI</button>
+        <button onclick="setFolder('ottavi')">OTTAVI</button>
+        <button onclick="setFolder('quarti')">QUARTI</button>
+        <button onclick="setFolder('semifinale')">SEMIFINALI</button>
+        <button onclick="setFolder('finale')">FINALE</button>
+    </div>
 
-<div id="gallery"></div>
+    <div id="gallery"></div>
+</section>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -438,6 +450,9 @@ const db = firebase.firestore();
 
 let currentFolder = "gironi";
 let isAdmin = false;
+
+// Avvia il primo render automatico al caricamento della pagina
+window.onload = () => { render(); };
 
 function toggleLogin(){
 document.getElementById("loginBox").style.display =
@@ -480,7 +495,7 @@ db.collection("photos").where("tag","==",currentFolder).get()
 .then(snapshot=>{
 
 if(snapshot.empty){
-g.innerHTML="<p style='text-align:center'>Nessuna foto</p>";
+g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; margin-top:40px;'>Nessuna foto presente in questa categoria.</p>";
 return;
 }
 
@@ -493,9 +508,9 @@ photos.sort((a,b)=>b.time-a.time);
 
 g.innerHTML=`
 <div class="gallery-grid">
-${photos.map(p=>`
-<div class="photo-card">
-<img src="${p.url}" onclick="openImg('${p.url}')">
+${photos.map((p, index)=>`
+<div class="photo-card" style="animation-delay: ${index * 0.05}s">
+<img src="${p.url}" onclick="openImg('${p.url}')" alt="Foto Torneo">
 ${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>`:""}
 </div>
 `).join("")}
@@ -507,39 +522,15 @@ function openImg(url){
 const overlay=document.createElement("div");
 overlay.className="img-overlay";
 overlay.innerHTML=`<img src="${url}">`;
-overlay.onclick=()=>overlay.remove();
+overlay.onclick=()=>{
+  overlay.remove();
+  document.body.style.overflow="auto";
+};
 document.body.appendChild(overlay);
 document.body.style.overflow="hidden";
 }
 
 function deletePhoto(id){
 if(!isAdmin)return;
-db.collection("photos").doc(id).delete().then(render);
-}
-
-function uploadPhoto(){
-let scelta=document.getElementById("folderSelect").value;
-
-let widget=cloudinary.createUploadWidget({
-cloudName:"dagfasmlx",
-uploadPreset:"iv-memorial",
-folder:"iv-memorial/"+scelta
-},(err,res)=>{
-if(res&&res.event==="success"){
-db.collection("photos").add({
-url:res.info.secure_url,
-tag:scelta,
-time:Date.now()
-});
-render();
-}
-});
-
-widget.open();
-}
-
-</script>
-
-</body>
-</html>
-
+if(confirm("Sei sicuro di voler eliminare questa foto?")) {
+  db.collection("photos").doc(id).delete().
