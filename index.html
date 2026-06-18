@@ -431,7 +431,7 @@ fetch(url)
 })
 .then(data => {
     if(!data.resources || data.resources.length === 0){
-        g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NON E' PRESENTE NESSUNA IMMAGINE AL MOMENTO</p>";
+        g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>NON E' PRESENTE NESSUNA IMMAGINE...</p>";
         return;
     }
 
