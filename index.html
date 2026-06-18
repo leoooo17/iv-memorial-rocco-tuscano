@@ -1,3 +1,4 @@
+CODICE COMPLETO 
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -215,7 +216,7 @@ transition: 0.4s ease;
 .photo-card:hover img{ transform:scale(1.05); }
 
 /* =========================
-   PULSANTE LIKE STILE INSTAGRAM
+   PULSANTE LIKE STILE INSTAGRAM (RIDOTTO)
 ========================= */
 .like-btn {
 position: absolute;
@@ -258,64 +259,6 @@ animation: instagramHeart 0.4s ease-in-out forwards;
 35% { transform: scale(1.3); }
 65% { transform: scale(0.92); }
 100% { transform: scale(1.05); }
-}
-
-/* PULSANTE INTERFACCIA CONDIVISIONE IPHONE (iOS STILE) */
-.share-btn {
-position: absolute;
-bottom: 15px;
-left: 15px;
-background: rgba(255, 255, 255, 0.95);
-backdrop-filter: blur(4px);
-border: none;
-border-radius: 50%;
-width: 38px;  
-height: 38px; 
-display: flex;
-justify-content: center;
-align-items: center;
-cursor: pointer;
-box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-transition: all 0.2s ease;
-z-index: 10;
-}
-
-/* Icona quadrata con freccia verso l'alto tipica dell'iPhone */
-.ios-share-icon {
-width: 14px;
-height: 14px;
-border: 2px solid #0b3d91;
-border-radius: 2px;
-position: relative;
-margin-top: 4px;
-box-sizing: border-box;
-}
-
-.ios-share-icon::before {
-content: "";
-position: absolute;
-top: -7px;
-left: 3px;
-width: 0;
-height: 0;
-border-left: 4px solid transparent;
-border-right: 4px solid transparent;
-border-bottom: 5px solid #0b3d91;
-}
-
-.ios-share-icon::after {
-content: "";
-position: absolute;
-top: -3px;
-left: 4px;
-width: 2px;
-height: 6px;
-background: #0b3d91;
-}
-
-.share-btn:hover {
-transform: scale(1.1);
-background: #ffffff;
 }
 
 /* PANNELLO DI LOGIN */
@@ -585,6 +528,7 @@ function toggleLike(photoId, event) {
             setTimeout(() => {
                 card.remove();
                 if (document.querySelectorAll('.photo-card').length === 0) {
+                    // OPZIONE 2: TESTO CORTO OTTIMIZZATO PER SMARTPHONE
                     document.getElementById("gallery").innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0; font-size:14px; letter-spacing:1px;'>LISTA PREFERITI VUOTA</p>";
                 }
             }, 300);
@@ -660,27 +604,10 @@ function showFavorites() {
     });
 
     if(favoritePhotos.length === 0) {
+        // OPZIONE 2: TESTO CORTO OTTIMIZZATO PER SMARTPHONE
         g.innerHTML = "<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0; font-size:14px; letter-spacing:1px;'>LISTA PREFERITI VUOTA</p>";
     } else {
         renderGrid(favoritePhotos, g, likedPhotos);
-    }
-}
-
-function sharePhoto(url, event) {
-    if(event) event.stopPropagation();
-
-    if (navigator.share) {
-        navigator.share({
-            title: 'Foto IV Memorial Rocco Tuscano',
-            text: 'Guarda questa foto del torneo!',
-            url: url
-        }).catch(err => console.log("Errore condivisione:", err));
-    } else {
-        navigator.clipboard.writeText(url).then(() => {
-            alert("Link della foto copiato negli appunti!");
-        }).catch(err => {
-            alert("Impossibile copiare il link. Aprilo direttamente: " + url);
-        });
     }
 }
 
@@ -694,10 +621,6 @@ const isLiked = likedPhotos.includes(pId);
 overlay.innerHTML=`
     <div class="img-overlay-wrapper">
         <img src="${url}" id="fullImg">
-        <!-- PULSANTE CONDIVIDI IPHONE STYLE -->
-        <button class="share-btn" onclick="sharePhoto('${url}', event)">
-            <div class="ios-share-icon"></div>
-        </button>
         <button class="like-btn btn-like-${pId} ${isLiked ? 'liked' : ''}" onclick="toggleLike('${pId}', event)">
             ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
         </button>
