@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-
 body{
 margin:0;
 font-family:Arial, sans-serif;
@@ -24,8 +23,7 @@ justify-content:center;
 align-items:center;
 text-align:center;
 position:relative;
-background:url("https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg")
-center/cover no-repeat;
+background:url("https://i.postimg.cc/xCrh11Qs/Whats-App-Image-2026-06-09-at-17-06-44.jpg") center/cover no-repeat;
 overflow:hidden;
 }
 
@@ -33,11 +31,7 @@ header::before{
 content:"";
 position:absolute;
 inset:0;
-background:linear-gradient(
-180deg,
-rgba(0,40,90,0.65),
-rgba(0,0,0,0.55)
-);
+background:linear-gradient(180deg, rgba(0,40,90,0.65), rgba(0,0,0,0.55));
 }
 
 .hero-text{
@@ -64,7 +58,6 @@ background:rgba(255,255,255,0.9);
 margin-bottom:14px;
 }
 
-/* TITLE */
 .hero-text h1{
 font-size:68px;
 color:#FFD700;
@@ -85,11 +78,8 @@ border-radius:10px;
 transition:0.3s;
 }
 
-.hero-text h1:hover::after{
-width:160px;
-}
+.hero-text h1:hover::after{ width:160px; }
 
-/* SUBTITLE */
 .hero-subtitle{
 color:rgba(255,255,255,0.92);
 max-width:780px;
@@ -127,7 +117,6 @@ margin:8px auto 0;
 border-radius:10px;
 }
 
-/* BANNER MENU STRUTTURATO */
 .menu{
 position:sticky;
 top:0;
@@ -144,9 +133,7 @@ scrollbar-width: none;
 padding: 0;
 }
 
-.menu::-webkit-scrollbar {
-display: none;
-}
+.menu::-webkit-scrollbar { display: none; }
 
 .menu button{
 padding:18px 28px;
@@ -168,7 +155,6 @@ color:#0b3d91;
 background: rgba(11,61,145,0.03);
 }
 
-/* Indicatore di selezione lineare sotto il testo */
 .menu button::after {
 content: "";
 position: absolute;
@@ -181,16 +167,9 @@ transition: all 0.3s ease;
 transform: translateX(-50%);
 }
 
-.menu button.active{
-color:#0b3d91;
-background: transparent;
-}
+.menu button.active{ color:#0b3d91; background: transparent; }
+.menu button.active::after { width: 70%; }
 
-.menu button.active::after {
-width: 70%; 
-}
-
-/* GRID FOTO */
 .gallery-grid{
 display:grid;
 grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
@@ -221,30 +200,9 @@ cursor:pointer;
 transition: 0.4s ease;
 }
 
-.photo-card:hover img{
-transform:scale(1.05);
-}
+.photo-card:hover img{ transform:scale(1.05); }
 
-/* DELETE BUTTON */
-.delete-btn{
-position:absolute;
-top:10px;
-right:10px;
-padding:6px 10px;
-font-size:14px;
-border:none;
-border-radius:8px;
-background:rgba(231,76,60,0.9);
-color:white;
-cursor:pointer;
-transition:0.2s ease;
-}
-
-.delete-btn:hover{
-transform:scale(1.1);
-}
-
-/* PANNELLO DI LOGIN (In alto a sinistra) */
+/* PANNELLO DI LOGIN */
 #menuBtn{
 position:fixed;
 top:15px;
@@ -262,10 +220,7 @@ box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 transition: 0.2s;
 }
 
-#menuBtn:hover{
-background:#082d6b;
-transform: scale(1.03);
-}
+#menuBtn:hover{ background:#082d6b; transform: scale(1.03); }
 
 #loginBox{
 position:fixed;
@@ -349,14 +304,9 @@ box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 transition: 0.2s;
 }
 
-.ig-fotografo:hover{
-background:#0b3d91;
-color:#FFD700;
-}
+.ig-fotografo:hover{ background:#0b3d91; color:#FFD700; }
 
-/* ===================================================
-   MODIFICHE RESPONSIVE PER SMARTPHONE
-   =================================================== */
+/* RESPONSIVE */
 @media (max-width: 900px){
 .hero-text h1{font-size:45px;}
 .menu { justify-content: flex-start; padding: 0 10px; }
@@ -366,47 +316,17 @@ color:#FFD700;
 @media (max-width: 600px) {
 .hero-text h1{font-size:35px;}
 .hero-subtitle{font-size:16px;}
-
-/* Barra categorie fissa e senza scorrimento su mobile */
-.menu {
-  justify-content: space-between;
-  overflow-x: hidden;
-  white-space: normal;
-  padding: 0;
-  width: 100%;
+.menu { justify-content: space-between; overflow-x: hidden; white-space: normal; padding: 0; width: 100%; }
+.menu button { flex: 1; padding: 14px 2px; font-size: 10px; letter-spacing: 0px; text-align: center; }
+.menu button.active::after { width: 85%; }
+.gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
 }
-
-/* Distribuzione equa dei pulsanti */
-.menu button {
-  flex: 1;
-  padding: 14px 2px;
-  font-size: 10px;
-  letter-spacing: 0px;
-  text-align: center;
-}
-
-.menu button.active::after {
-  width: 85%;
-}
-
-/* Griglia a 2 colonne affiancate su mobile */
-.gallery-grid {
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 15px;
-}
-}
-
 </style>
 </head>
 
 <body>
 
-<a class="ig-fotografo"
-href="https://www.instagram.com/alessio__orlando"
-target="_blank">
-📸 PH Alessio Orlando
-</a>
+<a class="ig-fotografo" href="https://www.instagram.com/alessio__orlando" target="_blank">📸 PH Alessio Orlando</a>
 
 <button id="menuBtn" onclick="toggleLogin()">☰ Menu</button>
 
@@ -422,7 +342,6 @@ target="_blank">
 <option value="semifinale">SEMIFINALI</option>
 <option value="finale">FINALE</option>
 </select>
-
 <button onclick="uploadPhoto()" style="background:#FFD700; color:#0b3d91; margin-top:5px;">📸 Carica Foto</button>
 </div>
 </div>
@@ -430,12 +349,8 @@ target="_blank">
 <header>
   <div class="hero-text">
     <div class="hero-badge">TORNEO UFFICIALE • EDIZIONE 2026</div>
-
     <h1>IV MEMORIAL<br>ROCCO TUSCANO</h1>
-
-    <p class="hero-subtitle">
-      Sport, emozione e ricordo.
-    </p>
+    <p class="hero-subtitle">Sport, emozione e ricordo.</p>
   </div>
 </header>
 
@@ -453,28 +368,16 @@ target="_blank">
     <div id="gallery"></div>
 </section>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
 <script>
-
-const firebaseConfig = {
-apiKey: "AIzaSyBdcApiH4G4kuSUKxIxQhhmq_fiLNRerp8",
-authDomain: "memorial-rocco-tuscano.firebaseapp.com",
-projectId: "memorial-rocco-tuscano",
-storageBucket: "memorial-rocco-tuscano.firebasestorage.app",
-messagingSenderId: "72206140774",
-appId: "1:72206140774:web:ac817e3fcd7107e53e34a7"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const CLOUD_NAME = "dagfasmlx";
+const PRESET_NAME = "iv-memorial";
 
 let currentFolder = "gironi";
 let isAdmin = false;
 
-window.onload = () => { render(); };
+window.onload = () => { fetchPhotos(); };
 
 function toggleLogin(){
 const box = document.getElementById("loginBox");
@@ -486,7 +389,6 @@ const pass=document.getElementById("pass").value;
 if(pass==="alessio2026"){
 isAdmin=true;
 document.getElementById("uploadBox").style.display="block";
-render();
 } else {
 alert("Password errata");
 }
@@ -498,52 +400,49 @@ if(e.key==="Enter") login();
 
 function setFolder(f){
 currentFolder = f;
+document.querySelectorAll(".menu button").forEach(b => b.classList.remove("active"));
+const activeBtn = document.getElementById("btn-" + f);
+if(activeBtn) activeBtn.classList.add("active");
 
-document.querySelectorAll(".menu button").forEach(b => {
-b.classList.remove("active");
-});
-
-const activeQueryButton = document.getElementById("btn-" + f);
-if(activeQueryButton) {
-  activeQueryButton.classList.add("active");
+fetchPhotos();
 }
 
-render();
-}
-
-function render(){
+// Questa funzione interroga direttamente Cloudinary senza passare da database esterni
+function fetchPhotos(){
 const g=document.getElementById("gallery");
-g.innerHTML="";
+g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>Caricamento immagini...</p>";
 
-// Richiesta ottimizzata: ordina direttamente sul server di Firebase
-db.collection("photos")
-  .where("tag","==",currentFolder)
-  .orderBy("time", "desc")
-  .get()
-.then(snapshot=>{
+// Cloudinary genera in automatico un file JSON con la lista dei file taggati
+const url = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/${currentFolder}.json?v=${Date.now()}`;
 
-if(snapshot.empty){
-g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>Nessuna foto presente in questa categoria.</p>";
-return;
-}
-
-let photos=[];
-snapshot.forEach(doc=>{
-photos.push({id:doc.id,...doc.data()});
-});
-
-g.innerHTML=`
-<div class="gallery-grid">
-${photos.map(p=>`
-<div class="photo-card">
-<img src="${p.url}" onclick="openImg('${p.url}')" alt="Foto">
-${isAdmin?`<button class="delete-btn" onclick="deletePhoto('${p.id}')">🗑</button>`:""}
-</div>
-`).join("")}
-</div>`;
+fetch(url)
+.then(res => {
+    if(!res.ok) throw new Error("Nessuna foto");
+    return res.json();
 })
-.catch(error => {
-  console.error("Errore Firebase:", error);
+.then(data => {
+    if(!data.resources || data.resources.length === 0){
+        g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>Nessuna foto presente in questa categoria.</p>";
+        return;
+    }
+
+    // Ordiniamo le foto dalle più recenti alle più vecchie
+    let photos = data.resources.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    g.innerHTML=`
+    <div class="gallery-grid">
+    ${photos.map(p=>{
+        // Costruiamo l'URL corretto dell'immagine originale
+        const imgUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/v${p.version}/${p.public_id}.${p.format}`;
+        return `
+        <div class="photo-card">
+        <img src="${imgUrl}" onclick="openImg('${imgUrl}')" alt="Foto Torneo">
+        </div>`;
+    }).join("")}
+    </div>`;
+})
+.catch(err => {
+    g.innerHTML="<p style='text-align:center; color:#0b3d91; font-weight:bold; padding:40px 0;'>Nessuna foto presente in questa categoria.</p>";
 });
 }
 
@@ -552,41 +451,31 @@ const overlay=document.createElement("div");
 overlay.className="img-overlay";
 overlay.innerHTML=`<img src="${url}">`;
 overlay.onclick=()=>{
-  overlay.remove();
-  document.body.style.overflow="auto";
+    overlay.remove();
+    document.body.style.overflow="auto";
 };
 document.body.appendChild(overlay);
 document.body.style.overflow="hidden";
-}
-
-function deletePhoto(id){
-if(!isAdmin)return;
-if(confirm("Vuoi cancellare definitivamente questa foto?")) {
-  db.collection("photos").doc(id).delete().then(render);
-}
 }
 
 function uploadPhoto(){
 let scelta=document.getElementById("folderSelect").value;
 
 let widget=cloudinary.createUploadWidget({
-cloudName:"dagfasmlx",
-uploadPreset:"iv-memorial",
-folder:"iv-memorial/"+scelta
+cloudName: CLOUD_NAME,
+uploadPreset: PRESET_NAME,
+folder: "iv-memorial/" + scelta,
+// Assegniamo alla foto un "tag" uguale al nome della categoria (gironi, ottavi, ecc.)
+tags: [scelta] 
 },(err,res)=>{
 if(res&&res.event==="success"){
-db.collection("photos").add({
-url:res.info.secure_url,
-tag:scelta,
-time:Date.now()
-});
-render();
+    // Aspettiamo un secondo per dare tempo a Cloudinary di elaborare il tag, poi aggiorniamo la vista
+    setTimeout(() => { fetchPhotos(); }, 1500);
 }
 });
 
 widget.open();
 }
-
 </script>
 
 </body>
