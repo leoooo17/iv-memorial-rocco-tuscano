@@ -391,6 +391,18 @@ font-size: 16px;
 background: rgba(255, 255, 255, 0.95);
 }
 
+/* RITARDO COMPARSA CUORE OVERLAY */
+.delayed-like {
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s ease;
+}
+
+.delayed-like.show {
+opacity: 1;
+visibility: visible;
+}
+
 /* Pulsanti delle frecce laterali standard (PC) */
 .nav-arrow {
 position: absolute;
@@ -811,20 +823,32 @@ function openImg(url, pId){
     const isLiked = likedPhotos.includes(pId);
 
     overlay.innerHTML=`
-        <button class="nav-arrow arrow-left" onclick="navigateGallery(-1, event)"><i class="fa-solid fa-chevron-left"></i></button>
-        <div class="img-overlay-wrapper" onclick="event.stopPropagation(); handlePhotoClick(this.parentElement, currentDisplayedPhotos[currentPhotoIndex].public_id.replace(/\\//g, '_'), currentImgUrl(), true)">
-            <img src="${url}" id="fullImg">
-            <button class="like-btn btn-like-${pId} ${isLiked ? 'liked' : ''}" onclick="toggleLike(currentDisplayedPhotos[currentPhotoIndex].public_id.replace(/\\//g, '_'), event)">
-                ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
-            </button>
-        </div>
-        <button class="nav-arrow arrow-right" onclick="navigateGallery(1, event)"><i class="fa-solid fa-chevron-right"></i></button>
+       <button class="nav-arrow arrow-left" onclick="navigateGallery(-1, event)"><i class="fa-solid fa-chevron-left"></i></button>
+<div class="img-overlay-wrapper" onclick="event.stopPropagation(); handlePhotoClick(this.parentElement, currentDisplayedPhotos[currentPhotoIndex].public_id.replace(/\\//g, '_'), currentImgUrl(), true)">
+    <img src="${url}" id="fullImg">
+
+    <button id="overlayLikeBtn"
+        class="like-btn delayed-like btn-like-${pId} ${isLiked ? 'liked' : ''}"
+        onclick="toggleLike(currentDisplayedPhotos[currentPhotoIndex].public_id.replace(/\\//g, '_'), event)">
+        ${isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>'}
+    </button>
+
+</div>
+<button class="nav-arrow arrow-right" onclick="navigateGallery(1, event)"><i class="fa-solid fa-chevron-right"></i></button>
     `;
 
-    document.body.appendChild(overlay);
-    document.body.style.overflow="hidden";
+  document.body.appendChild(overlay);
+document.body.style.overflow="hidden";
 
-    window.addEventListener("keydown", handleKeyDown);
+setTimeout(() => {
+    const likeBtn = document.getElementById("overlayLikeBtn");
+
+    if (likeBtn) {
+        likeBtn.classList.add("show");
+    }
+}, 1000);
+
+window.addEventListener("keydown", handleKeyDown);
 
     overlay.addEventListener("touchstart", handleTouchStart, {passive: true});
     overlay.addEventListener("touchend", handleTouchEnd, {passive: true});
@@ -863,14 +887,20 @@ function navigateGallery(direction, event) {
     const isLiked = likedPhotos.includes(nextId);
     const likeBtn = wrapper.querySelector(".like-btn");
     
-    if (likeBtn) {
-        likeBtn.className = `like-btn btn-like-${nextId} ${isLiked ? 'liked' : ''}`;
-        likeBtn.setAttribute("onclick", `toggleLike('${nextId}', event)`);
-        likeBtn.innerHTML = isLiked ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>';
-    }
+   if (likeBtn) {
+    likeBtn.className = `like-btn delayed-like btn-like-${nextId} ${isLiked ? 'liked' : ''}`;
 
-    overlay.setAttribute("onclick", `handlePhotoClick(this, '${nextId}', '${nextUrl}', true)`);
-    wrapper.setAttribute("onclick", `event.stopPropagation(); handlePhotoClick(this.parentElement, '${nextId}', '${nextUrl}', true)`);
+    likeBtn.setAttribute("onclick", `toggleLike('${nextId}', event)`);
+
+    likeBtn.innerHTML = isLiked
+        ? '<i class="fa-solid fa-heart"></i>'
+        : '<i class="fa-regular fa-heart"></i>';
+
+    likeBtn.classList.remove("show");
+
+    setTimeout(() => {
+        likeBtn.classList.add("show");
+    }, 1000);
 }
 
 function closeOverlay() {
