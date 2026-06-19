@@ -180,11 +180,12 @@ transform: translateX(-50%);
 
 .menu button.active{ color:#0b3d91; background: transparent; }
 .menu button.active::after { width: 70%; }
-   
-.gallery-grid {
-  column-count: 4;
-  column-gap: 20px;
-  padding: 25px;
+
+.gallery-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+gap:20px;
+padding: 25px;
 }
 
 .photo-card{
@@ -197,13 +198,6 @@ position:relative;
 aspect-ratio: 4/3;
 user-select: none;
 -webkit-user-select: none;
-}
-
-.photo-card {
-  display: inline-block;
-  width: 100%;
-  margin-bottom: 20px;
-  break-inside: avoid;
 }
 
 .photo-card:hover{
@@ -512,11 +506,7 @@ header {
 .menu { justify-content: space-between; overflow-x: hidden; white-space: normal; padding: 0; width: 100%; }
 .menu button { flex: 1; padding: 14px 2px; font-size: 10px; letter-spacing: 0px; text-align: center; }
 .menu button.active::after { width: 85%; }
-..gallery-grid {
-  column-count: 2;
-  column-gap: 10px;
-  padding: 15px;
-}
+.gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
 
 /* Ottimizzazione frecce per gli schermi dei telefoni */
 .nav-arrow { 
