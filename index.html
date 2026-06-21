@@ -446,8 +446,11 @@ border-radius:999px;
 text-decoration:none;
 font-size:12px;
 font-weight:700;
-box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-transition: 0.2s;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+
+opacity:0;
+visibility:hidden;
+transition:all 0.3s ease;
 }
 
 .ig-fotografo:hover{ background:#0b3d91; color:#FFD700; }
@@ -598,12 +601,20 @@ window.onload = () => { fetchPhotos(); };
 // Rileva lo scroll per mostrare/nascondere il pulsante torna su
 window.addEventListener("scroll", () => {
     const btn = document.getElementById("backToTop");
+    const ph = document.querySelector(".ig-fotografo");
+
     if (window.scrollY > 400) {
         btn.style.opacity = "1";
         btn.style.visibility = "visible";
+
+        ph.style.opacity = "1";
+        ph.style.visibility = "visible";
     } else {
         btn.style.opacity = "0";
         btn.style.visibility = "hidden";
+
+        ph.style.opacity = "0";
+        ph.style.visibility = "hidden";
     }
 });
 
